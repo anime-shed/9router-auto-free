@@ -1078,9 +1078,12 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
 
     const seenIds = new Set(existingModels.map(m => m.id.toLowerCase()));
     const seenFullIds = new Set(existingModels.map(m => (m.fullId || '').toLowerCase()));
-
+    const NON_TEXT_REGEX = /embed|tts|whisper|audio|speech|flux|diffusion|rerank|guard|moderation|asr|riva|parakeet|vision-only/i;
     for (const extId of candidatesToAdd) {
       const cleanId = extId.replace(/^[a-zA-Z0-9_.-]+\//, '').replace(/:free$/, '');
+      if (NON_TEXT_REGEX.test(cleanId) || NON_TEXT_REGEX.test(extId)) {
+        continue;
+      }
       const fullId = `${prefix}/${cleanId}`;
       if (seenIds.has(cleanId.toLowerCase()) || seenFullIds.has(fullId.toLowerCase())) {
         continue;
