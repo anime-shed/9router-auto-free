@@ -418,6 +418,38 @@ async function runTests() {
     assert.ok(assembled.unified.includes('openagentic/assistant-sonnet-4.5-thinking'));
     assert.ok(assembled.smart.includes('openagentic/assistant-sonnet-4.5-thinking'));
     assert.strictEqual(assembled.gatedOutCount, 1, 'Small context model gated out of super combo');
+
+    // Verify OpenCode Go models are excluded from all super-combos
+    const candidatesWithOcg = [
+      { id: 'sonnet-4.5', fullId: 'openagentic/assistant-sonnet-4.5-thinking' },
+      { id: 'ocg-model-1', fullId: 'ocg/qwen2.5-coder-32b' },
+      { id: 'ocg-model-2', fullId: 'opencode-go/deepseek-v3' },
+      { id: 'kilo-model', fullId: 'kilo/deepseek/deepseek-chat:free' }
+    ];
+    const latencyMapOcg = new Map([
+      ['openagentic/assistant-sonnet-4.5-thinking', 200],
+      ['ocg/qwen2.5-coder-32b', 150],
+      ['opencode-go/deepseek-v3', 180],
+      ['kilo/deepseek/deepseek-chat:free', 250]
+    ]);
+    const assembledOcg = assembleCombos({ candidates: candidatesWithOcg, latencyMap: latencyMapOcg });
+    assert.ok(!assembledOcg.unified.some(id => id.startsWith('ocg/') || id.startsWith('opencode-go/')), 'my9model-free (unified) must NOT contain ocg/ models');
+    assert.ok(!assembledOcg.smart.some(id => id.startsWith('ocg/') || id.startsWith('opencode-go/')), 'my9model-smart must NOT contain ocg/ models');
+    assert.ok(!assembledOcg.fast.some(id => id.startsWith('ocg/') || id.startsWith('opencode-go/')), 'my9model-fast must NOT contain ocg/ models');
+    assert.ok(!assembledOcg.cooldown.some(id => id.startsWith('ocg/') || id.startsWith('opencode-go/')), 'my9model-cooldown must NOT contain ocg/ models');
+    assert.ok(assembledOcg.unified.includes('openagentic/assistant-sonnet-4.5-thinking'), 'unified must still include non-ocg models');
+    assert.ok(assembledOcg.unified.includes('kilo/deepseek/deepseek-chat:free'), 'unified must still include non-ocg models');
+
+    // Dedicated provider combo preserves ocg models
+    const comboMap = buildComboMap({
+      free: assembledOcg.unified,
+      smart: assembledOcg.smart,
+      fast: assembledOcg.fast,
+      cooldown: assembledOcg.cooldown,
+      providers: [['ocg-free', ['ocg/qwen2.5-coder-32b', 'opencode-go/deepseek-v3']]]
+    });
+    assert.deepStrictEqual(comboMap.get('ocg-free'), ['ocg/qwen2.5-coder-32b', 'opencode-go/deepseek-v3'], 'ocg-free dedicated combo must preserve ocg models');
+    assert.ok(!comboMap.get('my9model-free').some(id => id.startsWith('ocg/')), 'my9model-free in comboMap must not contain ocg');
   }
 
   // 23. Registry completeness: every record yields a coherent provider

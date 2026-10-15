@@ -46,6 +46,15 @@ const TRANSIENT_HTTP_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504, 529]
 const escapeRegExp = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const PROVIDER_PREFIX_RE = /^[a-zA-Z0-9_.-]+\//;
 
+// Super-combos (my9model-free, my9model-smart, my9model-fast, my9model-cooldown) excluded prefixes
+const SUPER_COMBO_EXCLUDED_PREFIXES = ['ocg', 'opencode-go'];
+
+function isExcludedFromSuperCombo(fullId) {
+  if (!fullId || typeof fullId !== 'string') return false;
+  const prefix = fullId.split('/')[0].toLowerCase();
+  return SUPER_COMBO_EXCLUDED_PREFIXES.includes(prefix);
+}
+
 // Managed combos registry
 const MANAGED_COMBOS = [
   'my9model-free', 'my9model-smart', 'my9model-fast', 'my9model-cooldown',
@@ -373,12 +382,13 @@ function deriveTierLists(rankedAll, benchmarks = null) {
 }
 
 function buildComboMap({ free = [], cooldown = [], smart, fast, providers = [] }) {
+  const filterSuper = list => (list || []).filter(id => !isExcludedFromSuperCombo(id));
   const comboMap = new Map([
-    ['my9model-free', free],
-    ['my9model-cooldown', cooldown],
+    ['my9model-free', filterSuper(free)],
+    ['my9model-cooldown', filterSuper(cooldown)],
   ]);
-  if (Array.isArray(smart)) comboMap.set('my9model-smart', smart);
-  if (Array.isArray(fast)) comboMap.set('my9model-fast', fast);
+  if (Array.isArray(smart)) comboMap.set('my9model-smart', filterSuper(smart));
+  if (Array.isArray(fast)) comboMap.set('my9model-fast', filterSuper(fast));
   for (const [name, ids] of providers) comboMap.set(name, ids);
   return comboMap;
 }
@@ -390,8 +400,11 @@ function buildComboMap({ free = [], cooldown = [], smart, fast, providers = [] }
 function assembleCombos({ candidates, latencyMap = new Map(), metaMap = new Map(), signals = null }) {
   const allIds = Array.from(new Set(candidates.map(getModelFullId)));
 
+  // Filter out models explicitly excluded from super-combos (e.g. OpenCode Go)
+  const eligibleIds = allIds.filter(id => !isExcludedFromSuperCombo(id));
+
   // Super-combo agentic readiness gate
-  const gatedIds = allIds.filter(id => passesAgenticGate(metaMap.get(id)));
+  const gatedIds = eligibleIds.filter(id => passesAgenticGate(metaMap.get(id)));
   const gatedActiveIds = gatedIds.filter(id => !isParkedLatency(latencyMap.get(id) ?? 0));
   const gatedQuotaIds = gatedIds.filter(id => !gatedActiveIds.includes(id));
 
@@ -404,7 +417,8 @@ function assembleCombos({ candidates, latencyMap = new Map(), metaMap = new Map(
     cooldown: cooldownList,
     smart: tiers.smartList,
     fast: tiers.fastList,
-    gatedOutCount: allIds.length - gatedIds.length
+    gatedOutCount: eligibleIds.length - gatedIds.length,
+    superComboExcludedCount: allIds.length - eligibleIds.length
   };
 }
 
@@ -1003,5 +1017,7 @@ module.exports = {
   PROVIDERS,
   PROVIDER_BY_KEY,
   providerByPrefix,
-  isVerbose
+  isVerbose,
+  SUPER_COMBO_EXCLUDED_PREFIXES,
+  isExcludedFromSuperCombo
 };
