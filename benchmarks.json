@@ -1,1626 +1,4584 @@
 {
-  "gemini-3.1-pro-preview": {
-    "name": "Gemini 3.1 Pro Preview",
-    "score": 85,
-    "swe_bench": 81,
-    "livecodebench": 84.5,
-    "tier": "S"
+  "gemini-3.8-flash": {
+    "name": "Gemini 3.8 Flash",
+    "score": 78.5,
+    "swe_bench": 78.5,
+    "tier": "S+",
+    "contextLength": 1048576
   },
-  "assistant-sonnet-4.5-thinking": {
-    "name": "Claude Sonnet 4.5 Thinking",
-    "score": 84,
-    "swe_bench": 80,
-    "livecodebench": 83.5,
-    "tier": "S"
+  "claude-opus-4-6-thinking": {
+    "name": "Claude Opus 4.6 Thinking",
+    "score": 78,
+    "swe_bench": 78,
+    "tier": "S+",
+    "contextLength": 200000
+  },
+  "gh/gpt-4.1": {
+    "name": "GitHub GPT-4.1",
+    "score": 77,
+    "swe_bench": 77,
+    "tier": "S+",
+    "contextLength": 128000
+  },
+  "gpt-4.1": {
+    "name": "GPT-4.1",
+    "score": 77,
+    "swe_bench": 77,
+    "tier": "S+",
+    "contextLength": 128000
   },
   "gemini-3.7-flash": {
     "name": "Gemini 3.7 Flash",
-    "score": 83,
-    "swe_bench": 78.5,
-    "livecodebench": 82,
-    "tier": "S"
+    "score": 76.9,
+    "swe_bench": 76.9,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "moonshotai/kimi-k3": {
+    "name": "Moonshot Kimi K3",
+    "score": 76.8,
+    "swe_bench": 76.8,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "kimi-k3": {
+    "name": "Kimi K3",
+    "score": 76.8,
+    "swe_bench": 76.8,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "deprecated": true
+  },
+  "assistant-sonnet-4.5-thinking": {
+    "name": "Claude Sonnet 4.5 Thinking",
+    "score": 76.5,
+    "swe_bench": 76.5,
+    "tier": "S+",
+    "contextLength": 200000
+  },
+  "z-ai/glm-5.3": {
+    "name": "Zhipu GLM 5.3",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "glm-5.3": {
+    "name": "GLM 5.3",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "deprecated": true
+  },
+  "claude-sonnet-4.6": {
+    "name": "Claude Sonnet 4.6",
+    "score": 74,
+    "swe_bench": 74,
+    "tier": "S+",
+    "contextLength": 200000
+  },
+  "deepseek-v4.1-flash": {
+    "name": "DeepSeek V4.1 Flash",
+    "score": 74,
+    "swe_bench": 74,
+    "tier": "S+",
+    "contextLength": 131072
   },
   "claude-sonnet-4.5": {
     "name": "Claude Sonnet 4.5",
-    "score": 82.5,
-    "swe_bench": 78,
-    "livecodebench": 81,
-    "tier": "S"
+    "score": 73,
+    "swe_bench": 73,
+    "tier": "S+",
+    "contextLength": 200000
   },
-  "gemini-3.6-flash": {
-    "name": "Gemini 3.6 Flash",
-    "score": 81,
-    "swe_bench": 76,
-    "livecodebench": 80,
-    "tier": "S"
-  },
-  "gemini-3.5-flash": {
-    "name": "Gemini 3.5 Flash",
-    "score": 79,
-    "swe_bench": 74,
-    "livecodebench": 78,
-    "tier": "A+"
-  },
-  "claude-3.5-sonnet": {
-    "name": "Claude 3.5 Sonnet",
-    "score": 79,
-    "swe_bench": 74,
-    "livecodebench": 78,
-    "tier": "A+"
-  },
-  "deepseek-r1": {
-    "name": "DeepSeek R1",
-    "score": 76.5,
-    "swe_bench": 71,
-    "livecodebench": 75.8,
-    "tier": "A+"
-  },
-  "gemini-3.5-flash-lite": {
-    "name": "Gemini 3.5 Flash Lite",
-    "score": 76,
-    "swe_bench": 70,
-    "livecodebench": 75,
-    "tier": "A+"
-  },
-  "gemini-3.1-flash-lite": {
-    "name": "Gemini 3.1 Flash Lite",
-    "score": 74,
-    "swe_bench": 68,
-    "livecodebench": 73,
-    "tier": "A+"
-  },
-  "deepseek-v4": {
-    "name": "DeepSeek V4 Flash",
-    "score": 74,
-    "swe_bench": 68,
-    "livecodebench": 73,
-    "tier": "A+"
-  },
-  "deepseek-v3": {
-    "name": "DeepSeek V3",
-    "score": 72,
-    "swe_bench": 65,
-    "livecodebench": 70.5,
-    "tier": "A+"
-  },
-  "glm-5": {
-    "name": "Zhipu GLM 5",
-    "score": 71,
-    "swe_bench": 65,
-    "livecodebench": 71.5,
-    "tier": "A+"
-  },
-  "step-3.7-flash": {
-    "name": "StepFun Step 3.7 Flash",
-    "score": 70,
-    "swe_bench": 64.5,
-    "livecodebench": 70.2,
-    "tier": "A+"
-  },
-  "qwen3.7-flash": {
-    "name": "Qwen 3.7 Flash",
-    "score": 70,
-    "swe_bench": 64.5,
-    "livecodebench": 69.5,
-    "tier": "A+"
-  },
-  "qwen3.6-plus": {
-    "name": "Qwen 3.6 Plus",
-    "score": 69,
-    "swe_bench": 64,
-    "livecodebench": 68,
-    "tier": "A"
-  },
-  "qwen2.5-coder": {
-    "name": "Qwen 2.5 Coder 32B",
-    "score": 68.5,
-    "swe_bench": 63,
-    "livecodebench": 67.5,
-    "tier": "A"
-  },
-  "gpt-4o": {
-    "name": "GPT-4o",
-    "score": 66,
-    "swe_bench": 60,
-    "livecodebench": 65,
-    "tier": "A"
-  },
-  "gemini-2.0-flash": {
-    "name": "Gemini 2.0 Flash",
-    "score": 65,
-    "swe_bench": 58.5,
-    "livecodebench": 64,
-    "tier": "A"
-  },
-  "minimax-m3": {
-    "name": "MiniMax M3",
-    "score": 62.5,
-    "swe_bench": 55,
-    "livecodebench": 61,
-    "tier": "A"
-  },
-  "minimax-m2.5": {
-    "name": "MiniMax M2.5",
-    "score": 61,
-    "swe_bench": 53,
-    "livecodebench": 59.5,
-    "tier": "A"
+  "nvidia/nemotron-3-ultra-550b-a55b": {
+    "name": "Nemotron 3 Ultra 550B",
+    "score": 71.9,
+    "swe_bench": 71.9,
+    "tier": "S+",
+    "contextLength": 1048576
   },
   "nemotron-3-ultra": {
     "name": "NVIDIA Nemotron 3 Ultra",
-    "score": 58.5,
-    "swe_bench": 50,
-    "livecodebench": 57,
-    "tier": "B+"
+    "score": 71.9,
+    "swe_bench": 71.9,
+    "tier": "S+",
+    "contextLength": 1048576
   },
-  "nemotron-3.5-lightning": {
-    "name": "NVIDIA Nemotron 3.5 Lightning",
-    "score": 57,
-    "swe_bench": 49,
-    "livecodebench": 56,
-    "tier": "B+"
+  "poolside/laguna-xs-2.1": {
+    "name": "Poolside Laguna XS 2.1",
+    "score": 70.9,
+    "swe_bench": 70.9,
+    "tier": "S+",
+    "contextLength": 262144
   },
-  "nemotron-3-super": {
-    "name": "NVIDIA Nemotron 3 Super",
-    "score": 56,
-    "swe_bench": 48,
-    "livecodebench": 55,
-    "tier": "B+"
-  },
-  "hy3": {
-    "name": "Tencent HY3",
-    "score": 54,
-    "swe_bench": 46,
-    "livecodebench": 52.5,
-    "tier": "B+"
-  },
-  "mimo-v2.5": {
-    "name": "Xiaomi MiMo V2.5",
-    "score": 52,
-    "swe_bench": 44,
-    "livecodebench": 50.5,
-    "tier": "B+"
-  },
-  "nemotron-3-nano": {
-    "name": "NVIDIA Nemotron 3 Nano",
-    "score": 50,
-    "swe_bench": 42,
-    "livecodebench": 49,
-    "tier": "B+"
-  },
-  "laguna-s-2.1": {
-    "name": "Poolside Laguna S 2.1",
-    "score": 48,
-    "swe_bench": 40,
-    "livecodebench": 46,
-    "tier": "B"
-  },
-  "ling-3.0-flash": {
-    "name": "Ling 3.0 Flash",
-    "score": 47,
-    "swe_bench": 39,
-    "livecodebench": 45,
-    "tier": "B"
+  "laguna-xs": {
+    "name": "Laguna XS 2.1",
+    "score": 70.9,
+    "swe_bench": 70.9,
+    "tier": "S+",
+    "contextLength": 262144
   },
   "laguna-xs-2.1": {
     "name": "Poolside Laguna XS 2.1",
-    "score": 46,
-    "swe_bench": 38,
-    "livecodebench": 44,
-    "tier": "B"
+    "score": 70.9,
+    "swe_bench": 70.9,
+    "tier": "S+",
+    "contextLength": 262144
   },
-  "gpt-oss-20b": {
-    "name": "OpenAI GPT OSS 20B",
-    "score": 45,
-    "swe_bench": 36,
-    "livecodebench": 43,
-    "tier": "B"
+  "cerebras/qwen-3.8-27b": {
+    "name": "Cerebras Qwen 3.8 27B",
+    "score": 68,
+    "swe_bench": 68,
+    "tier": "S",
+    "contextLength": 32768
   },
-  "lfm-2.5-2.6b": {
-    "name": "LiquidAI LFM 2.5 2.6B",
-    "score": 44,
-    "swe_bench": 35,
-    "livecodebench": 42,
-    "tier": "C+"
+  "qwen-3.8-27b": {
+    "name": "Qwen 3.8 27B",
+    "score": 68,
+    "swe_bench": 68,
+    "tier": "S",
+    "contextLength": 32768
   },
-  "north-mini-code": {
-    "name": "Cohere North Mini Code",
-    "score": 43,
-    "swe_bench": 34,
-    "livecodebench": 41,
-    "tier": "C+"
+  "step-3.7-flash": {
+    "name": "StepFun Step 3.7 Flash",
+    "score": 66,
+    "swe_bench": 66,
+    "tier": "S",
+    "contextLength": 262144
+  },
+  "qwen2.5-coder": {
+    "name": "Qwen 2.5 Coder 32B",
+    "score": 65,
+    "swe_bench": 65,
+    "tier": "S",
+    "contextLength": 131072
+  },
+  "cerebras/gpt-oss-120b": {
+    "name": "Cerebras GPT-OSS 120B",
+    "score": 62.4,
+    "swe_bench": 62.4,
+    "tier": "S",
+    "contextLength": 8192
+  },
+  "gpt-oss-120b": {
+    "name": "GPT-OSS 120B",
+    "score": 62.4,
+    "swe_bench": 62.4,
+    "tier": "S",
+    "contextLength": 8192
+  },
+  "gcli/grok-4.7": {
+    "name": "xAI Grok 4.7 CLI",
+    "score": 62,
+    "swe_bench": 62,
+    "tier": "S",
+    "contextLength": 131072
+  },
+  "grok-4.7": {
+    "name": "Grok 4.7",
+    "score": 62,
+    "swe_bench": 62,
+    "tier": "S",
+    "contextLength": 131072
+  },
+  "nvidia/nemotron-3-super-120b-a12b": {
+    "name": "Nemotron 3 Super 120B",
+    "score": 60.5,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 1048576
+  },
+  "nemotron-3-super": {
+    "name": "NVIDIA Nemotron 3 Super",
+    "score": 60.5,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 1048576
+  },
+  "gemini-3.5-flash": {
+    "name": "Gemini 3.5 Flash",
+    "score": 78,
+    "swe_bench": 78,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "qwen3-coder-480b": {
+    "name": "Qwen3 Coder 480B",
+    "score": 58,
+    "swe_bench": 58,
+    "tier": "A+",
+    "contextLength": 131072
+  },
+  "qwen3.5-122b": {
+    "name": "Qwen 3.5 122B",
+    "score": 56,
+    "swe_bench": 56,
+    "tier": "A+",
+    "contextLength": 131072
+  },
+  "minimax-m3": {
+    "name": "MiniMax M3",
+    "score": 78.4,
+    "swe_bench": 78.4,
+    "tier": "S+",
+    "contextLength": 524288
+  },
+  "nemotron-3.5-lightning-30b": {
+    "name": "Nemotron 3.5 Lightning 30B",
+    "score": 52.8,
+    "swe_bench": 52.8,
+    "tier": "A+",
+    "contextLength": 131072
+  },
+  "nemotron-3.5-lightning": {
+    "name": "NVIDIA Nemotron 3.5 Lightning",
+    "score": 52.8,
+    "swe_bench": 52.8,
+    "tier": "A+",
+    "contextLength": 131072
+  },
+  "deepseek-r1": {
+    "name": "DeepSeek R1 Distill",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 131072
+  },
+  "mimo-v2.5": {
+    "name": "Xiaomi MiMo V2.5",
+    "score": 50.5,
+    "swe_bench": 50.5,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "deprecated": true
+  },
+  "hy3": {
+    "name": "Tencent HY3",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 131072,
+    "deprecated": true
+  },
+  "opencoder-8b-instruct": {
+    "name": "OpenCoder-8B-Instruct",
+    "score": 75,
+    "humaneval_plus": 77.4,
+    "mbpp_plus": 71.4,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "artigenz-coder-ds-6.7b": {
+    "name": "Artigenz-Coder-DS-6.7B",
+    "score": 71.4,
+    "humaneval_plus": 72.6,
+    "mbpp_plus": 69.6,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "code-13b": {
+    "name": "Code-13B",
+    "score": 31.4,
+    "humaneval_plus": 52.4,
+    "mbpp_plus": 0,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "code-290k-6.7b-instruct": {
+    "name": "Code-290k-6.7B-Instruct",
+    "score": 35.8,
+    "humaneval_plus": 59.7,
+    "mbpp_plus": 0,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "code-33b": {
+    "name": "Code-33B",
+    "score": 29.6,
+    "humaneval_plus": 49.4,
+    "mbpp_plus": 0,
+    "tier": "B",
+    "source": "evalplus"
+  },
+  "codegen-16b": {
+    "name": "CodeGen-16B",
+    "score": 35,
+    "humaneval_plus": 28,
+    "mbpp_plus": 45.5,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "codegen-2b": {
+    "name": "CodeGen-2B",
+    "score": 28,
+    "humaneval_plus": 22.6,
+    "mbpp_plus": 36,
+    "tier": "B",
+    "source": "evalplus"
+  },
+  "codegen-6b": {
+    "name": "CodeGen-6B",
+    "score": 32.5,
+    "humaneval_plus": 25.6,
+    "mbpp_plus": 42.9,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "codegen2-16b": {
+    "name": "CodeGen2-16B",
+    "score": 9.9,
+    "humaneval_plus": 16.5,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "codegen2-1b": {
+    "name": "CodeGen2-1B",
+    "score": 5.5,
+    "humaneval_plus": 9.1,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "codegen2-3b": {
+    "name": "CodeGen2-3B",
+    "score": 7.7,
+    "humaneval_plus": 12.8,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "codegen2-7b": {
+    "name": "CodeGen2-7B",
+    "score": 10.6,
+    "humaneval_plus": 17.7,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "codellama-13b": {
+    "name": "CodeLlama-13B",
+    "score": 44.1,
+    "humaneval_plus": 38.4,
+    "mbpp_plus": 52.6,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "codellama-34b": {
+    "name": "CodeLlama-34B",
+    "score": 48.9,
+    "humaneval_plus": 43.9,
+    "mbpp_plus": 56.3,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "codellama-70b": {
+    "name": "CodeLlama-70B",
+    "score": 30.4,
+    "humaneval_plus": 50.6,
+    "mbpp_plus": 0,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "codellama-70b-instruct": {
+    "name": "CodeLlama-70B-Instruct",
+    "score": 39.5,
+    "humaneval_plus": 65.9,
+    "mbpp_plus": 0,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "codellama-7b": {
+    "name": "CodeLlama-7B",
+    "score": 40,
+    "humaneval_plus": 35.4,
+    "mbpp_plus": 46.8,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "qwen2.5-coder-32b-instruct": {
+    "name": "Qwen2.5-Coder-32B-Instruct",
+    "score": 83.1,
+    "humaneval_plus": 87.2,
+    "mbpp_plus": 77,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "codeqwen1.5-7b": {
+    "name": "CodeQwen1.5-7B",
+    "score": 51.7,
+    "humaneval_plus": 45.7,
+    "mbpp_plus": 60.8,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "codeqwen1.5-7b-chat": {
+    "name": "CodeQwen1.5-7B-Chat",
+    "score": 74.8,
+    "humaneval_plus": 78.7,
+    "mbpp_plus": 69,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "qwen1.5-72b-chat": {
+    "name": "Qwen1.5-72B-Chat",
+    "score": 60.1,
+    "humaneval_plus": 59.1,
+    "mbpp_plus": 61.6,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "codet5--16b": {
+    "name": "CodeT5+-16B",
+    "score": 34.9,
+    "humaneval_plus": 26.8,
+    "mbpp_plus": 47.1,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "codet5--2b": {
+    "name": "CodeT5+-2B",
+    "score": 28.4,
+    "humaneval_plus": 22,
+    "mbpp_plus": 38.1,
+    "tier": "B",
+    "source": "evalplus"
+  },
+  "codet5--6b": {
+    "name": "CodeT5+-6B",
+    "score": 31.2,
+    "humaneval_plus": 24.4,
+    "mbpp_plus": 41.5,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "command-r": {
+    "name": "Command-R+",
+    "score": 59.4,
+    "humaneval_plus": 56.7,
+    "mbpp_plus": 63.5,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "deepseek-v3-nov-2024": {
+    "name": "DeepSeek-V3 (Nov 2024)",
+    "score": 81.2,
+    "humaneval_plus": 86.6,
+    "mbpp_plus": 73,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "deepseek-v2.5-nov-2024": {
+    "name": "DeepSeek-V2.5 (Nov 2024)",
+    "score": 79.7,
+    "humaneval_plus": 83.5,
+    "mbpp_plus": 74.1,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "gemini-1.5-pro-002": {
+    "name": "Gemini 1.5 Pro 002",
+    "score": 77.4,
+    "humaneval_plus": 79.3,
+    "mbpp_plus": 74.6,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "gemini-1.5-flash-002": {
+    "name": "Gemini 1.5 Flash 002",
+    "score": 72.4,
+    "humaneval_plus": 75.6,
+    "mbpp_plus": 67.5,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "deepseek-coder-v2-instruct": {
+    "name": "DeepSeek-Coder-V2-Instruct",
+    "score": 79.4,
+    "humaneval_plus": 82.3,
+    "mbpp_plus": 75.1,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "deepseek-coder-1.3b-base": {
+    "name": "DeepSeek-Coder-1.3B-base",
+    "score": 34.5,
+    "humaneval_plus": 25.6,
+    "mbpp_plus": 47.9,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "deepseek-coder-1.3b-instruct": {
+    "name": "DeepSeek-Coder-1.3B-instruct",
+    "score": 58.2,
+    "humaneval_plus": 60.4,
+    "mbpp_plus": 54.8,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "deepseek-coder-33b-base": {
+    "name": "DeepSeek-Coder-33B-base",
+    "score": 26.7,
+    "humaneval_plus": 44.5,
+    "mbpp_plus": 0,
+    "tier": "B",
+    "source": "evalplus"
+  },
+  "deepseek-coder-33b-instruct": {
+    "name": "DeepSeek-Coder-33B-instruct",
+    "score": 73,
+    "humaneval_plus": 75,
+    "mbpp_plus": 70.1,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "deepseek-coder-6.7b-base": {
+    "name": "DeepSeek-Coder-6.7B-base",
+    "score": 47.2,
+    "humaneval_plus": 39.6,
+    "mbpp_plus": 58.7,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "deepseek-coder-6.7b-instruct": {
+    "name": "DeepSeek-Coder-6.7B-instruct",
+    "score": 69,
+    "humaneval_plus": 71.3,
+    "mbpp_plus": 65.6,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "deepseek-coder-7b-instruct-v1.5": {
+    "name": "DeepSeek-Coder-7B-instruct-v1.5",
+    "score": 67.7,
+    "humaneval_plus": 71.3,
+    "mbpp_plus": 62.2,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "claude-sonnet-3.5-june-2024": {
+    "name": "Claude Sonnet 3.5 (June 2024)",
+    "score": 78.7,
+    "humaneval_plus": 81.7,
+    "mbpp_plus": 74.3,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "grok-beta": {
+    "name": "Grok Beta",
+    "score": 74.5,
+    "humaneval_plus": 80.5,
+    "mbpp_plus": 65.6,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "o1-preview-sept-2024": {
+    "name": "O1 Preview (Sept 2024)",
+    "score": 85.5,
+    "humaneval_plus": 89,
+    "mbpp_plus": 80.2,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "o1-mini-sept-2024": {
+    "name": "O1 Mini (Sept 2024)",
+    "score": 84.9,
+    "humaneval_plus": 89,
+    "mbpp_plus": 78.8,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "gpt-4o-aug-2024": {
+    "name": "GPT 4o (Aug 2024)",
+    "score": 81.2,
+    "humaneval_plus": 87.2,
+    "mbpp_plus": 72.2,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "gpt-4o-mini-july-2024": {
+    "name": "GPT 4o Mini (July 2024)",
+    "score": 79,
+    "humaneval_plus": 83.5,
+    "mbpp_plus": 72.2,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "gpt-3.5-may-2023": {
+    "name": "GPT-3.5 (May 2023)",
+    "score": 39.9,
+    "humaneval_plus": 66.5,
+    "mbpp_plus": 0,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "gpt-3.5-turbo-nov-2023": {
+    "name": "GPT-3.5-Turbo (Nov 2023)",
+    "score": 70.3,
+    "humaneval_plus": 70.7,
+    "mbpp_plus": 69.7,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "gpt-4-may-2023": {
+    "name": "GPT-4 (May 2023)",
+    "score": 47.6,
+    "humaneval_plus": 79.3,
+    "mbpp_plus": 0,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "gpt-4-turbo-april-2024": {
+    "name": "GPT-4-Turbo (April 2024)",
+    "score": 52,
+    "humaneval_plus": 86.6,
+    "mbpp_plus": 0,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "gpt-4-turbo-nov-2023": {
+    "name": "GPT-4-Turbo (Nov 2023)",
+    "score": 78.3,
+    "humaneval_plus": 81.7,
+    "mbpp_plus": 73.3,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "gpt-j-6b": {
+    "name": "GPT-J-6B",
+    "score": 6.6,
+    "humaneval_plus": 11,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "gpt-neo-2.7b": {
+    "name": "GPT-Neo-2.7B",
+    "score": 4,
+    "humaneval_plus": 6.7,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "gemini-pro-1.0": {
+    "name": "Gemini Pro 1.0",
+    "score": 57.9,
+    "humaneval_plus": 55.5,
+    "mbpp_plus": 61.4,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "gemini-pro-1.5": {
+    "name": "Gemini Pro 1.5",
+    "score": 36.6,
+    "humaneval_plus": 61,
+    "mbpp_plus": 0,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "incoder-1.3b": {
+    "name": "InCoder-1.3B",
+    "score": 6.6,
+    "humaneval_plus": 11,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "incoder-6.7b": {
+    "name": "InCoder-6.7B",
+    "score": 7.3,
+    "humaneval_plus": 12.2,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "llama3-70b-instruct": {
+    "name": "Llama3-70B-instruct",
+    "score": 70.8,
+    "humaneval_plus": 72,
+    "mbpp_plus": 69,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "llama3-8b-base": {
+    "name": "Llama3-8B-base",
+    "score": 38.2,
+    "humaneval_plus": 29.3,
+    "mbpp_plus": 51.6,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "llama3.1-8b-instruct": {
+    "name": "Llama3.1-8B-instruct",
+    "score": 59.9,
+    "humaneval_plus": 62.8,
+    "mbpp_plus": 55.6,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "llama3-8b-instruct": {
+    "name": "Llama3-8B-instruct",
+    "score": 55.9,
+    "humaneval_plus": 56.7,
+    "mbpp_plus": 54.8,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "wavecoder-ultra-6.7b": {
+    "name": "WaveCoder-Ultra-6.7B",
+    "score": 67.1,
+    "humaneval_plus": 69.5,
+    "mbpp_plus": 63.5,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "magicoder-s-cl-7b": {
+    "name": "Magicoder-S-CL-7B",
+    "score": 64.7,
+    "humaneval_plus": 67.7,
+    "mbpp_plus": 60.1,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "magicoder-s-ds-6.7b": {
+    "name": "Magicoder-S-DS-6.7B",
+    "score": 70.4,
+    "humaneval_plus": 71.3,
+    "mbpp_plus": 69,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "mistral-large-mar-2024": {
+    "name": "Mistral Large (Mar 2024)",
+    "score": 61.1,
+    "humaneval_plus": 62.2,
+    "mbpp_plus": 59.5,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "mistral-7b": {
+    "name": "Mistral-7B",
+    "score": 31.1,
+    "humaneval_plus": 23.8,
+    "mbpp_plus": 42.1,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "mistral-codealpaca-7b": {
+    "name": "Mistral-codealpaca-7B",
+    "score": 25.3,
+    "humaneval_plus": 42.1,
+    "mbpp_plus": 0,
+    "tier": "B",
+    "source": "evalplus"
+  },
+  "mistralhermes-codepro-7b-v1": {
+    "name": "MistralHermes-CodePro-7B-v1",
+    "score": 43.8,
+    "humaneval_plus": 42.1,
+    "mbpp_plus": 46.4,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "databricks-dbrx-instruct": {
+    "name": "databricks/dbrx-instruct",
+    "score": 64.4,
+    "humaneval_plus": 70.1,
+    "mbpp_plus": 55.8,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "codestral-22b-v0.1": {
+    "name": "Codestral-22B-v0.1",
+    "score": 69,
+    "humaneval_plus": 73.8,
+    "mbpp_plus": 61.9,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "mistral-7b-instruct-v0.2": {
+    "name": "Mistral-7B-Instruct-v0.2",
+    "score": 36.4,
+    "humaneval_plus": 36,
+    "mbpp_plus": 37,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "mixtral-8x22b-instruct-v0.1": {
+    "name": "Mixtral-8x22B-Instruct-v0.1",
+    "score": 68.9,
+    "humaneval_plus": 72,
+    "mbpp_plus": 64.3,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "mixtral-8x7b-instruct-v0.1": {
+    "name": "Mixtral-8x7B-Instruct-v0.1",
+    "score": 43.6,
+    "humaneval_plus": 39.6,
+    "mbpp_plus": 49.7,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "openchat-3.5-7b-0106": {
+    "name": "OpenChat-3.5-7B-0106",
+    "score": 62.4,
+    "humaneval_plus": 67.7,
+    "mbpp_plus": 54.5,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "opencodeinterpreter-ds-33b": {
+    "name": "OpenCodeInterpreter-DS-33B",
+    "score": 71.7,
+    "humaneval_plus": 73.8,
+    "mbpp_plus": 68.5,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "opencodeinterpreter-ds-6.7b": {
+    "name": "OpenCodeInterpreter-DS-6.7B",
+    "score": 69.8,
+    "humaneval_plus": 72,
+    "mbpp_plus": 66.4,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "openhermes-2.5-code-290k-13b": {
+    "name": "OpenHermes-2.5-Code-290k-13B",
+    "score": 47.6,
+    "humaneval_plus": 48.8,
+    "mbpp_plus": 45.8,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "phind-codellama-34b-v2": {
+    "name": "Phind-CodeLlama-34B-v2",
+    "score": 40.3,
+    "humaneval_plus": 67.1,
+    "mbpp_plus": 0,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "polycoder-2.7b": {
+    "name": "PolyCoder-2.7B",
+    "score": 3.7,
+    "humaneval_plus": 6.1,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "python-code-13b": {
+    "name": "Python-Code-13B",
+    "score": 18.3,
+    "humaneval_plus": 30.5,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "solar-10.7b-instruct-v1.0": {
+    "name": "SOLAR-10.7B-Instruct-v1.0",
+    "score": 36.8,
+    "humaneval_plus": 37.2,
+    "mbpp_plus": 36.2,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "santacoder-1.1b": {
+    "name": "SantaCoder-1.1B",
+    "score": 8.4,
+    "humaneval_plus": 14,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "stablelm-7b": {
+    "name": "StableLM-7B",
+    "score": 1.4,
+    "humaneval_plus": 2.4,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "starchat2-15b-v0.1": {
+    "name": "starchat2-15b-v0.1",
+    "score": 68.6,
+    "humaneval_plus": 71.3,
+    "mbpp_plus": 64.6,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "starcoder-15b": {
+    "name": "StarCoder-15B",
+    "score": 36,
+    "humaneval_plus": 29.3,
+    "mbpp_plus": 46.1,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "starcoder2-15b-instruct-v0.1": {
+    "name": "starcoder2-15b-instruct-v0.1",
+    "score": 62.3,
+    "humaneval_plus": 60.4,
+    "mbpp_plus": 65.1,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "starcoder2-15b": {
+    "name": "StarCoder2-15B",
+    "score": 22.7,
+    "humaneval_plus": 37.8,
+    "mbpp_plus": 0,
+    "tier": "B",
+    "source": "evalplus"
+  },
+  "starcoder2-3b": {
+    "name": "StarCoder2-3B",
+    "score": 16.4,
+    "humaneval_plus": 27.4,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "starcoder2-7b": {
+    "name": "StarCoder2-7B",
+    "score": 17.9,
+    "humaneval_plus": 29.9,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "starcoderbase-1b": {
+    "name": "StarCoderBase-1B",
+    "score": 7.3,
+    "humaneval_plus": 12.2,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "starcoderbase-3b": {
+    "name": "StarCoderBase-3B",
+    "score": 9.5,
+    "humaneval_plus": 15.9,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "starcoderbase-7b": {
+    "name": "StarCoderBase-7B",
+    "score": 12.8,
+    "humaneval_plus": 21.3,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "vicuna-13b": {
+    "name": "Vicuna-13B",
+    "score": 9.5,
+    "humaneval_plus": 15.9,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "vicuna-7b": {
+    "name": "Vicuna-7B",
+    "score": 7,
+    "humaneval_plus": 11.6,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "whiterabbitneo-33b-v1": {
+    "name": "WhiteRabbitNeo-33B-v1",
+    "score": 66.3,
+    "humaneval_plus": 65.9,
+    "mbpp_plus": 66.9,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "wizardcoder-15b-v1.0": {
+    "name": "WizardCoder-15B-V1.0",
+    "score": 52,
+    "humaneval_plus": 50.6,
+    "mbpp_plus": 54.2,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "wizardcoder-33b-v1.1": {
+    "name": "WizardCoder-33B-V1.1",
+    "score": 43.9,
+    "humaneval_plus": 73.2,
+    "mbpp_plus": 0,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "wizardcoder-python-34b-v1.0": {
+    "name": "WizardCoder-Python-34B-V1.0",
+    "score": 64,
+    "humaneval_plus": 64.6,
+    "mbpp_plus": 63.2,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "wizardcoder-python-7b-v1.0": {
+    "name": "WizardCoder-Python-7B-V1.0",
+    "score": 46.9,
+    "humaneval_plus": 45.1,
+    "mbpp_plus": 49.5,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "xwincoder-34b": {
+    "name": "XwinCoder-34B",
+    "score": 67.6,
+    "humaneval_plus": 69.5,
+    "mbpp_plus": 64.8,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "zephyr--7b": {
+    "name": "Zephyr β-7B",
+    "score": 27.8,
+    "humaneval_plus": 23.2,
+    "mbpp_plus": 34.7,
+    "tier": "B",
+    "source": "evalplus"
+  },
+  "claude-2-mar-2024": {
+    "name": "claude-2 (Mar 2024)",
+    "score": 37,
+    "humaneval_plus": 61.6,
+    "mbpp_plus": 0,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "claude-3-haiku-mar-2024": {
+    "name": "claude-3-haiku (Mar 2024)",
+    "score": 68.9,
+    "humaneval_plus": 68.9,
+    "mbpp_plus": 68.8,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "claude-3-opus-mar-2024": {
+    "name": "claude-3-opus (Mar 2024)",
+    "score": 75.8,
+    "humaneval_plus": 77.4,
+    "mbpp_plus": 73.3,
+    "tier": "S+",
+    "source": "evalplus"
+  },
+  "claude-3-sonnet-mar-2024": {
+    "name": "claude-3-sonnet (Mar 2024)",
+    "score": 66.1,
+    "humaneval_plus": 64,
+    "mbpp_plus": 69.3,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "claude-instant-1-mar-2024": {
+    "name": "claude-instant-1 (Mar 2024)",
+    "score": 30.4,
+    "humaneval_plus": 50.6,
+    "mbpp_plus": 0,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "code-millenials-34b": {
+    "name": "code-millenials-34B",
+    "score": 68.3,
+    "humaneval_plus": 70.7,
+    "mbpp_plus": 64.6,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "codegemma-2b": {
+    "name": "codegemma-2b",
+    "score": 31.1,
+    "humaneval_plus": 20.7,
+    "mbpp_plus": 46.6,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "codegemma-7b": {
+    "name": "codegemma-7b",
+    "score": 45.9,
+    "humaneval_plus": 41.5,
+    "mbpp_plus": 52.4,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "codegemma-7b-it": {
+    "name": "codegemma-7b-it",
+    "score": 53.8,
+    "humaneval_plus": 51.8,
+    "mbpp_plus": 56.9,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "dolphin-2.6-mixtral-8x7b": {
+    "name": "dolphin-2.6-mixtral-8x7b",
+    "score": 58,
+    "humaneval_plus": 57.3,
+    "mbpp_plus": 59,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "gemma-1.1-2b-it": {
+    "name": "gemma-1.1-2b-it",
+    "score": 19.9,
+    "humaneval_plus": 17.7,
+    "mbpp_plus": 23.3,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "gemma-1.1-7b-it": {
+    "name": "gemma-1.1-7b-it",
+    "score": 39.2,
+    "humaneval_plus": 35.4,
+    "mbpp_plus": 45,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "gemma-2b": {
+    "name": "gemma-2b",
+    "score": 26.1,
+    "humaneval_plus": 20.7,
+    "mbpp_plus": 34.1,
+    "tier": "B",
+    "source": "evalplus"
+  },
+  "gemma-2b-it": {
+    "name": "gemma-2b-it",
+    "score": 9.1,
+    "humaneval_plus": 15.2,
+    "mbpp_plus": 0,
+    "tier": "C",
+    "source": "evalplus"
+  },
+  "gemma-7b": {
+    "name": "gemma-7b",
+    "score": 34.6,
+    "humaneval_plus": 28.7,
+    "mbpp_plus": 43.4,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "gemma-7b-it": {
+    "name": "gemma-7b-it",
+    "score": 29.7,
+    "humaneval_plus": 25,
+    "mbpp_plus": 36.8,
+    "tier": "B",
+    "source": "evalplus"
+  },
+  "phi-3-mini-4k-instruct": {
+    "name": "Phi-3-mini-4k-instruct",
+    "score": 57.1,
+    "humaneval_plus": 59.1,
+    "mbpp_plus": 54.2,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "phi-2-2.7b": {
+    "name": "phi-2-2.7B",
+    "score": 48.7,
+    "humaneval_plus": 45.1,
+    "mbpp_plus": 54.2,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "speechless-code-mistral-7b-v1.0": {
+    "name": "speechless-code-mistral-7B-v1.0",
+    "score": 44.4,
+    "humaneval_plus": 41.5,
+    "mbpp_plus": 48.7,
+    "tier": "A",
+    "source": "evalplus"
+  },
+  "speechless-codellama-34b-v2.0": {
+    "name": "speechless-codellama-34B-v2.0",
+    "score": 67.8,
+    "humaneval_plus": 72,
+    "mbpp_plus": 61.4,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "speechless-coder-ds-6.7b": {
+    "name": "speechless-coder-ds-6.7B",
+    "score": 65.3,
+    "humaneval_plus": 65.9,
+    "mbpp_plus": 64.4,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "speechless-coding-7b-16k-tora": {
+    "name": "speechless-coding-7B-16k-tora",
+    "score": 50.6,
+    "humaneval_plus": 50.6,
+    "mbpp_plus": 50.6,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "speechless-starcoder2-15b": {
+    "name": "speechless-starcoder2-15b",
+    "score": 62.6,
+    "humaneval_plus": 62.8,
+    "mbpp_plus": 62.4,
+    "tier": "S",
+    "source": "evalplus"
+  },
+  "speechless-starcoder2-7b": {
+    "name": "speechless-starcoder2-7b",
+    "score": 53.6,
+    "humaneval_plus": 51.8,
+    "mbpp_plus": 56.3,
+    "tier": "A+",
+    "source": "evalplus"
+  },
+  "stable-code-3b": {
+    "name": "stable-code-3B",
+    "score": 33.7,
+    "humaneval_plus": 25.6,
+    "mbpp_plus": 45.8,
+    "tier": "B+",
+    "source": "evalplus"
+  },
+  "xdan-l1-chat-rl-v1-7b": {
+    "name": "xDAN-L1-Chat-RL-v1-7B",
+    "score": 36.3,
+    "humaneval_plus": 32.9,
+    "mbpp_plus": 41.3,
+    "tier": "A-",
+    "source": "evalplus"
+  },
+  "zyte-1b": {
+    "name": "zyte-1B",
+    "score": 4.1,
+    "humaneval_plus": 1.8,
+    "mbpp_plus": 7.5,
+    "tier": "C",
+    "source": "evalplus"
   },
   "sonar-foundation-agent-claude-4.5-opus": {
     "name": "Sonar Foundation Agent + Claude 4.5 Opus",
     "score": 79.2,
     "swe_bench": 79.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "live-swe-agent-claude-4.5-opus-medium-20251101": {
     "name": "live-SWE-agent + Claude 4.5 Opus medium (20251101)",
     "score": 79.2,
     "swe_bench": 79.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "trae-doubao-seed-code": {
     "name": "TRAE + Doubao-Seed-Code",
     "score": 78.8,
     "swe_bench": 78.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "live-swe-agent-gemini-3-pro-preview-2025-11-18": {
     "name": "live-SWE-agent + Gemini 3 Pro Preview (2025-11-18)",
     "score": 77.4,
     "swe_bench": 77.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "epam-ai-run-developer-agent-v20250719-claude-4-sonnet": {
     "name": "EPAM AI/Run Developer Agent v20250719 + Claude 4 Sonnet",
     "score": 76.8,
     "swe_bench": 76.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "atlassian-rovo-dev-2025-09-02": {
     "name": "Atlassian Rovo Dev (2025-09-02)",
     "score": 76.8,
     "swe_bench": 76.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "claude-4.5-opus-high": {
     "name": "Claude 4.5 Opus (high)",
     "score": 76.8,
     "swe_bench": 76.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "acoder": {
     "name": "ACoder",
     "score": 76.4,
     "swe_bench": 76.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "gemini-3-flash-high": {
     "name": "Gemini 3 Flash (high)",
     "score": 75.8,
     "swe_bench": 75.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "minimax-m2.5-high": {
     "name": "MiniMax M2.5 (high)",
     "score": 75.8,
     "swe_bench": 75.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "warp": {
     "name": "Warp",
     "score": 75.6,
     "swe_bench": 75.6,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "claude-4.6-opus": {
     "name": "Claude 4.6 Opus",
     "score": 75.6,
     "swe_bench": 75.6,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "trae-claude-sonnet-4-opus-4-sonnet-3.7-gemini-2.5-pro": {
     "name": "TRAE + Claude Sonnet 4 + Opus 4 + Sonnet 3.7 + Gemini 2.5 Pro",
     "score": 75.2,
     "swe_bench": 75.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "harness-ai": {
     "name": "Harness AI",
     "score": 74.8,
     "swe_bench": 74.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "sonar-foundation-agent-claude-4.5-sonnet": {
     "name": "Sonar Foundation Agent + Claude 4.5 Sonnet",
     "score": 74.8,
     "swe_bench": 74.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "lingxi-v1.5-claude-4-sonnet-20250514": {
     "name": "Lingxi-v1.5_claude-4-sonnet-20250514",
     "score": 74.6,
     "swe_bench": 74.6,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "joycode-claude-4-sonnet-gpt-4.1": {
     "name": "JoyCode + Claude 4 Sonnet + GPT-4.1",
     "score": 74.6,
     "swe_bench": 74.6,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "refact.ai-agent-claude-4-sonnet-o4-mini": {
     "name": "Refact.ai Agent + Claude 4 Sonnet + o4-mini",
     "score": 74.4,
     "swe_bench": 74.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "prometheus-v1.2.1-gpt-5": {
     "name": "Prometheus-v1.2.1 + GPT-5",
     "score": 74.4,
     "swe_bench": 74.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "claude-4.5-opus-20251101-medium": {
     "name": "Claude 4.5 Opus (20251101) (medium)",
     "score": 74.4,
     "swe_bench": 74.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "gemini-3-pro-preview-2025-11-18": {
     "name": "Gemini 3 Pro Preview (2025-11-18)",
     "score": 74.2,
     "swe_bench": 74.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "salesforce-ai-research-sage-openhands": {
     "name": "Salesforce AI Research SAGE (OpenHands)",
     "score": 73.8,
     "swe_bench": 73.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "tools-claude-4-opus-2025-05-22": {
     "name": "Tools + Claude 4 Opus (2025-05-22)",
     "score": 73.2,
     "swe_bench": 73.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "salesforce-ai-research-sage-bash-only": {
     "name": "Salesforce AI Research SAGE (bash-only)",
     "score": 73,
     "swe_bench": 73,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "glm-5-high": {
     "name": "GLM 5 (high)",
     "score": 72.8,
     "swe_bench": 72.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "gpt-5.2-high": {
     "name": "GPT 5.2 (high)",
     "score": 72.8,
     "swe_bench": 72.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "gpt-5.2-codex": {
     "name": "GPT 5.2 Codex",
     "score": 72.8,
     "swe_bench": 72.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "tools-claude-4-sonnet-2025-05-22": {
     "name": "Tools + Claude 4 Sonnet (2025-05-22)",
     "score": 72.4,
     "swe_bench": 72.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "openhands-gpt-5": {
     "name": "OpenHands + GPT-5",
     "score": 71.8,
     "swe_bench": 71.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "gpt-5.2-2025-12-11-high": {
     "name": "GPT 5.2 (2025-12-11) (high)",
     "score": 71.8,
     "swe_bench": 71.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "claude-4.5-sonnet-high": {
     "name": "Claude 4.5 Sonnet (high)",
     "score": 71.4,
     "swe_bench": 71.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "bloop": {
     "name": "Bloop",
     "score": 71.2,
     "swe_bench": 71.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "qodo-command": {
     "name": "Qodo Command",
     "score": 71.2,
     "swe_bench": 71.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "prometheus-v1.2-gpt-5": {
     "name": "Prometheus-v1.2 + GPT-5",
     "score": 71.2,
     "swe_bench": 71.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "lingxi-v1.5-x-kimi-k2": {
     "name": "Lingxi v1.5 x Kimi K2",
     "score": 71.2,
     "swe_bench": 71.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "moatless-tools-claude-4-sonnet": {
     "name": "Moatless Tools + Claude 4 Sonnet",
     "score": 70.8,
     "swe_bench": 70.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "kimi-k2.5-high": {
     "name": "Kimi K2.5 (high)",
     "score": 70.8,
     "swe_bench": 70.8,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "trae": {
     "name": "TRAE",
     "score": 70.6,
     "swe_bench": 70.6,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "claude-4.5-sonnet-20250929": {
     "name": "Claude 4.5 Sonnet (20250929)",
     "score": 70.6,
     "swe_bench": 70.6,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "refact.ai-agent": {
     "name": "Refact.ai Agent",
     "score": 70.4,
     "swe_bench": 70.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "openhands-claude-4-sonnet": {
     "name": "OpenHands + Claude 4 Sonnet",
     "score": 70.4,
     "swe_bench": 70.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "augment-agent-v1": {
     "name": "Augment Agent v1",
     "score": 70.4,
     "swe_bench": 70.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "devlo": {
     "name": "devlo",
     "score": 70.2,
     "swe_bench": 70.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "zencoder-2025-04-30": {
     "name": "Zencoder (2025-04-30)",
     "score": 70,
     "swe_bench": 70,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "deepseek-v3.2-high": {
     "name": "DeepSeek V3.2 (high)",
     "score": 70,
     "swe_bench": 70,
-    "tier": "A+",
+    "tier": "S+",
     "source": "swebench-verified"
   },
   "openhands-qwen3-coder-480b-a35b-instruct": {
     "name": "OpenHands + Qwen3-Coder-480B-A35B-Instruct",
     "score": 69.6,
     "swe_bench": 69.6,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "gemini-3-pro": {
     "name": "Gemini 3 Pro",
     "score": 69.6,
     "swe_bench": 69.6,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "gpt-5.2-2025-12-11": {
     "name": "GPT 5.2 (2025-12-11)",
     "score": 69,
     "swe_bench": 69,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "nemotron-cortexa": {
     "name": "Nemotron-CORTEXA",
     "score": 68.2,
     "swe_bench": 68.2,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "glm-4.6": {
     "name": "GLM-4.6",
     "score": 68.2,
     "swe_bench": 68.2,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "claude-4-opus-20250514": {
     "name": "Claude 4 Opus (20250514)",
     "score": 67.6,
     "swe_bench": 67.6,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "swe-agent-claude-4-sonnet": {
     "name": "SWE-agent + Claude 4 Sonnet",
     "score": 66.6,
     "swe_bench": 66.6,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "claude-4.5-haiku-high": {
     "name": "Claude 4.5 Haiku (high)",
     "score": 66.6,
     "swe_bench": 66.6,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "aime-coder-v1-anthopic-claude-3.7-sonnet": {
     "name": "Aime-coder v1 + Anthopic Claude 3.7 Sonnet",
     "score": 66.4,
     "swe_bench": 66.4,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "gpt-5.1-2025-11-13-medium": {
     "name": "GPT 5.1 (2025-11-13) (medium)",
     "score": 66,
     "swe_bench": 66,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "gpt-5.1-codex-medium": {
     "name": "GPT 5.1 Codex (medium)",
     "score": 66,
     "swe_bench": 66,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "openhands": {
     "name": "OpenHands",
     "score": 65.8,
     "swe_bench": 65.8,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "augment-agent-v0": {
     "name": "Augment Agent v0",
     "score": 65.4,
     "swe_bench": 65.4,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "amazon-q-developer-agent-v20250405-dev": {
     "name": "Amazon Q Developer Agent (v20250405-dev)",
     "score": 65.4,
     "swe_bench": 65.4,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "openhands-kimi-k2": {
     "name": "OpenHands + Kimi K2",
     "score": 65.4,
     "swe_bench": 65.4,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "gpt-5-2025-08-07-medium": {
     "name": "GPT 5 (2025-08-07) (medium)",
     "score": 65,
     "swe_bench": 65,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "claude-4-sonnet-20250514": {
     "name": "Claude 4 Sonnet (20250514)",
     "score": 64.9,
     "swe_bench": 64.9,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "w-b-programmer-o1-crosscheck5": {
     "name": "W&B Programmer O1 crosscheck5",
     "score": 64.6,
     "swe_bench": 64.6,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "patchpilot-v1.1": {
     "name": "PatchPilot-v1.1",
     "score": 64.6,
     "swe_bench": 64.6,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "glm-4.5": {
     "name": "GLM-4.5",
     "score": 64.2,
     "swe_bench": 64.2,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "agentscope": {
     "name": "AgentScope",
     "score": 63.4,
     "swe_bench": 63.4,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "kimi-k2-thinking": {
     "name": "Kimi K2 Thinking",
     "score": 63.4,
     "swe_bench": 63.4,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "tools-claude-3.7-sonnet-2025-02-24": {
     "name": "Tools + Claude 3.7 Sonnet (2025-02-24)",
     "score": 63.2,
     "swe_bench": 63.2,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "blackbox-ai-agent": {
     "name": "Blackbox AI Agent",
     "score": 62.8,
     "swe_bench": 62.8,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "epam-ai-run-developer-agent-v20250219-anthopic-claude-3.5-sonnet": {
     "name": "EPAM AI/Run Developer Agent v20250219 + Anthopic Claude 3.5 Sonnet",
     "score": 62.8,
     "swe_bench": 62.8,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "swe-agent-claude-3.7-sonnet-w-review-heavy": {
     "name": "SWE-agent + Claude 3.7 Sonnet w/ Review Heavy",
     "score": 62.4,
     "swe_bench": 62.4,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "codestory-midwit-agent-swe-search": {
     "name": "CodeStory Midwit Agent + swe-search",
     "score": 62.2,
     "swe_bench": 62.2,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "minimax-m2": {
     "name": "MiniMax M2",
     "score": 61,
     "swe_bench": 61,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "openhands-4x-scaled-2024-02-03": {
     "name": "OpenHands + 4x Scaled (2024-02-03)",
     "score": 60.8,
     "swe_bench": 60.8,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "entropo-r2e-qwen3-coder-30b-a3b-instruct": {
     "name": "EntroPO + R2E + Qwen3-Coder-30B-A3B-Instruct",
     "score": 60.4,
     "swe_bench": 60.4,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "learn-by-interact": {
     "name": "Learn-by-interact",
     "score": 60.2,
     "swe_bench": 60.2,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "deepseek-v3.2-reasoner": {
     "name": "DeepSeek V3.2 Reasoner",
     "score": 60,
     "swe_bench": 60,
-    "tier": "A",
+    "tier": "S",
     "source": "swebench-verified"
   },
   "gpt-5-mini-2025-08-07-medium": {
     "name": "GPT 5 mini (2025-08-07) (medium)",
     "score": 59.8,
     "swe_bench": 59.8,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "deepswe-preview-tts-bo16": {
     "name": "DeepSWE-Preview + TTS(Bo16)",
     "score": 58.8,
     "swe_bench": 58.8,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "o3-2025-04-16": {
     "name": "o3 (2025-04-16)",
     "score": 58.4,
     "swe_bench": 58.4,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "emergent-e1-v2024-12-23": {
     "name": "Emergent E1 (v2024-12-23)",
     "score": 57.2,
     "swe_bench": 57.2,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "gru-2024-12-08": {
     "name": "Gru(2024-12-08)",
     "score": 57,
     "swe_bench": 57,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "artemis-agent-v2-2025-09-24": {
     "name": "Artemis Agent v2 (2025-09-24)",
     "score": 57,
     "swe_bench": 57,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "swe-rizzo": {
     "name": "SWE-Rizzo",
     "score": 56.6,
     "swe_bench": 56.6,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "devstral-small-2512": {
     "name": "Devstral Small (2512)",
     "score": 56.4,
     "swe_bench": 56.4,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "gpt-5-mini": {
     "name": "GPT 5 mini",
     "score": 56.2,
     "swe_bench": 56.2,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "epam-ai-run-developer-agent-v20241212-anthopic-claude-3.5-sonnet": {
     "name": "EPAM AI/Run Developer Agent v20241212 + Anthopic Claude 3.5 Sonnet",
     "score": 55.4,
     "swe_bench": 55.4,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "qwen3-coder-480b-a35b-instruct": {
     "name": "Qwen3-Coder 480B/A35B Instruct",
     "score": 55.4,
     "swe_bench": 55.4,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "glm-4.6-t-1": {
     "name": "GLM 4.6 (T=1)",
     "score": 55.4,
     "swe_bench": 55.4,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "amazon-q-developer-agent-v20241202-dev": {
     "name": "Amazon Q Developer Agent (v20241202-dev)",
     "score": 55,
     "swe_bench": 55,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "glm-4.5-2025-08-22": {
     "name": "GLM 4.5 (2025-08-22)",
     "score": 54.2,
     "swe_bench": 54.2,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "devstral-2512": {
     "name": "Devstral (2512)",
     "score": 53.8,
     "swe_bench": 53.8,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "frogboss-32b-2510": {
     "name": "FrogBoss-32B-2510",
     "score": 53.6,
     "swe_bench": 53.6,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "gemini-2.5-pro-2025-05-06": {
     "name": "Gemini 2.5 Pro (2025-05-06)",
     "score": 53.6,
     "swe_bench": 53.6,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "codesweep---swe-agent---kimi-k2-instruct": {
     "name": "CodeSweep - SWE-agent - Kimi K2 Instruct",
     "score": 53.4,
     "swe_bench": 53.4,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "bracket.sh": {
     "name": "Bracket.sh",
     "score": 53.2,
     "swe_bench": 53.2,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "openhands-codeact-v2.1-claude-3-5-sonnet-20241022": {
     "name": "OpenHands + CodeAct v2.1 (claude-3-5-sonnet-20241022)",
     "score": 53,
     "swe_bench": 53,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "claude-3.7-sonnet-20250219": {
     "name": "Claude 3.7 Sonnet (20250219)",
     "score": 52.8,
     "swe_bench": 52.8,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "google-jules-gemini-2.0-flash-v20241212-experimental": {
     "name": "Google Jules + Gemini 2.0 Flash (v20241212-experimental)",
     "score": 52.2,
     "swe_bench": 52.2,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "engine-labs-2024-11-25": {
     "name": "Engine Labs (2024-11-25)",
     "score": 51.8,
     "swe_bench": 51.8,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "autocoderover-v2.1-claude-3.5-sonnet-20241022": {
     "name": "AutoCodeRover-v2.1 (Claude-3.5-Sonnet-20241022)",
     "score": 51.6,
     "swe_bench": 51.6,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "openhands-qwen3-coder-30b-a3b-instruct": {
     "name": "OpenHands + Qwen3-Coder-30B-A3B-Instruct",
     "score": 51.6,
     "swe_bench": 51.6,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "agentless-1.5-claude-3.5-sonnet-20241022": {
     "name": "Agentless-1.5 + Claude-3.5 Sonnet (20241022)",
     "score": 50.8,
     "swe_bench": 50.8,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "solver-2024-10-28": {
     "name": "Solver (2024-10-28)",
     "score": 50,
     "swe_bench": 50,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "bytedance-marscode-agent": {
     "name": "Bytedance MarsCode Agent",
     "score": 50,
     "swe_bench": 50,
-    "tier": "B+",
+    "tier": "A+",
     "source": "swebench-verified"
   },
   "nfactorial-2024-11-05": {
     "name": "nFactorial (2024-11-05)",
     "score": 49.2,
     "swe_bench": 49.2,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "tools-claude-3.5-sonnet-2024-10-22": {
     "name": "Tools + Claude 3.5 Sonnet (2024-10-22)",
     "score": 49,
     "swe_bench": 49,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "composio-swe-kit-2024-10-25": {
     "name": "Composio SWE-Kit (2024-10-25)",
     "score": 48.6,
     "swe_bench": 48.6,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "appmap-navie-v2": {
     "name": "AppMap Navie v2",
     "score": 47.2,
     "swe_bench": 47.2,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "skywork-swe-32b-tts-bo8": {
     "name": "Skywork-SWE-32B + TTS(Bo8)",
     "score": 47,
     "swe_bench": 47,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "openhands-devstral-small-2505": {
     "name": "OpenHands + DevStral Small 2505",
     "score": 46.8,
     "swe_bench": 46.8,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "emergent-e1-v2024-10-12": {
     "name": "Emergent E1 (v2024-10-12)",
     "score": 46.6,
     "swe_bench": 46.6,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "autocoderover-v2.0-claude-3.5-sonnet-20241022": {
     "name": "AutoCodeRover-v2.0 (Claude-3.5-Sonnet-20241022)",
     "score": 46.2,
     "swe_bench": 46.2,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "patchpilot-co-patcher": {
     "name": "PatchPilot + Co-PatcheR",
     "score": 46,
     "swe_bench": 46,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "solver-2024-09-12": {
     "name": "Solver (2024-09-12)",
     "score": 45.4,
     "swe_bench": 45.4,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "gru-2024-08-24": {
     "name": "Gru(2024-08-24)",
     "score": 45.2,
     "swe_bench": 45.2,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "frogmini-14b-2510": {
     "name": "FrogMini-14B-2510",
     "score": 45,
     "swe_bench": 45,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "o4-mini-2025-04-16": {
     "name": "o4-mini (2025-04-16)",
     "score": 45,
     "swe_bench": 45,
-    "tier": "B",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "codeshellagent-gemini-2.0-flash-experimental": {
     "name": "CodeShellAgent + Gemini 2.0 Flash (Experimental)",
     "score": 44.2,
     "swe_bench": 44.2,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "kimi-k2-instruct": {
     "name": "Kimi K2 Instruct",
     "score": 43.8,
     "swe_bench": 43.8,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "agentless-lite-o3-mini-20250214": {
     "name": "Agentless Lite + O3 Mini (20250214)",
     "score": 42.4,
     "swe_bench": 42.4,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "amazon-nova-premier-1.0-2025-04-30": {
     "name": "Amazon Nova Premier 1.0 (2025-04-30)",
     "score": 42.4,
     "swe_bench": 42.4,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "deepswe-preview": {
     "name": "DeepSWE-Preview",
     "score": 42.2,
     "swe_bench": 42.2,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "swe-exp": {
     "name": "SWE-Exp",
     "score": 42,
     "swe_bench": 42,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "nfactorial-2024-10-30": {
     "name": "nFactorial (2024-10-30)",
     "score": 41.6,
     "swe_bench": 41.6,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "ugaiforge": {
     "name": "ugaiforge",
     "score": 41.6,
     "swe_bench": 41.6,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "swe-rl-llama3-swe-rl-70b-agentless-mini-20250226": {
     "name": "SWE-RL (Llama3-SWE-RL-70B + Agentless Mini) (20250226)",
     "score": 41.2,
     "swe_bench": 41.2,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "honeycomb": {
     "name": "Honeycomb",
     "score": 40.6,
     "swe_bench": 40.6,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "composio-swekit-claude-3.5-sonnet-2024-10-16": {
     "name": "Composio SWEkit + Claude 3.5 Sonnet (2024-10-16)",
     "score": 40.6,
     "swe_bench": 40.6,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "tools-claude-3.5-haiku": {
     "name": "Tools + Claude 3.5 Haiku",
     "score": 40.6,
     "swe_bench": 40.6,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "nebius-ai-qwen-2.5-72b-generator-llama-3.1-70b-critic": {
     "name": "Nebius AI Qwen 2.5 72B Generator + LLama 3.1 70B Critic",
     "score": 40.6,
     "swe_bench": 40.6,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "swe-agent-swe-agent-lm-32b": {
     "name": "SWE-agent + SWE-agent-LM-32B",
     "score": 40.2,
     "swe_bench": 40.2,
-    "tier": "C+",
+    "tier": "A",
     "source": "swebench-verified"
   },
   "epam-ai-run-developer-agent-v20241029-anthopic-claude-3.5-sonnet": {
     "name": "EPAM AI/Run Developer Agent v20241029 + Anthopic Claude 3.5 Sonnet",
     "score": 39.6,
     "swe_bench": 39.6,
-    "tier": "C+",
+    "tier": "A-",
     "source": "swebench-verified"
   },
   "gpt-4.1-2025-04-14": {
     "name": "GPT 4.1 (2025-04-14)",
     "score": 39.6,
     "swe_bench": 39.6,
-    "tier": "C+",
+    "tier": "A-",
     "source": "swebench-verified"
   },
   "amazon-q-developer-agent-v20240719-dev": {
     "name": "Amazon Q Developer Agent (v20240719-dev)",
     "score": 38.8,
     "swe_bench": 38.8,
-    "tier": "C+",
+    "tier": "A-",
     "source": "swebench-verified"
   },
   "agentless-1.5-gpt-4o-2024-05-13": {
     "name": "Agentless-1.5 + GPT 4o (2024-05-13)",
     "score": 38.8,
     "swe_bench": 38.8,
-    "tier": "C+",
+    "tier": "A-",
     "source": "swebench-verified"
   },
   "autocoderover-v20240620-gpt-4o-2024-05-13": {
     "name": "AutoCodeRover (v20240620) + GPT 4o (2024-05-13)",
     "score": 38.4,
     "swe_bench": 38.4,
-    "tier": "C+",
+    "tier": "A-",
     "source": "swebench-verified"
   },
   "skywork-swe-32b": {
     "name": "Skywork-SWE-32B",
     "score": 38,
     "swe_bench": 38,
-    "tier": "C+",
+    "tier": "A-",
     "source": "swebench-verified"
   },
   "swe-agent-devstral-small-2507": {
     "name": "SWE-agent + DevStral Small 2507",
     "score": 38,
     "swe_bench": 38,
-    "tier": "C+",
+    "tier": "A-",
     "source": "swebench-verified"
   },
   "factory-code-droid": {
     "name": "Factory Code Droid",
     "score": 37,
     "swe_bench": 37,
-    "tier": "C+",
+    "tier": "A-",
     "source": "swebench-verified"
   },
   "gpt-5-nano-2025-08-07-medium": {
     "name": "GPT 5 nano (2025-08-07) (medium)",
     "score": 34.8,
     "swe_bench": 34.8,
-    "tier": "C+",
+    "tier": "B+",
     "source": "swebench-verified"
   },
   "swe-agent-claude-3.5-sonnet": {
     "name": "SWE-agent + Claude 3.5 Sonnet",
     "score": 33.6,
     "swe_bench": 33.6,
-    "tier": "C+",
+    "tier": "B+",
     "source": "swebench-verified"
   },
   "swe-fixer-qwen2.5-7b-retriever-qwen2.5-72b-editor": {
     "name": "SWE-Fixer (Qwen2.5-7b retriever + Qwen2.5-72b editor)",
     "score": 32.8,
     "swe_bench": 32.8,
-    "tier": "C+",
+    "tier": "B+",
     "source": "swebench-verified"
   },
   "masai-gpt-4o-2024-06-12": {
     "name": "MASAI + GPT 4o (2024-06-12)",
     "score": 32.6,
     "swe_bench": 32.6,
-    "tier": "C+",
+    "tier": "B+",
     "source": "swebench-verified"
   },
   "artemis-agent-v1-2024-11-20": {
     "name": "Artemis Agent v1 (2024-11-20)",
     "score": 32,
     "swe_bench": 32,
-    "tier": "C+",
+    "tier": "B+",
     "source": "swebench-verified"
   },
   "nfactorial-2024-10-07": {
     "name": "nFactorial (2024-10-07)",
     "score": 31.6,
     "swe_bench": 31.6,
-    "tier": "C+",
+    "tier": "B+",
     "source": "swebench-verified"
   },
   "swe-fixer-qwen2.5-7b-retriever-qwen2.5-72b-editor-20241128": {
     "name": "SWE-Fixer (Qwen2.5-7b retriever + Qwen2.5-72b editor) 20241128",
     "score": 30.2,
     "swe_bench": 30.2,
-    "tier": "C+",
+    "tier": "B+",
     "source": "swebench-verified"
   },
   "lingma-agent-lingma-swe-gpt-72b-v0925": {
     "name": "Lingma Agent + Lingma SWE-GPT 72b (v0925)",
     "score": 28.8,
     "swe_bench": 28.8,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "gemini-2.5-flash-2025-04-17": {
     "name": "Gemini 2.5 Flash (2025-04-17)",
     "score": 28.7,
     "swe_bench": 28.7,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "epam-ai-run-developer-agent-gpt4o": {
     "name": "EPAM AI/Run Developer Agent + GPT4o",
     "score": 27,
     "swe_bench": 27,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "appmap-navie-gpt-4o-2024-05-13": {
     "name": "AppMap Navie + GPT 4o (2024-05-13)",
     "score": 26.2,
     "swe_bench": 26.2,
-    "tier": "C+",
-    "source": "swebench-verified"
-  },
-  "gpt-oss-120b": {
-    "name": "gpt-oss-120b",
-    "score": 26,
-    "swe_bench": 26,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "nfactorial-2024-10-01": {
     "name": "nFactorial (2024-10-01)",
     "score": 25.8,
     "swe_bench": 25.8,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "amazon-q-developer-agent-v20240430-dev": {
     "name": "Amazon Q Developer Agent (v20240430-dev)",
     "score": 25.6,
     "swe_bench": 25.6,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "lingma-agent-lingma-swe-gpt-72b-v0918": {
     "name": "Lingma Agent + Lingma SWE-GPT 72b (v0918)",
     "score": 25,
     "swe_bench": 25,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "gpt-4.1-mini-2025-04-14": {
     "name": "GPT 4.1 mini (2025-04-14)",
     "score": 23.9,
     "swe_bench": 23.9,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "swe-agent-gpt-4o-2024-05-13": {
     "name": "SWE-agent + GPT 4o (2024-05-13)",
     "score": 23.2,
     "swe_bench": 23.2,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "mcts-refine-7b": {
     "name": "MCTS-Refine-7B",
     "score": 23.2,
     "swe_bench": 23.2,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "swe-agent-gpt-4-1106": {
     "name": "SWE-agent + GPT 4 (1106)",
     "score": 22.4,
     "swe_bench": 22.4,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "gpt-4o-2024-11-20": {
     "name": "GPT 4o (2024-11-20)",
     "score": 21.6,
     "swe_bench": 21.6,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "llama-4-maverick-instruct": {
     "name": "Llama 4 Maverick Instruct",
     "score": 21,
     "swe_bench": 21,
-    "tier": "C+",
+    "tier": "B",
     "source": "swebench-verified"
   },
   "lingma-agent-lingma-swe-gpt-7b-v0925": {
     "name": "Lingma Agent + Lingma SWE-GPT 7b (v0925)",
     "score": 18.2,
     "swe_bench": 18.2,
-    "tier": "C+",
+    "tier": "C",
     "source": "swebench-verified"
   },
   "swe-agent-claude-3-opus": {
     "name": "SWE-agent + Claude 3 Opus",
     "score": 15.8,
     "swe_bench": 15.8,
-    "tier": "C+",
+    "tier": "C",
+    "source": "swebench-verified"
+  },
+  "gemini-2.0-flash": {
+    "name": "Gemini 2.0 Flash",
+    "score": 13.5,
+    "swe_bench": 13.5,
+    "tier": "C",
     "source": "swebench-verified"
   },
   "lingma-agent-lingma-swe-gpt-7b-v0918": {
     "name": "Lingma Agent + Lingma SWE-GPT 7b (v0918)",
     "score": 10.2,
     "swe_bench": 10.2,
-    "tier": "C+",
+    "tier": "C",
     "source": "swebench-verified"
   },
   "llama-4-scout-instruct": {
     "name": "Llama 4 Scout Instruct",
     "score": 9.1,
     "swe_bench": 9.1,
-    "tier": "C+",
-    "source": "swebench-verified"
-  },
-  "qwen2.5-coder-32b-instruct": {
-    "name": "Qwen2.5-Coder 32B Instruct",
-    "score": 9,
-    "swe_bench": 9,
-    "tier": "C+",
-    "source": "swebench-verified"
+    "tier": "C",
+    "source": "swebench-verified",
+    "deprecated": true
   },
   "rag-claude-3-opus": {
     "name": "RAG + Claude 3 Opus",
     "score": 7,
     "swe_bench": 7,
-    "tier": "C+",
+    "tier": "C",
     "source": "swebench-verified"
   },
   "rag-claude-2": {
     "name": "RAG + Claude 2",
     "score": 4.4,
     "swe_bench": 4.4,
-    "tier": "C+",
+    "tier": "C",
     "source": "swebench-verified"
   },
   "rag-gpt-4-1106": {
     "name": "RAG + GPT 4 (1106)",
     "score": 2.8,
     "swe_bench": 2.8,
-    "tier": "C+",
+    "tier": "C",
     "source": "swebench-verified"
   },
   "rag-swe-llama-7b": {
     "name": "RAG + SWE-Llama 7B",
     "score": 1.4,
     "swe_bench": 1.4,
-    "tier": "C+",
+    "tier": "C",
     "source": "swebench-verified"
   },
   "rag-swe-llama-13b": {
     "name": "RAG + SWE-Llama 13B",
     "score": 1.2,
     "swe_bench": 1.2,
-    "tier": "C+",
+    "tier": "C",
     "source": "swebench-verified"
   },
   "rag-chatgpt-3.5": {
     "name": "RAG + ChatGPT 3.5",
     "score": 0.4,
     "swe_bench": 0.4,
-    "tier": "C+",
+    "tier": "C",
     "source": "swebench-verified"
+  },
+  "deepseek-v3": {
+    "name": "DeepSeek-V3",
+    "score": 49.6,
+    "livecodebench": 49.6,
+    "tier": "A",
+    "source": "livecodebench"
   },
   "gpt-4-turbo-2024-04-09": {
     "name": "GPT-4-Turbo-2024-04-09",
     "score": 37.3,
     "livecodebench": 37.3,
-    "tier": "C+",
+    "tier": "A-",
     "source": "livecodebench"
   },
   "gpt-4o-2024-08-06": {
     "name": "GPT-4O-2024-08-06",
     "score": 38.3,
     "livecodebench": 38.3,
-    "tier": "C+",
+    "tier": "A-",
     "source": "livecodebench"
   },
   "gpt-4o-mini-2024-07-18": {
     "name": "GPT-4O-mini-2024-07-18",
     "score": 35.5,
     "livecodebench": 35.5,
-    "tier": "C+",
+    "tier": "A-",
     "source": "livecodebench"
   },
   "o3-mini-2025-01-31-low": {
     "name": "O3-Mini-2025-01-31 (Low)",
     "score": 70.6,
     "livecodebench": 70.6,
-    "tier": "A+",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "o3-mini-2025-01-31-med": {
     "name": "O3-Mini-2025-01-31 (Med)",
     "score": 75.4,
     "livecodebench": 75.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "o3-mini-2025-01-31-high": {
     "name": "O3-Mini-2025-01-31 (High)",
     "score": 77.7,
     "livecodebench": 77.7,
-    "tier": "A+",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "o4-mini-high": {
     "name": "O4-Mini (High)",
     "score": 87.3,
     "livecodebench": 87.3,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "o4-mini-medium": {
     "name": "O4-Mini (Medium)",
     "score": 84.5,
     "livecodebench": 84.5,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "o4-mini-low": {
     "name": "O4-Mini (Low)",
     "score": 77.4,
     "livecodebench": 77.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "o3-high": {
     "name": "O3 (High)",
     "score": 84.7,
     "livecodebench": 84.7,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "claude-3.5-sonnet-20241022": {
     "name": "Claude-3.5-Sonnet-20241022",
     "score": 48.7,
     "livecodebench": 48.7,
-    "tier": "B",
+    "tier": "A",
     "source": "livecodebench"
   },
   "claude-3-haiku": {
     "name": "Claude-3-Haiku",
     "score": 22.5,
     "livecodebench": 22.5,
-    "tier": "C+",
+    "tier": "B",
     "source": "livecodebench"
   },
   "claude-sonnet-4-thinking": {
     "name": "Claude-Sonnet-4 (Thinking)",
     "score": 68.5,
     "livecodebench": 68.5,
-    "tier": "A",
+    "tier": "S",
     "source": "livecodebench"
   },
   "claude-opus-4-thinking": {
     "name": "Claude-Opus-4 (Thinking)",
     "score": 70.4,
     "livecodebench": 70.4,
-    "tier": "A+",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "claude-opus-4": {
     "name": "Claude-Opus-4",
     "score": 62.4,
     "livecodebench": 62.4,
-    "tier": "A",
+    "tier": "S",
     "source": "livecodebench"
   },
   "claude-sonnet-4": {
     "name": "Claude-Sonnet-4",
     "score": 59.4,
     "livecodebench": 59.4,
-    "tier": "B+",
+    "tier": "A+",
     "source": "livecodebench"
   },
   "gemini-2.5-pro-06-05": {
     "name": "Gemini-2.5-Pro-06-05",
     "score": 84.3,
     "livecodebench": 84.3,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "gemini-2.5-pro-05-06": {
     "name": "Gemini-2.5-Pro-05-06",
     "score": 82.7,
     "livecodebench": 82.7,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "gemini-2.5-flash-04-17": {
     "name": "Gemini-2.5-Flash-04-17",
     "score": 75.1,
     "livecodebench": 75.1,
-    "tier": "A+",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "gemini-2.5-flash-05-20": {
     "name": "Gemini-2.5-Flash-05-20",
     "score": 76.2,
     "livecodebench": 76.2,
-    "tier": "A+",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "qwen3-235b-a22b": {
     "name": "Qwen3-235B-A22B",
     "score": 80.4,
     "livecodebench": 80.4,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "deepseek-r1-0528": {
     "name": "DeepSeek-R1-0528",
     "score": 84.4,
     "livecodebench": 84.4,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "grok-3-mini-high": {
     "name": "Grok-3-Mini (High)",
     "score": 78.1,
     "livecodebench": 78.1,
-    "tier": "A+",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "opencodereasoning-nemotron-1.1-32b": {
     "name": "OpenCodeReasoning-Nemotron-1.1-32B",
     "score": 78.5,
     "livecodebench": 78.5,
-    "tier": "A+",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "openreasoning-nemotron-32b": {
     "name": "OpenReasoning-Nemotron-32B",
     "score": 81,
     "livecodebench": 81,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "xbai-o4-medium": {
     "name": "XBai-o4-medium",
     "score": 80.1,
     "livecodebench": 80.1,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
   },
   "exaone-4.0-32b": {
     "name": "EXAONE-4.0-32B",
     "score": 80.9,
     "livecodebench": 80.9,
-    "tier": "S",
+    "tier": "S+",
     "source": "livecodebench"
+  },
+  "moonshotai-kimi-k3": {
+    "name": "Kimi K3",
+    "score": 76.8,
+    "swe_bench": 76.8,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia"
+  },
+  "z-ai-glm-5.3-flash": {
+    "name": "GLM-5.3-Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia",
+    "deprecated": true
+  },
+  "glm-5.3-flash": {
+    "name": "GLM-5.3-Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia",
+    "deprecated": true
+  },
+  "z-ai-glm-5.3": {
+    "name": "GLM 5.3",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-nemotron-3-ultra-550b-a55b": {
+    "name": "Nemotron 3 Ultra",
+    "score": 71.9,
+    "swe_bench": 71.9,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia"
+  },
+  "nemotron-3-ultra-550b-a55b": {
+    "name": "Nemotron 3 Ultra",
+    "score": 71.9,
+    "swe_bench": 71.9,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia"
+  },
+  "poolside-laguna-xs-2.1": {
+    "name": "Laguna XS 2.1",
+    "score": 70.9,
+    "swe_bench": 70.9,
+    "tier": "S+",
+    "contextLength": 268288,
+    "source": "external-catalog:nvidia"
+  },
+  "meta-muse-glimmer-30b": {
+    "name": "Muse Glimmer 30B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:nvidia"
+  },
+  "muse-glimmer-30b": {
+    "name": "Muse Glimmer 30B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-nemotron-3-super-120b-a12b": {
+    "name": "Nemotron 3 Super",
+    "score": 60.5,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia"
+  },
+  "nemotron-3-super-120b-a12b": {
+    "name": "Nemotron 3 Super",
+    "score": 60.5,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-nemotron-3-nano-omni-30b-a3b-reasoning": {
+    "name": "Nemotron 3 Omni",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:nvidia"
+  },
+  "nemotron-3-nano-omni-30b-a3b-reasoning": {
+    "name": "Nemotron 3 Omni",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-nemotron-3.5-lightning-30b-a3b": {
+    "name": "Nemotron 3.5 Lightning 30B",
+    "score": 52.8,
+    "swe_bench": 52.8,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia"
+  },
+  "nemotron-3.5-lightning-30b-a3b": {
+    "name": "Nemotron 3.5 Lightning 30B",
+    "score": 52.8,
+    "swe_bench": 52.8,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia"
+  },
+  "deepseek-ai-deepseek-v4.1-flash": {
+    "name": "DeepSeek V4.1 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:nvidia"
+  },
+  "openai-gpt-oss-20b": {
+    "name": "GPT OSS 20B",
+    "score": 60.7,
+    "swe_bench": 60.7,
+    "tier": "S",
+    "contextLength": 134144,
+    "source": "external-catalog:nvidia"
+  },
+  "gpt-oss-20b": {
+    "name": "GPT OSS 20B",
+    "score": 60.7,
+    "swe_bench": 60.7,
+    "tier": "S",
+    "contextLength": 134144,
+    "source": "external-catalog:nvidia"
+  },
+  "google-gemma-4-31b-it": {
+    "name": "Gemma 4 31B",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:nvidia"
+  },
+  "gemma-4-31b-it": {
+    "name": "Gemma 4 31B",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:nvidia"
+  },
+  "google-diffusiongemma-26b-a4b-it": {
+    "name": "DiffusionGemma 26B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:nvidia"
+  },
+  "diffusiongemma-26b-a4b-it": {
+    "name": "DiffusionGemma 26B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:nvidia"
+  },
+  "openai-gpt-oss-120b": {
+    "name": "GPT OSS 120B",
+    "score": 62.4,
+    "swe_bench": 62.4,
+    "tier": "S",
+    "contextLength": 134144,
+    "source": "external-catalog:groq"
+  },
+  "qwen-qwen3.8-27b": {
+    "name": "Qwen3.8 27B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:groq"
+  },
+  "qwen3.8-27b": {
+    "name": "Qwen3.8 27B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:groq"
+  },
+  "gemini-3.6-flash": {
+    "name": "Gemini 3.6 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:googleai"
+  },
+  "gemini-3.5-flash-lite": {
+    "name": "Gemini 3.5 Flash Lite",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:googleai"
+  },
+  "gemini-3.1-flash-lite": {
+    "name": "Gemini 3.1 Flash Lite",
+    "score": 62.8,
+    "swe_bench": 62.8,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:googleai"
+  },
+  "gemini-2.5-flash": {
+    "name": "Gemini 2.5 Flash",
+    "score": 54,
+    "swe_bench": 54,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:googleai"
+  },
+  "gemini-2.5-flash-lite": {
+    "name": "Gemini 2.5 Flash Lite",
+    "score": 42.6,
+    "swe_bench": 42.6,
+    "tier": "A",
+    "contextLength": 1048576,
+    "source": "external-catalog:googleai"
+  },
+  "gemini-3-flash-preview": {
+    "name": "Gemini 3 Flash Preview",
+    "score": 78,
+    "swe_bench": 78,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:googleai"
+  },
+  "gemini-2.5-pro": {
+    "name": "Gemini 2.5 Pro",
+    "score": 63.8,
+    "swe_bench": 63.8,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:googleai"
+  },
+  "mistral-medium-3-5": {
+    "name": "Mistral Medium 3.5",
+    "score": 77.6,
+    "swe_bench": 77.6,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:mistral"
+  },
+  "mistral-small-2603": {
+    "name": "Mistral Small 4",
+    "score": 48,
+    "swe_bench": 48,
+    "tier": "A",
+    "contextLength": 262144,
+    "source": "external-catalog:mistral"
+  },
+  "ministral-14b-2512": {
+    "name": "Ministral 3 14B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:mistral"
+  },
+  "ministral-8b-2512": {
+    "name": "Ministral 3 8B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:mistral"
+  },
+  "labs-leanstral-1-5-1": {
+    "name": "Leanstral 1.5.1",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:mistral"
+  },
+  "ministral-3b-2512": {
+    "name": "Ministral 3 3B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:mistral"
+  },
+  "mistral-code-latest": {
+    "name": "Mistral Code",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:mistral"
+  },
+  "mistral-code-fim-latest": {
+    "name": "Mistral Code FIM",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:mistral"
+  },
+  "mistral-vibe-cli-latest": {
+    "name": "Mistral Vibe CLI",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:mistral"
+  },
+  "cf-zai-org-glm-4.7-flash": {
+    "name": "GLM-4.7-Flash",
+    "score": 59.2,
+    "swe_bench": 59.2,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:cloudflare"
+  },
+  "glm-4.7-flash": {
+    "name": "GLM-4.7-Flash",
+    "score": 59.2,
+    "swe_bench": 59.2,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-openai-gpt-oss-120b": {
+    "name": "GPT OSS 120B",
+    "score": 62,
+    "swe_bench": 62,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-nvidia-nemotron-3-120b-a12b": {
+    "name": "Nemotron 3 Super",
+    "score": 60.5,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 262144,
+    "source": "external-catalog:cloudflare"
+  },
+  "nemotron-3-120b-a12b": {
+    "name": "Nemotron 3 Super",
+    "score": 60.5,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 262144,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-qwen-qwen3-30b-a3b-fp8": {
+    "name": "Qwen3 30B MoE",
+    "score": 25.2,
+    "swe_bench": 25.2,
+    "tier": "B",
+    "contextLength": 32768,
+    "source": "external-catalog:cloudflare"
+  },
+  "qwen3-30b-a3b-fp8": {
+    "name": "Qwen3 30B MoE",
+    "score": 25.2,
+    "swe_bench": 25.2,
+    "tier": "B",
+    "contextLength": 32768,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-qwen-qwen2.5-coder-32b-instruct": {
+    "name": "Qwen2.5 Coder 32B",
+    "score": 45.7,
+    "swe_bench": 45.7,
+    "tier": "A",
+    "contextLength": 32768,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-openai-gpt-oss-20b": {
+    "name": "GPT OSS 20B",
+    "score": 50.3,
+    "swe_bench": 50.3,
+    "tier": "A+",
+    "contextLength": 131072,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-meta-llama-3.3-70b-instruct-fp8-fast": {
+    "name": "Llama 3.3 70B",
+    "score": 22,
+    "swe_bench": 22,
+    "tier": "B",
+    "contextLength": 24576,
+    "source": "external-catalog:cloudflare"
+  },
+  "llama-3.3-70b-instruct-fp8-fast": {
+    "name": "Llama 3.3 70B",
+    "score": 22,
+    "swe_bench": 22,
+    "tier": "B",
+    "contextLength": 24576,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-google-gemma-4-26b-a4b-it": {
+    "name": "Gemma 4 26B MoE",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:cloudflare"
+  },
+  "gemma-4-26b-a4b-it": {
+    "name": "Gemma 4 26B MoE",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-qwen-qwen3.8-27b": {
+    "name": "Qwen3.8 27B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-mistralai-mistral-small-3.1-24b-instruct": {
+    "name": "Mistral Small 3.1",
+    "score": 30,
+    "swe_bench": 30,
+    "tier": "B+",
+    "contextLength": 131072,
+    "source": "external-catalog:cloudflare"
+  },
+  "mistral-small-3.1-24b-instruct": {
+    "name": "Mistral Small 3.1",
+    "score": 30,
+    "swe_bench": 30,
+    "tier": "B+",
+    "contextLength": 131072,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-ibm-granite-granite-4.0-h-micro": {
+    "name": "Granite 4.0 Micro",
+    "score": 30,
+    "swe_bench": 30,
+    "tier": "B+",
+    "contextLength": 134144,
+    "source": "external-catalog:cloudflare"
+  },
+  "granite-4.0-h-micro": {
+    "name": "Granite 4.0 Micro",
+    "score": 30,
+    "swe_bench": 30,
+    "tier": "B+",
+    "contextLength": 134144,
+    "source": "external-catalog:cloudflare"
+  },
+  "cf-aisingapore-gemma-sea-lion-v4-27b-it": {
+    "name": "Gemma SEA-LION V4 27B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 131072,
+    "source": "external-catalog:cloudflare"
+  },
+  "gemma-sea-lion-v4-27b-it": {
+    "name": "Gemma SEA-LION V4 27B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 131072,
+    "source": "external-catalog:cloudflare"
+  },
+  "nvidia-nemotron-3-ultra-550b-a55b-free": {
+    "name": "Nemotron 3 Ultra",
+    "score": 71.9,
+    "swe_bench": 71.9,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "nemotron-3-ultra-550b-a55b-free": {
+    "name": "Nemotron 3 Ultra",
+    "score": 71.9,
+    "swe_bench": 71.9,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "poolside-laguna-xs-2.1-free": {
+    "name": "Poolside Laguna XS 2.1",
+    "score": 70.9,
+    "swe_bench": 70.9,
+    "tier": "S+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "laguna-xs-2.1-free": {
+    "name": "Poolside Laguna XS 2.1",
+    "score": 70.9,
+    "swe_bench": 70.9,
+    "tier": "S+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "poolside-laguna-s-2.1-free": {
+    "name": "Poolside Laguna S 2.1",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "laguna-s-2.1-free": {
+    "name": "Poolside Laguna S 2.1",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "cohere-north-mini-code-free": {
+    "name": "North Mini Code",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:openrouter"
+  },
+  "north-mini-code-free": {
+    "name": "North Mini Code",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:openrouter"
+  },
+  "nvidia-nemotron-3-super-120b-a12b-free": {
+    "name": "Nemotron 3 Super",
+    "score": 60.5,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "nemotron-3-super-120b-a12b-free": {
+    "name": "Nemotron 3 Super",
+    "score": 60.5,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "inclusionai-ling-3.1-flash": {
+    "name": "Ling 3.1 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "ling-3.1-flash": {
+    "name": "Ling 3.1 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "nvidia-nemotron-3-nano-omni-30b-a3b-reasoning-free": {
+    "name": "Nemotron 3 Omni",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:openrouter"
+  },
+  "nemotron-3-nano-omni-30b-a3b-reasoning-free": {
+    "name": "Nemotron 3 Omni",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:openrouter"
+  },
+  "google-gemma-4-31b-it-free": {
+    "name": "Gemma 4 31B",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "gemma-4-31b-it-free": {
+    "name": "Gemma 4 31B",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "google-gemma-4-26b-a4b-it-free": {
+    "name": "Gemma 4 26B MoE",
+    "score": 38,
+    "swe_bench": 38,
+    "tier": "A-",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "gemma-4-26b-a4b-it-free": {
+    "name": "Gemma 4 26B MoE",
+    "score": 38,
+    "swe_bench": 38,
+    "tier": "A-",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "liquid-lfm-2.5-2.6b-free": {
+    "name": "LiquidAI LFM2.5-2.6B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 65536,
+    "source": "external-catalog:openrouter"
+  },
+  "lfm-2.5-2.6b-free": {
+    "name": "LiquidAI LFM2.5-2.6B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 65536,
+    "source": "external-catalog:openrouter"
+  },
+  "nvidia-nemotron-3.5-lightning-free": {
+    "name": "NVIDIA Nemotron 3.5 Lightning",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "nemotron-3.5-lightning-free": {
+    "name": "NVIDIA Nemotron 3.5 Lightning",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "thinkingmachines-inkling-free": {
+    "name": "Inkling",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "inkling-free": {
+    "name": "Inkling",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "apodex-apodex-1.1-mini-free": {
+    "name": "Apodex 1.1 Mini",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "apodex-1.1-mini-free": {
+    "name": "Apodex 1.1 Mini",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:openrouter"
+  },
+  "openrouter-free": {
+    "name": "Free Models Router",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 204800,
+    "source": "external-catalog:openrouter",
+    "deprecated": true
+  },
+  "free": {
+    "name": "Free Models Router",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 204800,
+    "source": "external-catalog:openrouter",
+    "deprecated": true
+  },
+  "thinkingmachines-inkling-small-free": {
+    "name": "Inkling Small",
+    "score": 80.2,
+    "swe_bench": 80.2,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "inkling-small-free": {
+    "name": "Inkling Small",
+    "score": 80.2,
+    "swe_bench": 80.2,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "dots-studio-dots-3-note-preview-free": {
+    "name": "Dots 3 Note Preview",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 524288,
+    "source": "external-catalog:openrouter"
+  },
+  "dots-3-note-preview-free": {
+    "name": "Dots 3 Note Preview",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 524288,
+    "source": "external-catalog:openrouter"
+  },
+  "deepseek-v3.1": {
+    "name": "DeepSeek V3.1",
+    "score": 66,
+    "swe_bench": 66,
+    "tier": "S",
+    "contextLength": 134144,
+    "source": "external-catalog:sambanova"
+  },
+  "deepseek-v3.2": {
+    "name": "DeepSeek V3.2",
+    "score": 70,
+    "swe_bench": 70,
+    "tier": "S+",
+    "contextLength": 32768,
+    "source": "external-catalog:sambanova"
+  },
+  "meta-llama-3.3-70b-instruct": {
+    "name": "Llama 3.3 70B",
+    "score": 22,
+    "swe_bench": 22,
+    "tier": "B",
+    "contextLength": 134144,
+    "source": "external-catalog:sambanova"
+  },
+  "qwen3.5-397b-a17b": {
+    "name": "Qwen3.5 397B MoE",
+    "score": 76.4,
+    "swe_bench": 76.4,
+    "tier": "S+",
+    "contextLength": 268288,
+    "source": "external-catalog:ovhcloud"
+  },
+  "qwen3.6-27b": {
+    "name": "Qwen3.6 27B",
+    "score": 77.2,
+    "swe_bench": 77.2,
+    "tier": "S+",
+    "contextLength": 268288,
+    "source": "external-catalog:ovhcloud"
+  },
+  "meta-llama-3-3-70b-instruct": {
+    "name": "Llama 3.3 70B",
+    "score": 22,
+    "swe_bench": 22,
+    "tier": "B",
+    "contextLength": 134144,
+    "source": "external-catalog:ovhcloud"
+  },
+  "mistral-small-3.2-24b-instruct-2506": {
+    "name": "Mistral Small 3.2 24B",
+    "score": 20,
+    "swe_bench": 20,
+    "tier": "B",
+    "contextLength": 134144,
+    "source": "external-catalog:ovhcloud"
+  },
+  "qwen3.5-9b": {
+    "name": "Qwen3.5 9B",
+    "score": 30,
+    "swe_bench": 30,
+    "tier": "B+",
+    "contextLength": 268288,
+    "source": "external-catalog:ovhcloud"
+  },
+  "qwen2.5-vl-72b-instruct": {
+    "name": "Qwen2.5-VL 72B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 32768,
+    "source": "external-catalog:ovhcloud"
+  },
+  "qwen3-embedding-8b": {
+    "name": "Qwen3 Embedding 8B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 32768,
+    "source": "external-catalog:ovhcloud"
+  },
+  "bge-m3": {
+    "name": "BGE M3",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 8192,
+    "source": "external-catalog:ovhcloud"
+  },
+  "bge-multilingual-gemma2": {
+    "name": "BGE Multilingual Gemma2",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 8192,
+    "source": "external-catalog:ovhcloud"
+  },
+  "qwen3guard-gen-8b": {
+    "name": "Qwen3Guard Gen 8B (moderation, beta)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 32768,
+    "source": "external-catalog:ovhcloud"
+  },
+  "qwen3guard-gen-0.6b": {
+    "name": "Qwen3Guard Gen 0.6B (moderation, beta)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 32768,
+    "source": "external-catalog:ovhcloud"
+  },
+  "codestral-2508": {
+    "name": "Codestral",
+    "score": 40,
+    "swe_bench": 40,
+    "tier": "A",
+    "contextLength": 262144,
+    "source": "external-catalog:codestral"
+  },
+  "zai-glm-5.3-flash": {
+    "name": "GLM-5.3-Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:zai"
+  },
+  "glm-5.2": {
+    "name": "GLM 5.2",
+    "score": 82.8,
+    "swe_bench": 82.8,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:scaleway"
+  },
+  "deepseek-v4-flash-0731": {
+    "name": "DeepSeek V4 Flash",
+    "score": 79,
+    "swe_bench": 79,
+    "tier": "S+",
+    "contextLength": 409600,
+    "source": "external-catalog:scaleway",
+    "deprecated": true
+  },
+  "mistral-medium-3.5-128b": {
+    "name": "Mistral Medium 3.5 128B",
+    "score": 77.6,
+    "swe_bench": 77.6,
+    "tier": "S+",
+    "contextLength": 184320,
+    "source": "external-catalog:scaleway"
+  },
+  "qwen3.6-35b-a3b": {
+    "name": "Qwen3.6 35B MoE",
+    "score": 73.4,
+    "swe_bench": 73.4,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:scaleway"
+  },
+  "qwen3-235b-a22b-instruct-2507": {
+    "name": "Qwen3 235B",
+    "score": 45.2,
+    "swe_bench": 45.2,
+    "tier": "A",
+    "contextLength": 256000,
+    "source": "external-catalog:scaleway"
+  },
+  "llama-3.3-70b-instruct": {
+    "name": "Llama 3.3 70B",
+    "score": 22,
+    "swe_bench": 22,
+    "tier": "B",
+    "contextLength": 102400,
+    "source": "external-catalog:scaleway"
+  },
+  "qwen3.7-max": {
+    "name": "Qwen3.7 Max",
+    "score": 80.4,
+    "swe_bench": 80.4,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.6-plus": {
+    "name": "Qwen3.6 Plus",
+    "score": 78.8,
+    "swe_bench": 78.8,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.7-plus": {
+    "name": "Qwen3.7 Plus",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.8-max": {
+    "name": "Qwen3.8 Max",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.8-2.4t-a95b": {
+    "name": "Qwen3.8 2.4T A95B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.8-max-0902": {
+    "name": "Qwen3.8 Max 0902",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.5-plus": {
+    "name": "Qwen3.5 Plus",
+    "score": 80,
+    "swe_bench": 80,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.7-flash": {
+    "name": "Qwen3.7 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.6-flash": {
+    "name": "Qwen3.6 Flash",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.5-flash": {
+    "name": "Qwen3.5 Flash",
+    "score": 64.4,
+    "swe_bench": 64.4,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3-coder-flash": {
+    "name": "Qwen3 Coder Flash",
+    "score": 55,
+    "swe_bench": 55,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3-vl-plus": {
+    "name": "Qwen3 VL Plus",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.5-122b-a10b": {
+    "name": "Qwen3.5 122B A10B",
+    "score": 72,
+    "swe_bench": 72,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.5-35b-a3b": {
+    "name": "Qwen3.5 35B A3B",
+    "score": 69.2,
+    "swe_bench": 69.2,
+    "tier": "S",
+    "contextLength": 262144,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.8-flash": {
+    "name": "Qwen3.8 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen",
+    "deprecated": true
+  },
+  "qwen3.5-27b": {
+    "name": "Qwen3.5 27B",
+    "score": 72.4,
+    "swe_bench": 72.4,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.5-omni-plus": {
+    "name": "Qwen3.5 Omni Plus",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:qwen"
+  },
+  "qwen3.8-omni-flash": {
+    "name": "Qwen3.8 Omni Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:qwen"
+  },
+  "big-pickle": {
+    "name": "Big Pickle",
+    "score": 72,
+    "swe_bench": 72,
+    "tier": "S+",
+    "contextLength": 204800,
+    "source": "external-catalog:opencode-zen",
+    "deprecated": true
+  },
+  "mimo-v2.6-flash-free": {
+    "name": "MiMo-V2.6 Flash Free",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 204800,
+    "source": "external-catalog:opencode-zen"
+  },
+  "step-5-preview-free": {
+    "name": "Step 5 Preview Free",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 204800,
+    "source": "external-catalog:opencode-zen"
+  },
+  "ling-3.1-flash-free": {
+    "name": "Ling 3.1 Flash Free",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:opencode-zen"
+  },
+  "nemotron-3-ultra-free": {
+    "name": "Nemotron 3 Ultra Free",
+    "score": 71.9,
+    "swe_bench": 71.9,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:opencode-zen"
+  },
+  "ling-3.0-flash-fin-free": {
+    "name": "Ling 3.0 Flash Fin Free",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:opencode-zen"
+  },
+  "muse-spark-1.3-contributor-free": {
+    "name": "Muse Spark 1.3 Contributor Free",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:opencode-zen"
+  },
+  "jev-1.13-free": {
+    "name": "Jev 1.13 Free",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 204800,
+    "source": "external-catalog:opencode-zen"
+  },
+  "space-bunny-free": {
+    "name": "Space Bunny Free",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:opencode-zen"
+  },
+  "longcat-2.5-preview-free": {
+    "name": "LongCat 2.5 Preview Free",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:opencode-zen"
+  },
+  "kilo-auto-free": {
+    "name": "Kilo Auto Free",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:kilo"
+  },
+  "stepfun-step-5-preview-free": {
+    "name": "StepFun Step 5 Preview (free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:kilo"
+  },
+  "stealth-glyph-cluster": {
+    "name": "Glyph Cluster (stealth, free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:kilo"
+  },
+  "glyph-cluster": {
+    "name": "Glyph Cluster (stealth, free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:kilo"
+  },
+  "kimi-k2.7-code": {
+    "name": "Kimi K2.7 Code",
+    "score": 60.4,
+    "swe_bench": 60.4,
+    "tier": "S",
+    "contextLength": 262144,
+    "source": "external-catalog:llm7"
+  },
+  "kimi-k2.6": {
+    "name": "Kimi K2.6",
+    "score": 80.2,
+    "swe_bench": 80.2,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:llm7"
+  },
+  "mistral-nemo-instruct-2407": {
+    "name": "Mistral Nemo 12B Instruct",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 131072,
+    "source": "external-catalog:llm7"
+  },
+  "nemotron-3-nano-30b": {
+    "name": "Nemotron 3 Nano 30B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:llm7"
+  },
+  "codestral-latest": {
+    "name": "Codestral Latest",
+    "score": 40,
+    "swe_bench": 40,
+    "tier": "A",
+    "contextLength": 32768,
+    "source": "external-catalog:llm7"
+  },
+  "deepseek-v4-flash-free": {
+    "name": "DeepSeek V4 Flash",
+    "score": 79,
+    "swe_bench": 79,
+    "tier": "S+",
+    "contextLength": 43008,
+    "source": "external-catalog:routeway"
+  },
+  "minimax-m2.7-free": {
+    "name": "MiniMax M2.7",
+    "score": 78,
+    "swe_bench": 78,
+    "tier": "S+",
+    "contextLength": 43008,
+    "source": "external-catalog:routeway"
+  },
+  "muse-glimmer-30b-free": {
+    "name": "Muse Glimmer 30B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:routeway"
+  },
+  "gemma-4-26b-a4b-it-chimerax-free": {
+    "name": "Gemma 4 26B A4B ChimeraX",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 63488,
+    "source": "external-catalog:routeway"
+  },
+  "gemma-4-26b-a4b-it-darksoul-free": {
+    "name": "Gemma 4 26B A4B Darksoul",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 63488,
+    "source": "external-catalog:routeway"
+  },
+  "gemma-4-26b-a4b-it-luminous-free": {
+    "name": "Gemma 4 26B A4B Luminous",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 63488,
+    "source": "external-catalog:routeway"
+  },
+  "gemma-4-26b-a4b-it-moonlight-free": {
+    "name": "Gemma 4 26B A4B Moonlight",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 63488,
+    "source": "external-catalog:routeway"
+  },
+  "gemma-4-26b-a4b-it-musica-free": {
+    "name": "Gemma 4 26B A4B Musica",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 63488,
+    "source": "external-catalog:routeway"
+  },
+  "gemma-4-26b-a4b-it-meromero-free": {
+    "name": "Gemma 4 26B A4B Meromero",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 63488,
+    "source": "external-catalog:routeway"
+  },
+  "zai-org-glm-5.3-flash": {
+    "name": "GLM 5.3 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:novita"
+  },
+  "qwen-qwen3.8-flash": {
+    "name": "Qwen3.8 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:novita"
+  },
+  "inclusionai-ling-3.0-flash-sante": {
+    "name": "Ling 3.0 Flash Sante",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:novita"
+  },
+  "ling-3.0-flash-sante": {
+    "name": "Ling 3.0 Flash Sante",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:novita"
+  },
+  "dev-glm46": {
+    "name": "GLM 4.6 (dev)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:novita"
+  },
+  "glm46": {
+    "name": "GLM 4.6 (dev)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:novita"
+  },
+  "inclusionai-ling-3.0-flash": {
+    "name": "Ling 3.0 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:novita"
+  },
+  "ling-3.0-flash": {
+    "name": "Ling 3.0 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:novita"
+  },
+  "zai-org-glm-4.7-flash": {
+    "name": "GLM 4.7 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 204800,
+    "source": "external-catalog:novita"
+  },
+  "minimax-minimax-m2.7": {
+    "name": "MiniMax M2.7",
+    "score": 78,
+    "swe_bench": 78,
+    "tier": "S+",
+    "contextLength": 204800,
+    "source": "external-catalog:novita"
+  },
+  "minimax-m2.7": {
+    "name": "MiniMax M2.7",
+    "score": 78,
+    "swe_bench": 78,
+    "tier": "S+",
+    "contextLength": 204800,
+    "source": "external-catalog:novita"
+  },
+  "kimi": {
+    "name": "Moonshot Kimi K2.6",
+    "score": 80.2,
+    "swe_bench": 80.2,
+    "tier": "S+",
+    "contextLength": 268288,
+    "source": "external-catalog:pollinations",
+    "deprecated": true
+  },
+  "minimax": {
+    "name": "MiniMax M3",
+    "score": 80.5,
+    "swe_bench": 80.5,
+    "tier": "S+",
+    "contextLength": 536576,
+    "source": "external-catalog:pollinations"
+  },
+  "openai-gpt-5.5": {
+    "name": "OpenAI GPT-5.5",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "gpt-5.5": {
+    "name": "OpenAI GPT-5.5",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "openai-gpt-6-astra": {
+    "name": "OpenAI GPT-6 Astra",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "gpt-6-astra": {
+    "name": "OpenAI GPT-6 Astra",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "qwen-coder": {
+    "name": "Qwen3 Coder 30B",
+    "score": 51.6,
+    "swe_bench": 51.6,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:pollinations"
+  },
+  "deepseek": {
+    "name": "DeepSeek V4 Flash",
+    "score": 79,
+    "swe_bench": 79,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations",
+    "deprecated": true
+  },
+  "openai": {
+    "name": "OpenAI GPT-5.4 Nano",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 409600,
+    "source": "external-catalog:pollinations"
+  },
+  "openai-gpt-5.6-luna": {
+    "name": "OpenAI GPT-5.6 Luna",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "gpt-5.6-luna": {
+    "name": "OpenAI GPT-5.6 Luna",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "deepseek-deepseek-v4.1-flash": {
+    "name": "DeepSeek V4.1 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "gpt-oss": {
+    "name": "GPT OSS 20B",
+    "score": 50.3,
+    "swe_bench": 50.3,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:pollinations"
+  },
+  "openai-gpt-6-sol": {
+    "name": "OpenAI GPT-6 Sol",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "gpt-6-sol": {
+    "name": "OpenAI GPT-6 Sol",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "openai-gpt-5.3-codex": {
+    "name": "OpenAI GPT-5.3 Codex",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 409600,
+    "source": "external-catalog:pollinations"
+  },
+  "gpt-5.3-codex": {
+    "name": "OpenAI GPT-5.3 Codex",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 409600,
+    "source": "external-catalog:pollinations"
+  },
+  "openai-gpt-6-luna": {
+    "name": "OpenAI GPT-6 Luna",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "gpt-6-luna": {
+    "name": "OpenAI GPT-6 Luna",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "z-ai-glm-5.2": {
+    "name": "Z.ai GLM-5.2",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "openai-gpt-5.4-mini": {
+    "name": "OpenAI GPT-5.4 Mini",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 409600,
+    "source": "external-catalog:pollinations"
+  },
+  "gpt-5.4-mini": {
+    "name": "OpenAI GPT-5.4 Mini",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 409600,
+    "source": "external-catalog:pollinations"
+  },
+  "x-ai-grok-4.20": {
+    "name": "xAI Grok 4.20",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:pollinations"
+  },
+  "grok-4.20": {
+    "name": "xAI Grok 4.20",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:pollinations"
+  },
+  "amazon-nova-2-lite-v1": {
+    "name": "Amazon Nova 2 Lite",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "nova-2-lite-v1": {
+    "name": "Amazon Nova 2 Lite",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "openai-gpt-6.1-sol": {
+    "name": "OpenAI GPT-6.1 Sol",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "gpt-6.1-sol": {
+    "name": "OpenAI GPT-6.1 Sol",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "x-ai-grok-4.7": {
+    "name": "xAI Grok 4.7",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 512000,
+    "source": "external-catalog:pollinations"
+  },
+  "stepfun-step-5-preview": {
+    "name": "StepFun Step 5 Preview",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "step-5-preview": {
+    "name": "StepFun Step 5 Preview",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:pollinations"
+  },
+  "xingchenagi-xing4.0-29b": {
+    "name": "Xing4.0 29B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:siliconflow"
+  },
+  "xing4.0-29b": {
+    "name": "Xing4.0 29B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:siliconflow"
+  },
+  "poolside-laguna-xs.2": {
+    "name": "Laguna XS.2",
+    "score": 70.9,
+    "swe_bench": 70.9,
+    "tier": "S+",
+    "contextLength": 32768,
+    "source": "external-catalog:requesty"
+  },
+  "laguna-xs.2": {
+    "name": "Laguna XS.2",
+    "score": 70.9,
+    "swe_bench": 70.9,
+    "tier": "S+",
+    "contextLength": 32768,
+    "source": "external-catalog:requesty"
+  },
+  "poolside-laguna-m.1": {
+    "name": "Laguna M.1",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 32768,
+    "source": "external-catalog:requesty"
+  },
+  "laguna-m.1": {
+    "name": "Laguna M.1",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 32768,
+    "source": "external-catalog:requesty"
+  },
+  "nvidia-nemotron-3-nano-30b-a3b": {
+    "name": "Nemotron Nano 30B",
+    "score": 38.8,
+    "swe_bench": 38.8,
+    "tier": "A-",
+    "contextLength": 268288,
+    "source": "external-catalog:requesty"
+  },
+  "nemotron-3-nano-30b-a3b": {
+    "name": "Nemotron Nano 30B",
+    "score": 38.8,
+    "swe_bench": 38.8,
+    "tier": "A-",
+    "contextLength": 268288,
+    "source": "external-catalog:requesty"
+  },
+  "mistral-leanstral-1-5": {
+    "name": "Leanstral 1.5",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:requesty"
+  },
+  "leanstral-1-5": {
+    "name": "Leanstral 1.5",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:requesty"
+  },
+  "novita-inclusionai-ling-3.0-tiny": {
+    "name": "Ling 3.0 Tiny",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:requesty"
+  },
+  "ling-3.0-tiny": {
+    "name": "Ling 3.0 Tiny",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:requesty"
+  },
+  "novita-inclusionai-ling-3.1-flash": {
+    "name": "Ling 3.1 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:requesty"
+  },
+  "nvidia-muse-glimmer-30b": {
+    "name": "Muse Glimmer 30B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:requesty"
+  },
+  "deepseek-deepseek-v4-flash-free": {
+    "name": "DeepSeek V4 Flash (Free)",
+    "score": 79,
+    "swe_bench": 79,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:orcarouter"
+  },
+  "tencent-hy3-free": {
+    "name": "Tencent Hy3 (Free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:orcarouter"
+  },
+  "hy3-free": {
+    "name": "Tencent Hy3 (Free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:orcarouter"
+  },
+  "orcarouter-free": {
+    "name": "OrcaRouter Free (difficulty-routed)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 131072,
+    "source": "external-catalog:orcarouter"
+  },
+  "z-ai-glm-5.3-flash-free": {
+    "name": "GLM-5.3 Flash (Free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:orcarouter"
+  },
+  "glm-5.3-flash-free": {
+    "name": "GLM-5.3 Flash (Free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:orcarouter"
+  },
+  "tencent-hy4-preview-free": {
+    "name": "Tencent Hy4 Preview (Free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:orcarouter"
+  },
+  "hy4-preview-free": {
+    "name": "Tencent Hy4 Preview (Free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:orcarouter"
+  },
+  "orca-orcaverify-text1.0-free": {
+    "name": "OrcaVerify Text 1.0 (Free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 131072,
+    "source": "external-catalog:orcarouter"
+  },
+  "orcaverify-text1.0-free": {
+    "name": "OrcaVerify Text 1.0 (Free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 131072,
+    "source": "external-catalog:orcarouter"
+  },
+  "inclusionai-ling-3.1-flash-free": {
+    "name": "Ling 3.1 Flash (Free)",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:vercel-gateway"
+  },
+  "deepseek-v4-pro-0813": {
+    "name": "DeepSeek V4 Pro",
+    "score": 80.6,
+    "swe_bench": 80.6,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:ollama-cloud",
+    "deprecated": true
+  },
+  "gemma4-31b": {
+    "name": "Gemma 4 31B",
+    "score": 52,
+    "swe_bench": 52,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:ollama-cloud"
+  },
+  "mistral-large-3-675b": {
+    "name": "Mistral Large 3 675B Cloud",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:ollama-cloud"
+  },
+  "mistral-large-4": {
+    "name": "Mistral Large 4",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:ollama-cloud"
+  },
+  "deepseek-v4-flash": {
+    "name": "DeepSeek V4 Flash",
+    "score": 79,
+    "swe_bench": 79,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:onomeo",
+    "deprecated": true
+  },
+  "glm-4.5-flash": {
+    "name": "GLM 4.5 Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 134144,
+    "source": "external-catalog:onomeo"
+  },
+  "glm-4.6v-flash": {
+    "name": "GLM 4.6V Flash",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 131072,
+    "source": "external-catalog:onomeo"
+  },
+  "ministral-14b-latest": {
+    "name": "Ministral 3 14B",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 268288,
+    "source": "external-catalog:onomeo"
+  },
+  "stealth-space-bunny-alpha": {
+    "name": "Space Bunny Alpha",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:onomeo",
+    "deprecated": true
+  },
+  "space-bunny-alpha": {
+    "name": "Space Bunny Alpha",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:onomeo",
+    "deprecated": true
+  },
+  "hy4-preview": {
+    "name": "Hunyuan 4 Preview",
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 1048576,
+    "source": "external-catalog:onomeo"
   }
 }

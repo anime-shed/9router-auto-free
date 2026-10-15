@@ -10,50 +10,61 @@ const path = require("node:path");
 
 const BENCHMARKS_PATH = path.join(__dirname, "benchmarks.json");
 
-// Calibrated empirical baseline (SWE-bench / LiveCodeBench / LMSYS Coding Elo)
+// Calibrated empirical baseline (SWE-bench Verified / LiveCodeBench / LMSYS Coding Elo)
 const BASELINE = {
-  "gemini-3.1-pro-preview": { name: "Gemini 3.1 Pro Preview", score: 85.0, swe_bench: 81.0, livecodebench: 84.5, tier: "S" },
-  "assistant-sonnet-4.5-thinking": { name: "Claude Sonnet 4.5 Thinking", score: 84.0, swe_bench: 80.0, livecodebench: 83.5, tier: "S" },
-  "gemini-3.7-flash": { name: "Gemini 3.7 Flash", score: 83.0, swe_bench: 78.5, livecodebench: 82.0, tier: "S" },
-  "claude-sonnet-4.5": { name: "Claude Sonnet 4.5", score: 82.5, swe_bench: 78.0, livecodebench: 81.0, tier: "S" },
-  "gemini-3.6-flash": { name: "Gemini 3.6 Flash", score: 81.0, swe_bench: 76.0, livecodebench: 80.0, tier: "S" },
-  "gemini-3.5-flash": { name: "Gemini 3.5 Flash", score: 79.0, swe_bench: 74.0, livecodebench: 78.0, tier: "A+" },
-  "claude-3.5-sonnet": { name: "Claude 3.5 Sonnet", score: 79.0, swe_bench: 74.0, livecodebench: 78.0, tier: "A+" },
-  "deepseek-r1": { name: "DeepSeek R1", score: 76.5, swe_bench: 71.0, livecodebench: 75.8, tier: "A+" },
-  "gemini-3.5-flash-lite": { name: "Gemini 3.5 Flash Lite", score: 76.0, swe_bench: 70.0, livecodebench: 75.0, tier: "A+" },
-  "gemini-3.1-flash-lite": { name: "Gemini 3.1 Flash Lite", score: 74.0, swe_bench: 68.0, livecodebench: 73.0, tier: "A+" },
-  "deepseek-v4": { name: "DeepSeek V4 Flash", score: 74.0, swe_bench: 68.0, livecodebench: 73.0, tier: "A+" },
-  "deepseek-v3": { name: "DeepSeek V3", score: 72.0, swe_bench: 65.0, livecodebench: 70.5, tier: "A+" },
-  "glm-5": { name: "Zhipu GLM 5", score: 71.0, swe_bench: 65.0, livecodebench: 71.5, tier: "A+" },
-  "step-3.7-flash": { name: "StepFun Step 3.7 Flash", score: 70.0, swe_bench: 64.5, livecodebench: 70.2, tier: "A+" },
-  "qwen3.7-flash": { name: "Qwen 3.7 Flash", score: 70.0, swe_bench: 64.5, livecodebench: 69.5, tier: "A+" },
-  "qwen3.6-plus": { name: "Qwen 3.6 Plus", score: 69.0, swe_bench: 64.0, livecodebench: 68.0, tier: "A" },
-  "qwen2.5-coder": { name: "Qwen 2.5 Coder 32B", score: 68.5, swe_bench: 63.0, livecodebench: 67.5, tier: "A" },
-  "gpt-4o": { name: "GPT-4o", score: 66.0, swe_bench: 60.0, livecodebench: 65.0, tier: "A" },
-  "gemini-2.0-flash": { name: "Gemini 2.0 Flash", score: 65.0, swe_bench: 58.5, livecodebench: 64.0, tier: "A" },
-  "minimax-m3": { name: "MiniMax M3", score: 62.5, swe_bench: 55.0, livecodebench: 61.0, tier: "A" },
-  "minimax-m2.5": { name: "MiniMax M2.5", score: 61.0, swe_bench: 53.0, livecodebench: 59.5, tier: "A" },
-  "nemotron-3-ultra": { name: "NVIDIA Nemotron 3 Ultra", score: 58.5, swe_bench: 50.0, livecodebench: 57.0, tier: "B+" },
-  "nemotron-3.5-lightning": { name: "NVIDIA Nemotron 3.5 Lightning", score: 57.0, swe_bench: 49.0, livecodebench: 56.0, tier: "B+" },
-  "nemotron-3-super": { name: "NVIDIA Nemotron 3 Super", score: 56.0, swe_bench: 48.0, livecodebench: 55.0, tier: "B+" },
-  "hy3": { name: "Tencent HY3", score: 54.0, swe_bench: 46.0, livecodebench: 52.5, tier: "B+" },
-  "mimo-v2.5": { name: "Xiaomi MiMo V2.5", score: 52.0, swe_bench: 44.0, livecodebench: 50.5, tier: "B+" },
-  "nemotron-3-nano": { name: "NVIDIA Nemotron 3 Nano", score: 50.0, swe_bench: 42.0, livecodebench: 49.0, tier: "B+" },
-  "laguna-s-2.1": { name: "Poolside Laguna S 2.1", score: 48.0, swe_bench: 40.0, livecodebench: 46.0, tier: "B" },
-  "ling-3.0-flash": { name: "Ling 3.0 Flash", score: 47.0, swe_bench: 39.0, livecodebench: 45.0, tier: "B" },
-  "laguna-xs-2.1": { name: "Poolside Laguna XS 2.1", score: 46.0, swe_bench: 38.0, livecodebench: 44.0, tier: "B" },
-  "gpt-oss-20b": { name: "OpenAI GPT OSS 20B", score: 45.0, swe_bench: 36.0, livecodebench: 43.0, tier: "B" },
-  "lfm-2.5-2.6b": { name: "LiquidAI LFM 2.5 2.6B", score: 44.0, swe_bench: 35.0, livecodebench: 42.0, tier: "C+" },
-  "north-mini-code": { name: "Cohere North Mini Code", score: 43.0, swe_bench: 34.0, livecodebench: 41.0, tier: "C+" }
+  // S+ Tier (>= 70% SWE-bench Verified)
+  "gemini-3.8-flash": { name: "Gemini 3.8 Flash", score: 78.5, swe_bench: 78.5, tier: "S+", contextLength: 1048576 },
+  "claude-opus-4-6-thinking": { name: "Claude Opus 4.6 Thinking", score: 78.0, swe_bench: 78.0, tier: "S+", contextLength: 200000 },
+  "gh/gpt-4.1": { name: "GitHub GPT-4.1", score: 77.0, swe_bench: 77.0, tier: "S+", contextLength: 128000 },
+  "gpt-4.1": { name: "GPT-4.1", score: 77.0, swe_bench: 77.0, tier: "S+", contextLength: 128000 },
+  "gemini-3.7-flash": { name: "Gemini 3.7 Flash", score: 76.9, swe_bench: 76.9, tier: "S+", contextLength: 1048576 },
+  "moonshotai/kimi-k3": { name: "Moonshot Kimi K3", score: 76.8, swe_bench: 76.8, tier: "S+", contextLength: 1048576 },
+  "kimi-k3": { name: "Kimi K3", score: 76.8, swe_bench: 76.8, tier: "S+", contextLength: 1048576 },
+  "assistant-sonnet-4.5-thinking": { name: "Claude Sonnet 4.5 Thinking", score: 76.5, swe_bench: 76.5, tier: "S+", contextLength: 200000 },
+  "z-ai/glm-5.3": { name: "Zhipu GLM 5.3", score: 75.0, swe_bench: 75.0, tier: "S+", contextLength: 1048576 },
+  "glm-5.3": { name: "GLM 5.3", score: 75.0, swe_bench: 75.0, tier: "S+", contextLength: 1048576 },
+  "claude-sonnet-4.6": { name: "Claude Sonnet 4.6", score: 74.0, swe_bench: 74.0, tier: "S+", contextLength: 200000 },
+  "deepseek-v4.1-flash": { name: "DeepSeek V4.1 Flash", score: 74.0, swe_bench: 74.0, tier: "S+", contextLength: 131072 },
+  "claude-sonnet-4.5": { name: "Claude Sonnet 4.5", score: 73.0, swe_bench: 73.0, tier: "S+", contextLength: 200000 },
+  "nvidia/nemotron-3-ultra-550b-a55b": { name: "Nemotron 3 Ultra 550B", score: 71.9, swe_bench: 71.9, tier: "S+", contextLength: 1048576 },
+  "nemotron-3-ultra": { name: "NVIDIA Nemotron 3 Ultra", score: 71.9, swe_bench: 71.9, tier: "S+", contextLength: 1048576 },
+  "poolside/laguna-xs-2.1": { name: "Poolside Laguna XS 2.1", score: 70.9, swe_bench: 70.9, tier: "S+", contextLength: 262144 },
+  "laguna-xs": { name: "Laguna XS 2.1", score: 70.9, swe_bench: 70.9, tier: "S+", contextLength: 262144 },
+  "laguna-xs-2.1": { name: "Poolside Laguna XS 2.1", score: 70.9, swe_bench: 70.9, tier: "S+", contextLength: 262144 },
+
+  // S Tier (60 - 70% SWE-bench Verified)
+  "cerebras/qwen-3.8-27b": { name: "Cerebras Qwen 3.8 27B", score: 68.0, swe_bench: 68.0, tier: "S", contextLength: 32768 },
+  "qwen-3.8-27b": { name: "Qwen 3.8 27B", score: 68.0, swe_bench: 68.0, tier: "S", contextLength: 32768 },
+  "step-3.7-flash": { name: "StepFun Step 3.7 Flash", score: 66.0, swe_bench: 66.0, tier: "S", contextLength: 262144 },
+  "qwen2.5-coder": { name: "Qwen 2.5 Coder 32B", score: 65.0, swe_bench: 65.0, tier: "S", contextLength: 131072 },
+  "cerebras/gpt-oss-120b": { name: "Cerebras GPT-OSS 120B", score: 62.4, swe_bench: 62.4, tier: "S", contextLength: 8192 },
+  "gpt-oss-120b": { name: "GPT-OSS 120B", score: 62.4, swe_bench: 62.4, tier: "S", contextLength: 8192 },
+  "gcli/grok-4.7": { name: "xAI Grok 4.7 CLI", score: 62.0, swe_bench: 62.0, tier: "S", contextLength: 131072 },
+  "grok-4.7": { name: "Grok 4.7", score: 62.0, swe_bench: 62.0, tier: "S", contextLength: 131072 },
+  "nvidia/nemotron-3-super-120b-a12b": { name: "Nemotron 3 Super 120B", score: 60.5, swe_bench: 60.5, tier: "S", contextLength: 1048576 },
+  "nemotron-3-super": { name: "NVIDIA Nemotron 3 Super", score: 60.5, swe_bench: 60.5, tier: "S", contextLength: 1048576 },
+
+  // A+ Tier (50 - 60% SWE-bench Verified)
+  "gemini-3.5-flash": { name: "Gemini 3.5 Flash", score: 58.0, swe_bench: 58.0, tier: "A+", contextLength: 1048576 },
+  "qwen3-coder-480b": { name: "Qwen3 Coder 480B", score: 58.0, swe_bench: 58.0, tier: "A+", contextLength: 131072 },
+  "qwen3.5-122b": { name: "Qwen 3.5 122B", score: 56.0, swe_bench: 56.0, tier: "A+", contextLength: 131072 },
+  "minimax-m3": { name: "MiniMax M3", score: 55.0, swe_bench: 55.0, tier: "A+", contextLength: 1048576 },
+  "nemotron-3.5-lightning-30b": { name: "Nemotron 3.5 Lightning 30B", score: 52.8, swe_bench: 52.8, tier: "A+", contextLength: 131072 },
+  "nemotron-3.5-lightning": { name: "NVIDIA Nemotron 3.5 Lightning", score: 52.8, swe_bench: 52.8, tier: "A+", contextLength: 131072 },
+  "deepseek-r1": { name: "DeepSeek R1 Distill", score: 52.0, swe_bench: 52.0, tier: "A+", contextLength: 131072 },
+  "mimo-v2.5": { name: "Xiaomi MiMo V2.5", score: 50.5, swe_bench: 50.5, tier: "A+", contextLength: 1048576 },
+  "hy3": { name: "Tencent HY3", score: 50.0, swe_bench: 50.0, tier: "A+", contextLength: 131072 }
 };
 
 function determineTier(score) {
-  if (score >= 80) return "S";
-  if (score >= 70) return "A+";
-  if (score >= 60) return "A";
-  if (score >= 50) return "B+";
-  if (score >= 45) return "B";
-  return "C+";
+  if (score >= 70) return "S+";
+  if (score >= 60) return "S";
+  if (score >= 50) return "A+";
+  if (score >= 40) return "A";
+  if (score >= 35) return "A-";
+  if (score >= 30) return "B+";
+  if (score >= 20) return "B";
+  return "C";
 }
 
 function normalizeKey(str) {
@@ -212,6 +223,56 @@ async function updateBenchmarks() {
     }
   }
   console.log(`[+] Merged ${added} additional model scores from live sources.`);
+
+  // Ingest harvested external models catalog (vava-nessa, mvalentsev, peter123023)
+  const externalPath = path.join(__dirname, "external-models.json");
+  if (fs.existsSync(externalPath)) {
+    try {
+      const extData = JSON.parse(fs.readFileSync(externalPath, "utf8"));
+      const extModels = extData.models || [];
+      let extAdded = 0;
+      for (const m of extModels) {
+        if (!m || !m.id) continue;
+        const rawKey = normalizeKey(m.id);
+        const baseKey = normalizeKey(m.id.split("/").pop());
+        const score = typeof m.score === "number" ? m.score : (parseFloat(m.score) || 50);
+
+        const entry = {
+          name: m.name || m.id,
+          score,
+          swe_bench: score,
+          tier: determineTier(score),
+          contextLength: m.contextLength || 131072,
+          source: `external-catalog:${m.provider || "generic"}`
+        };
+
+        for (const k of [rawKey, baseKey]) {
+          if (!merged[k]) {
+            merged[k] = entry;
+            extAdded++;
+          } else if (score > (merged[k].score || 0)) {
+            merged[k].score = score;
+            merged[k].swe_bench = score;
+            merged[k].tier = determineTier(score);
+            if (m.contextLength) merged[k].contextLength = m.contextLength;
+          }
+        }
+      }
+      console.log(`[+] Ingested ${extAdded} models from external-models.json catalog.`);
+
+      // Mark deprecated models
+      const deprecated = extData.deprecated || [];
+      for (const dep of deprecated) {
+        const depKey = normalizeKey(dep);
+        if (merged[depKey]) merged[depKey].deprecated = true;
+        for (const [k, v] of Object.entries(merged)) {
+          if (k.includes(depKey) || depKey.includes(k)) v.deprecated = true;
+        }
+      }
+    } catch (e) {
+      console.warn(`[!] Note: Could not parse external-models.json: ${e.message}`);
+    }
+  }
 
   // Tier labels are always derived from the score (single source of truth);
   // this also re-labels stale entries on every run.

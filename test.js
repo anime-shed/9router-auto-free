@@ -512,8 +512,8 @@ async function runTests() {
   // 25. Cross-file agreement: tier boundary & key normalization
   {
     const { normalizeKey, determineTier, SMART_MIN_SCORE } = require('./update-benchmarks.js');
-    assert.strictEqual(determineTier(SMART_MIN_SCORE), 'A', 'SMART_MIN_SCORE must be the A-tier floor');
-    assert.notStrictEqual(determineTier(SMART_MIN_SCORE - 1), 'A', 'one point below must leave tier A');
+    assert.strictEqual(determineTier(SMART_MIN_SCORE), 'S', 'SMART_MIN_SCORE must be the S-tier floor');
+    assert.notStrictEqual(determineTier(SMART_MIN_SCORE - 1), 'S', 'one point below must leave tier S');
 
     const db = getBenchmarksDatabase();
     const sampleKeys = Object.keys(db).slice(0, 5);
@@ -850,6 +850,27 @@ async function runTests() {
     assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['devin-cli'], 'devin');
     assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['mimo'], 'mimo');
     assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['freebuff'], 'fb');
+
+    // 10) 2026 SWE-bench Verified Benchmarks Upgrade Tests
+    console.log('[-] Testing 2026 SWE-bench Verified benchmarks & tiers...');
+    const benchmarksUpdater = require('./update-benchmarks.js');
+    assert.strictEqual(benchmarksUpdater.determineTier(76.8), 'S+');
+    assert.strictEqual(benchmarksUpdater.determineTier(62.4), 'S');
+    assert.strictEqual(benchmarksUpdater.determineTier(52.8), 'A+');
+
+    const updatedBenchmarks = await benchmarksUpdater.updateBenchmarks();
+    assert.ok(updatedBenchmarks['kimi-k3'] || updatedBenchmarks['moonshotai-kimi-k3'], 'kimi-k3 must be in benchmarks');
+    const kimiScore = (updatedBenchmarks['kimi-k3'] || updatedBenchmarks['moonshotai-kimi-k3']).score;
+    assert.ok(kimiScore >= 76, 'kimi-k3 score must be >= 76% SWE-bench');
+
+    const ultraScore = (updatedBenchmarks['nemotron-3-ultra'] || updatedBenchmarks['nvidia-nemotron-3-ultra-550b-a55b']).score;
+    assert.ok(ultraScore >= 71, 'nemotron-3-ultra score must be >= 71% SWE-bench (S+)');
+
+    const lagunaScore = (updatedBenchmarks['laguna-xs'] || updatedBenchmarks['laguna-xs-2.1'] || updatedBenchmarks['poolside-laguna-xs-2.1']).score;
+    assert.ok(lagunaScore >= 70, 'laguna-xs score must be >= 70% SWE-bench (S+)');
+
+    const gptOssScore = (updatedBenchmarks['gpt-oss-120b'] || updatedBenchmarks['cerebras-gpt-oss-120b']).score;
+    assert.ok(gptOssScore >= 62, 'gpt-oss-120b score must be >= 62% SWE-bench (S)');
   }
 
   console.log('[✓] All tests passed successfully!');
