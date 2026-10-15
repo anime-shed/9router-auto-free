@@ -1,152 +1,194 @@
 {
+  "claude-opus-4-6-thinking": {
+    "name": "Claude Opus 4.6 Thinking",
+    "score": 85,
+    "swe_bench": 81,
+    "tier": "S+",
+    "contextLength": 200000
+  },
+  "assistant-sonnet-4.5-thinking": {
+    "name": "Claude Sonnet 4.5 Thinking",
+    "score": 84,
+    "swe_bench": 80,
+    "tier": "S+",
+    "contextLength": 200000
+  },
   "gemini-3.8-flash": {
     "name": "Gemini 3.8 Flash",
-    "score": 78.5,
+    "score": 83.5,
     "swe_bench": 78.5,
     "tier": "S+",
     "contextLength": 1048576
   },
-  "claude-opus-4-6-thinking": {
-    "name": "Claude Opus 4.6 Thinking",
-    "score": 78,
+  "gemini-3.7-flash": {
+    "name": "Gemini 3.7 Flash",
+    "score": 83,
+    "swe_bench": 78.5,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "claude-sonnet-4.5": {
+    "name": "Claude Sonnet 4.5",
+    "score": 82.5,
     "swe_bench": 78,
     "tier": "S+",
     "contextLength": 200000
   },
-  "gh/gpt-4.1": {
-    "name": "GitHub GPT-4.1",
-    "score": 77,
-    "swe_bench": 77,
-    "tier": "S+",
-    "contextLength": 128000
-  },
-  "gpt-4.1": {
-    "name": "GPT-4.1",
-    "score": 77,
-    "swe_bench": 77,
-    "tier": "S+",
-    "contextLength": 128000
-  },
-  "gemini-3.7-flash": {
-    "name": "Gemini 3.7 Flash",
-    "score": 76.9,
-    "swe_bench": 76.9,
-    "tier": "S+",
-    "contextLength": 1048576
-  },
   "moonshotai/kimi-k3": {
     "name": "Moonshot Kimi K3",
-    "score": 76.8,
+    "score": 82,
     "swe_bench": 76.8,
     "tier": "S+",
     "contextLength": 1048576
   },
   "kimi-k3": {
     "name": "Kimi K3",
-    "score": 76.8,
+    "score": 82,
     "swe_bench": 76.8,
     "tier": "S+",
     "contextLength": 1048576,
     "deprecated": true
   },
-  "assistant-sonnet-4.5-thinking": {
-    "name": "Claude Sonnet 4.5 Thinking",
-    "score": 76.5,
-    "swe_bench": 76.5,
+  "gh/gpt-4.1": {
+    "name": "GitHub GPT-4.1",
+    "score": 81.5,
+    "swe_bench": 77,
+    "tier": "S+",
+    "contextLength": 128000
+  },
+  "gpt-4.1": {
+    "name": "GPT-4.1",
+    "score": 81.5,
+    "swe_bench": 77,
+    "tier": "S+",
+    "contextLength": 128000
+  },
+  "claude-sonnet-4.6": {
+    "name": "Claude Sonnet 4.6",
+    "score": 81,
+    "swe_bench": 74,
     "tier": "S+",
     "contextLength": 200000
   },
   "z-ai/glm-5.3": {
     "name": "Zhipu GLM 5.3",
-    "score": 75,
+    "score": 80,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1048576
   },
   "glm-5.3": {
     "name": "GLM 5.3",
-    "score": 75,
+    "score": 80,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1048576,
     "deprecated": true
   },
-  "claude-sonnet-4.6": {
-    "name": "Claude Sonnet 4.6",
-    "score": 74,
-    "swe_bench": 74,
-    "tier": "S+",
-    "contextLength": 200000
-  },
   "deepseek-v4.1-flash": {
     "name": "DeepSeek V4.1 Flash",
-    "score": 74,
+    "score": 79.5,
     "swe_bench": 74,
     "tier": "S+",
     "contextLength": 131072
   },
-  "claude-sonnet-4.5": {
-    "name": "Claude Sonnet 4.5",
-    "score": 73,
-    "swe_bench": 73,
-    "tier": "S+",
-    "contextLength": 200000
-  },
   "nvidia/nemotron-3-ultra-550b-a55b": {
     "name": "Nemotron 3 Ultra 550B",
-    "score": 71.9,
+    "score": 77.5,
     "swe_bench": 71.9,
     "tier": "S+",
     "contextLength": 1048576
   },
   "nemotron-3-ultra": {
     "name": "NVIDIA Nemotron 3 Ultra",
-    "score": 71.9,
+    "score": 77.5,
     "swe_bench": 71.9,
     "tier": "S+",
     "contextLength": 1048576
   },
   "poolside/laguna-xs-2.1": {
     "name": "Poolside Laguna XS 2.1",
-    "score": 70.9,
+    "score": 76,
     "swe_bench": 70.9,
     "tier": "S+",
     "contextLength": 262144
   },
   "laguna-xs": {
     "name": "Laguna XS 2.1",
-    "score": 70.9,
+    "score": 76,
     "swe_bench": 70.9,
     "tier": "S+",
     "contextLength": 262144
   },
   "laguna-xs-2.1": {
     "name": "Poolside Laguna XS 2.1",
-    "score": 70.9,
+    "score": 76,
     "swe_bench": 70.9,
     "tier": "S+",
     "contextLength": 262144
   },
   "cerebras/qwen-3.8-27b": {
     "name": "Cerebras Qwen 3.8 27B",
-    "score": 68,
+    "score": 73,
     "swe_bench": 68,
-    "tier": "S",
+    "tier": "S+",
     "contextLength": 32768
   },
   "qwen-3.8-27b": {
     "name": "Qwen 3.8 27B",
-    "score": 68,
+    "score": 73,
     "swe_bench": 68,
-    "tier": "S",
+    "tier": "S+",
     "contextLength": 32768
   },
   "step-3.7-flash": {
     "name": "StepFun Step 3.7 Flash",
-    "score": 66,
+    "score": 70,
     "swe_bench": 66,
-    "tier": "S",
+    "tier": "S+",
     "contextLength": 262144
+  },
+  "cerebras/gpt-oss-120b": {
+    "name": "Cerebras GPT-OSS 120B",
+    "score": 68,
+    "swe_bench": 62.4,
+    "tier": "S",
+    "contextLength": 8192
+  },
+  "gpt-oss-120b": {
+    "name": "GPT-OSS 120B",
+    "score": 68,
+    "swe_bench": 62.4,
+    "tier": "S",
+    "contextLength": 8192
+  },
+  "gcli/grok-4.7": {
+    "name": "xAI Grok 4.7 CLI",
+    "score": 67.5,
+    "swe_bench": 62,
+    "tier": "S",
+    "contextLength": 131072
+  },
+  "grok-4.7": {
+    "name": "Grok 4.7",
+    "score": 67.5,
+    "swe_bench": 62,
+    "tier": "S",
+    "contextLength": 131072
+  },
+  "nvidia/nemotron-3-super-120b-a12b": {
+    "name": "Nemotron 3 Super 120B",
+    "score": 66,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 1048576
+  },
+  "nemotron-3-super": {
+    "name": "NVIDIA Nemotron 3 Super",
+    "score": 66,
+    "swe_bench": 60.5,
+    "tier": "S",
+    "contextLength": 1048576
   },
   "qwen2.5-coder": {
     "name": "Qwen 2.5 Coder 32B",
@@ -154,48 +196,6 @@
     "swe_bench": 65,
     "tier": "S",
     "contextLength": 131072
-  },
-  "cerebras/gpt-oss-120b": {
-    "name": "Cerebras GPT-OSS 120B",
-    "score": 62.4,
-    "swe_bench": 62.4,
-    "tier": "S",
-    "contextLength": 8192
-  },
-  "gpt-oss-120b": {
-    "name": "GPT-OSS 120B",
-    "score": 62.4,
-    "swe_bench": 62.4,
-    "tier": "S",
-    "contextLength": 8192
-  },
-  "gcli/grok-4.7": {
-    "name": "xAI Grok 4.7 CLI",
-    "score": 62,
-    "swe_bench": 62,
-    "tier": "S",
-    "contextLength": 131072
-  },
-  "grok-4.7": {
-    "name": "Grok 4.7",
-    "score": 62,
-    "swe_bench": 62,
-    "tier": "S",
-    "contextLength": 131072
-  },
-  "nvidia/nemotron-3-super-120b-a12b": {
-    "name": "Nemotron 3 Super 120B",
-    "score": 60.5,
-    "swe_bench": 60.5,
-    "tier": "S",
-    "contextLength": 1048576
-  },
-  "nemotron-3-super": {
-    "name": "NVIDIA Nemotron 3 Super",
-    "score": 60.5,
-    "swe_bench": 60.5,
-    "tier": "S",
-    "contextLength": 1048576
   },
   "gemini-3.5-flash": {
     "name": "Gemini 3.5 Flash",
@@ -208,6 +208,20 @@
     "name": "Qwen3 Coder 480B",
     "score": 58,
     "swe_bench": 58,
+    "tier": "A+",
+    "contextLength": 131072
+  },
+  "nemotron-3.5-lightning-30b": {
+    "name": "Nemotron 3.5 Lightning 30B",
+    "score": 57,
+    "swe_bench": 52.8,
+    "tier": "A+",
+    "contextLength": 131072
+  },
+  "nemotron-3.5-lightning": {
+    "name": "NVIDIA Nemotron 3.5 Lightning",
+    "score": 57,
+    "swe_bench": 52.8,
     "tier": "A+",
     "contextLength": 131072
   },
@@ -224,20 +238,6 @@
     "swe_bench": 78.4,
     "tier": "S+",
     "contextLength": 524288
-  },
-  "nemotron-3.5-lightning-30b": {
-    "name": "Nemotron 3.5 Lightning 30B",
-    "score": 52.8,
-    "swe_bench": 52.8,
-    "tier": "A+",
-    "contextLength": 131072
-  },
-  "nemotron-3.5-lightning": {
-    "name": "NVIDIA Nemotron 3.5 Lightning",
-    "score": 52.8,
-    "swe_bench": 52.8,
-    "tier": "A+",
-    "contextLength": 131072
   },
   "deepseek-r1": {
     "name": "DeepSeek R1 Distill",

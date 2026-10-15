@@ -871,6 +871,32 @@ async function runTests() {
 
     const gptOssScore = (updatedBenchmarks['gpt-oss-120b'] || updatedBenchmarks['cerebras-gpt-oss-120b']).score;
     assert.ok(gptOssScore >= 62, 'gpt-oss-120b score must be >= 62% SWE-bench (S)');
+
+    // 11) Enhanced Model Picking, Context Bonus & Deprecation Sorting Tests
+    console.log('[-] Testing enhanced model picking, context window bonus & deprecation filtering...');
+    const syncLib = require('./sync.js');
+    
+    // Test context window weighting
+    const mockBenchmarks = {
+      'test-model-1m': { score: 70.0, contextLength: 1048576, tier: 'S+' },
+      'test-model-32k': { score: 70.0, contextLength: 32768, tier: 'S+' },
+      'test-deprecated': { score: 75.0, contextLength: 131072, tier: 'S+', deprecated: true }
+    };
+    const score1m = syncLib.getCodingScore('test-model-1m', mockBenchmarks);
+    const score32k = syncLib.getCodingScore('test-model-32k', mockBenchmarks);
+    assert.ok(score1m > score32k, 'Model with 1M context must receive context bonus over 32k model');
+
+    // Test smart tier identification
+    assert.strictEqual(syncLib.isSmartTierModel('moonshotai/kimi-k3'), true, 'kimi-k3 must be smart tier');
+    assert.strictEqual(syncLib.isSmartTierModel('nvidia/nemotron-3-ultra-550b-a55b'), true, 'nemotron-3-ultra must be smart tier');
+    assert.strictEqual(syncLib.isSmartTierModel('cerebras/gpt-oss-120b'), true, 'cerebras/gpt-oss-120b must be smart tier');
+
+    // Test deprecation sorting
+    const sortedDep = syncLib.sortModelsByCodingQuality([
+      { id: 'test-deprecated', fullId: 'mock/test-deprecated' },
+      { id: 'test-model-32k', fullId: 'mock/test-model-32k' }
+    ], null, null, { benchmarks: mockBenchmarks });
+    assert.strictEqual(sortedDep[0].id, 'test-model-32k', 'Active model must rank ahead of deprecated model despite lower base score');
   }
 
   console.log('[✓] All tests passed successfully!');

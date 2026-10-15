@@ -201,7 +201,16 @@ function getCodingScore(modelIdentifier, customBenchmarks = null) {
   const benchmarks = customBenchmarks || getBenchmarksDatabase();
   const match = findBenchmarkMatch(modelIdentifier, benchmarks);
   if (match && typeof match.score === 'number') {
-    return match.score * 100;
+    let score = match.score * 100;
+    const ctx = match.contextLength;
+    if (typeof ctx === 'number') {
+      if (ctx >= 1000000) score += 200;
+      else if (ctx >= 250000) score += 100;
+    }
+    if (match.deprecated === true) {
+      score -= 5000;
+    }
+    return score;
   }
 
   const id = String(modelIdentifier).toLowerCase();
@@ -318,7 +327,11 @@ function isSmartTierModel(modelIdentifier, benchmarks = null) {
   const str = String(modelIdentifier).toLowerCase();
   if (/thinking|reasoning|reasoner|r1\b/.test(str)) return true;
   const match = findBenchmarkMatch(str, benchmarks || getBenchmarksDatabase());
-  return Boolean(match && typeof match.score === 'number' && match.score >= SMART_MIN_SCORE);
+  if (match) {
+    if (match.tier === 'S+' || match.tier === 'S') return true;
+    if (typeof match.score === 'number' && match.score >= SMART_MIN_SCORE) return true;
+  }
+  return false;
 }
 
 function passesAgenticGate(meta) {
@@ -355,6 +368,13 @@ function sortModelsByCodingQuality(models, latencyMap = null, customPriorities =
     const quotaB = Boolean((typeof b === 'object' && b?.quotaExhausted) || isParkedLatency(latB));
 
     if (quotaA !== quotaB) return quotaA ? 1 : -1;
+
+    // Deprecated models go below active models
+    const matchA = findBenchmarkMatch(idA, benchmarks);
+    const matchB = findBenchmarkMatch(idB, benchmarks);
+    const depA = Boolean(matchA?.deprecated);
+    const depB = Boolean(matchB?.deprecated);
+    if (depA !== depB) return depA ? 1 : -1;
 
     const rankA = getModelPriorityRank(idA, priorities);
     const rankB = getModelPriorityRank(idB, priorities);
@@ -957,6 +977,24 @@ async function main() {
     return;
   }
 
+  // Auto-harvest external free models catalog if missing or older than 24 hours
+  const externalModelsPath = path.join(__dirname, 'external-models.json');
+  let shouldHarvest = !fs.existsSync(externalModelsPath);
+  if (!shouldHarvest) {
+    try {
+      const stat = fs.statSync(externalModelsPath);
+      if (Date.now() - stat.mtimeMs > 24 * 60 * 60 * 1000) shouldHarvest = true;
+    } catch {}
+  }
+  if (shouldHarvest) {
+    try {
+      const { harvestExternalModels } = require('./fetch-external-models.js');
+      await harvestExternalModels();
+    } catch (e) {
+      console.warn(`[!] External model harvesting notice: ${e.message}`);
+    }
+  }
+
   const excludedProviders = getExcludedProviders();
   if (excludedProviders.length > 0) {
     console.log(`[⊘] Excluded providers via config (${excludedProviders.length}): ${excludedProviders.join(', ')}\n`);
@@ -1012,6 +1050,7 @@ module.exports = {
   saveCandidateState,
   loadCandidatePool,
   deriveTierLists,
+  isSmartTierModel,
   PROVIDER_COMBO_PREFIXES,
   idMatchesPrefixes,
   PROVIDERS,
