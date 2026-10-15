@@ -31,7 +31,12 @@ const STANDARD_PROVIDER_PREFIXES = {
   mistral: 'mistral',
   poolside: 'poolside',
   'cloudflare-ai': 'cloudflare-ai',
-  openagentic: 'oa'
+  openagentic: 'oa',
+  devin: 'devin',
+  'devin-cli': 'devin',
+  windsurf: 'windsurf',
+  mimo: 'mimo',
+  'mimo-code': 'mimo'
 };
 
 const PROVIDER_DISPLAY_NAMES = {
@@ -39,6 +44,8 @@ const PROVIDER_DISPLAY_NAMES = {
   antigravity: 'Antigravity',
   xai: 'xAI Grok',
   'xiaomi-mimo': 'Xiaomi Mimo',
+  mimo: 'Xiaomi MiMo Code',
+  'mimo-code': 'Xiaomi MiMo Code',
   freebuff: 'Freebuff',
   qoder: 'Qoder',
   'opencode-zen': 'OpenCode Zen',
@@ -55,7 +62,10 @@ const PROVIDER_DISPLAY_NAMES = {
   mistral: 'Mistral',
   poolside: 'Poolside',
   'cloudflare-ai': 'Cloudflare Workers AI',
-  openagentic: 'OpenAgentic'
+  openagentic: 'OpenAgentic',
+  devin: 'Devin CLI',
+  'devin-cli': 'Devin CLI',
+  windsurf: 'Windsurf'
 };
 
 function getProviderLabel(providerName, prefix, connectionName) {
@@ -1019,7 +1029,79 @@ async function discover9routerActiveProviders(options = {}) {
     });
   }
 
+  // Enrich all active provider records with external free model catalogs if available
+  for (const [targetKey, providerRecord] of Object.entries(results)) {
+    enrichProviderCandidatesFromExternalCatalog(targetKey, providerRecord.provider, providerRecord.models, providerRecord.prefix);
+  }
+
   return results;
+}
+
+/**
+ * Enrich candidate models for a provider using the harvested external catalog (external-models.json).
+ */
+function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, existingModels, prefix) {
+  const externalModelsPath = path.join(__dirname, 'external-models.json');
+  if (!fs.existsSync(externalModelsPath)) return;
+  try {
+    const extData = JSON.parse(fs.readFileSync(externalModelsPath, 'utf8'));
+    const catalog = extData.providerCatalog || {};
+    const modelsMeta = extData.models || [];
+
+    const keysToCheck = new Set([
+      targetKey.toLowerCase(),
+      String(providerName || '').toLowerCase(),
+      prefix.toLowerCase(),
+      `${targetKey.toLowerCase()}-free`,
+      `${prefix.toLowerCase()}-free`,
+      `${String(providerName || '').toLowerCase()}-free`
+    ]);
+
+    const candidatesToAdd = new Set();
+
+    for (const [catKey, modelList] of Object.entries(catalog)) {
+      const lowerCatKey = catKey.toLowerCase();
+      if (keysToCheck.has(lowerCatKey) || [...keysToCheck].some(k => lowerCatKey.includes(k) || k.includes(lowerCatKey))) {
+        for (const mId of modelList) {
+          candidatesToAdd.add(mId);
+        }
+      }
+    }
+
+    // Also look for models in extData.models with matching provider
+    for (const em of modelsMeta) {
+      const emProv = String(em.provider || '').toLowerCase();
+      if (keysToCheck.has(emProv) || [...keysToCheck].some(k => emProv.includes(k) || k.includes(emProv))) {
+        candidatesToAdd.add(em.id);
+      }
+    }
+
+    const seenIds = new Set(existingModels.map(m => m.id.toLowerCase()));
+    const seenFullIds = new Set(existingModels.map(m => (m.fullId || '').toLowerCase()));
+
+    for (const extId of candidatesToAdd) {
+      const cleanId = extId.replace(/^[a-zA-Z0-9_.-]+\//, '').replace(/:free$/, '');
+      const fullId = `${prefix}/${cleanId}`;
+      if (seenIds.has(cleanId.toLowerCase()) || seenFullIds.has(fullId.toLowerCase())) {
+        continue;
+      }
+      seenIds.add(cleanId.toLowerCase());
+      seenFullIds.add(fullId.toLowerCase());
+
+      const meta = modelsMeta.find(m => m.id === extId || m.id === cleanId) || {};
+      existingModels.push({
+        id: cleanId,
+        fullId,
+        name: meta.name || cleanId,
+        source: `${prefix}-external-catalog`,
+        contextLength: meta.contextLength || 131072,
+        tier: meta.tier || 'A',
+        score: meta.score
+      });
+    }
+  } catch (err) {
+    // Non-fatal if external-models.json cannot be read
+  }
 }
 
 /**
@@ -1038,8 +1120,21 @@ async function discoverProvider(recordOrKey) {
  * Automatically combines active 9router deployment providers with built-in adapters and dynamic connections.
  */
 async function discoverAllProviders(options = {}) {
-  const excludedProviders = options.excludedProviders || [];
-  const isExcluded = rec => (rec.prefixes || [rec.prefix]).some(p => excludedProviders.includes(p.toLowerCase()));
+  const excludedProviders = (options.excludedProviders || []).map(p => String(p).toLowerCase());
+
+  // Active 9router connections must NEVER be silenced by default exclusions
+  const activeConns = storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : [];
+  const activeProvidersSet = new Set(activeConns.map(c => String(c.provider || '').toLowerCase()));
+  const activePrefixesSet = new Set(activeConns.map(c => String(c.prefix || '').toLowerCase()));
+
+  const isExcluded = rec => {
+    const prefixes = (rec.prefixes || [rec.prefix] || []).map(p => String(p).toLowerCase());
+    const prov = String(rec.provider || rec.key || '').toLowerCase();
+    if (activeProvidersSet.has(prov) || prefixes.some(p => activePrefixesSet.has(p))) {
+      return false;
+    }
+    return prefixes.some(p => excludedProviders.includes(p)) || excludedProviders.includes(prov);
+  };
 
   const results = {};
 
@@ -1047,7 +1142,7 @@ async function discoverAllProviders(options = {}) {
   try {
     const nineRouterActive = await discover9routerActiveProviders(options);
     for (const [key, p] of Object.entries(nineRouterActive)) {
-      if (isExcluded(p) || excludedProviders.includes(key.toLowerCase()) || excludedProviders.includes(p.provider?.toLowerCase())) {
+      if (isExcluded(p)) {
         results[key] = { ...p, models: [], excluded: true };
       } else {
         results[key] = p;
@@ -1071,6 +1166,8 @@ async function discoverAllProviders(options = {}) {
     } else {
       try {
         const res = await discoverProvider(rec);
+        const prefix = rec.prefixes[0];
+        enrichProviderCandidatesFromExternalCatalog(rec.key, rec.usageName || rec.key, res.models, prefix);
         if (results[rec.key]) {
           if (res.models && res.models.length > 0) results[rec.key].models = res.models;
         } else {
@@ -1079,7 +1176,9 @@ async function discoverAllProviders(options = {}) {
       } catch (err) {
         console.warn(`[!] Failed to discover ${rec.label}: ${err.message}`);
         if (!results[rec.key]) {
-          results[rec.key] = { prefix: rec.prefixes[0], models: [], label: rec.label, combo: rec.combo };
+          const fallbackModels = [];
+          enrichProviderCandidatesFromExternalCatalog(rec.key, rec.usageName || rec.key, fallbackModels, rec.prefixes[0]);
+          results[rec.key] = { prefix: rec.prefixes[0], models: fallbackModels, label: rec.label, combo: rec.combo };
         }
       }
     }
@@ -1138,5 +1237,6 @@ module.exports = {
   getProviderCredentials,
   discoverProvider,
   discover9routerActiveProviders,
-  discoverAllProviders
+  discoverAllProviders,
+  enrichProviderCandidatesFromExternalCatalog
 };

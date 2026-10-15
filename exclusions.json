@@ -1,24 +1,13 @@
 {
   "excludedProviders": [
     "api-airforce",
-    "cloudflare",
-    "mistral",
-    "nvidia",
-    "groq",
-    "bazaarlink",
-    "cerebras",
-    "b.ai",
-    "OpenAgentic.id",
-    "OpenAgentic"
+    "b.ai"
   ],
   "excludedModels": [
     "nano",
     "tiny",
-    "laguna-xs",
     "north-mini",
     "lfm",
-    "gemma",
-    "gpt-oss",
     "bazaarlink/auto:free",
     "dots-studio",
     "openrouter/free",

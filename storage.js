@@ -177,7 +177,12 @@ function readActiveProviderConnections() {
     nvidia: 'nvidia',
     mistral: 'mistral',
     poolside: 'poolside',
-    'cloudflare-ai': 'cloudflare-ai'
+    'cloudflare-ai': 'cloudflare-ai',
+    devin: 'devin',
+    'devin-cli': 'devin',
+    windsurf: 'windsurf',
+    mimo: 'mimo',
+    'mimo-code': 'mimo'
   };
 
   try {

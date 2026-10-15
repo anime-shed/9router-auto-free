@@ -184,10 +184,10 @@ async function runTests() {
   }
   assert.ok(isModelExcluded('ollama/nemotron-3-nano:30b', exclusions), 'nano models must be excluded');
   assert.ok(isModelExcluded('openrouter/liquid/lfm-2.5-2.6b:free', exclusions), 'lfm small models must be excluded');
-  assert.ok(isModelExcluded('poolside/poolside/laguna-xs-2.1', exclusions), 'laguna-xs models must be excluded');
   assert.ok(isModelExcluded('openrouter/cohere/north-mini-code:free', exclusions), 'north-mini models must be excluded');
-  assert.ok(isModelExcluded('gemini/gemma-4-31b-it', exclusions), 'gemma models must be excluded');
-  assert.ok(isModelExcluded('ollama/gpt-oss:120b', exclusions), 'gpt-oss models must be excluded');
+  assert.ok(isModelExcluded('openrouter/tts-1', exclusions), 'tts models must be excluded');
+  assert.strictEqual(isModelExcluded('poolside/poolside/laguna-xs-2.1', exclusions), false, 'laguna-xs models must NOT be excluded');
+  assert.strictEqual(isModelExcluded('cerebras/gpt-oss-120b', exclusions), false, 'gpt-oss models must NOT be excluded');
   assert.ok(isModelExcluded('bazaarlink/auto:free', exclusions), 'bazaarlink/auto:free must be excluded');
   assert.ok(isModelExcluded('openrouter/free', exclusions), 'openrouter/free must be excluded');
   assert.ok(isModelExcluded('kc/dots-studio/dots-3-note-preview:free', exclusions), 'dots-studio must be excluded');
@@ -828,6 +828,28 @@ async function runTests() {
     const parsedReadme = harvester.parseReadmeContent(sampleReadme);
     assert.ok(Array.isArray(parsedReadme.deprecated), 'deprecated must be an array');
     assert.ok(parsedReadme.deprecated.some(d => d.includes('DeepSeek V4 Pro')), 'Must detect strikethrough deprecated model');
+
+    // 9) Active Provider Auto-Consideration & Dynamic Catalog Enrichment Tests
+    console.log('[-] Testing active provider auto-consideration & external catalog enrichment...');
+    const providersModule = require('./providers.js');
+    assert.strictEqual(typeof providersModule.enrichProviderCandidatesFromExternalCatalog, 'function');
+
+    // Test Cerebras enrichment from external-models.json
+    const cerebrasModels = [];
+    providersModule.enrichProviderCandidatesFromExternalCatalog('cerebras', 'cerebras', cerebrasModels, 'cerebras');
+    assert.ok(cerebrasModels.length > 0, 'Cerebras candidate pool must be enriched from external catalog');
+    assert.ok(cerebrasModels.some(m => m.id.includes('gpt-oss') || m.id.includes('qwen')), 'Cerebras must receive free coding models (gpt-oss / qwen)');
+
+    // Test Groq enrichment from external-models.json
+    const groqModels = [];
+    providersModule.enrichProviderCandidatesFromExternalCatalog('groq', 'groq', groqModels, 'groq');
+    assert.ok(groqModels.length > 0, 'Groq candidate pool must be enriched from external catalog');
+
+    // Test alias mappings
+    assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['devin'], 'devin');
+    assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['devin-cli'], 'devin');
+    assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['mimo'], 'mimo');
+    assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['freebuff'], 'fb');
   }
 
   console.log('[✓] All tests passed successfully!');
