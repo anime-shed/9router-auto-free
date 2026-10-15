@@ -758,6 +758,76 @@ async function runTests() {
     const syncModule = require('./sync.js');
     assert.strictEqual(typeof webModule.isVerbose, 'boolean', 'web.isVerbose must be a boolean');
     assert.strictEqual(typeof syncModule.isVerbose, 'boolean', 'sync.isVerbose must be a boolean');
+
+    // 8) External Model Harvester Tests
+    console.log('[-] Testing External Model Harvester (fetch-external-models.js)...');
+    const harvester = require('./fetch-external-models.js');
+    assert.strictEqual(typeof harvester.fetchWithBackoff, 'function', 'fetchWithBackoff must be exported');
+    assert.strictEqual(typeof harvester.parseSourcesContent, 'function', 'parseSourcesContent must be exported');
+    assert.strictEqual(typeof harvester.parseIndexJsonContent, 'function', 'parseIndexJsonContent must be exported');
+    assert.strictEqual(typeof harvester.parseReadmeContent, 'function', 'parseReadmeContent must be exported');
+    assert.strictEqual(typeof harvester.harvestExternalModels, 'function', 'harvestExternalModels must be exported');
+
+    // Test retry backoff logic with a mock fetch that fails with 429 once then succeeds
+    let attempts = 0;
+    const mockFetch = async () => {
+      attempts++;
+      if (attempts === 1) return { ok: false, status: 429, headers: new Map() };
+      return { ok: true, status: 200, text: async () => 'hello world' };
+    };
+    const resText = await harvester.fetchWithBackoff('http://mock.test', { retries: 2, baseDelayMs: 10, fetchImpl: mockFetch });
+    assert.strictEqual(resText, 'hello world', 'fetchWithBackoff must retry on 429 and return content');
+    assert.strictEqual(attempts, 2, 'fetchWithBackoff must have attempted twice');
+
+    // Test parseSourcesContent with mock sample
+    const sampleSources = `
+      export const sources = {
+        cerebras: {
+          name: "Cerebras",
+          models: [
+            ["gpt-oss-120b", "GPT-OSS 120B", "S", 62.4, "8k", "2026-08-10"],
+            ["qwen-3.8-27b", "Qwen 3.8 27B", "A+", 68.0, "32k", "2026-09-01"]
+          ]
+        }
+      };
+      export const MODELS = [];
+    `;
+    const parsedSources = await harvester.parseSourcesContent(sampleSources);
+    assert.ok(Array.isArray(parsedSources.models), 'models must be an array');
+    assert.strictEqual(parsedSources.models.length, 2, 'Must parse 2 models');
+    assert.strictEqual(parsedSources.models[0].id, 'gpt-oss-120b');
+    assert.strictEqual(parsedSources.models[0].score, 62.4);
+    assert.strictEqual(parsedSources.models[0].tier, 'S');
+    assert.strictEqual(parsedSources.providerCatalog['cerebras']?.length, 2);
+
+    // Test parseIndexJsonContent with mock sample
+    const sampleIndex = {
+      entries: [
+        {
+          id: 'groq',
+          name: 'Groq',
+          limits: '30 requests/minute',
+          quotas: [{ amount: 30, unit: 'requests', period: 'minute' }],
+          api: {
+            model_ids: ['groq/llama-3.3-70b-versatile', 'groq/deepseek-r1-distill-llama-70b']
+          }
+        }
+      ]
+    };
+    const parsedIndex = harvester.parseIndexJsonContent(sampleIndex);
+    assert.ok(parsedIndex.quotas['groq'], 'Must extract quotas for groq');
+    assert.strictEqual(parsedIndex.providerCatalog['groq']?.length, 2);
+
+    // Test parseReadmeContent with strikethrough deprecations
+    const sampleReadme = `
+      ### DeepSeek family
+      #### DeepSeek V4.1 Flash
+      #### ~~DeepSeek V4 Pro~~ (official routing retired from 2026-09-14)
+      #### ~~DeepSeek V4 Flash 0731~~ (sunset)
+    `;
+    const parsedReadme = harvester.parseReadmeContent(sampleReadme);
+    assert.ok(Array.isArray(parsedReadme.deprecated), 'deprecated must be an array');
+    assert.ok(parsedReadme.deprecated.some(d => d.includes('DeepSeek V4 Pro')), 'Must detect strikethrough deprecated model');
   }
 
   console.log('[✓] All tests passed successfully!');
