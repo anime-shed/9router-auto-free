@@ -155,6 +155,60 @@ function readAllProviderConnections() {
   }
 }
 
+// Read all active provider connections from SQLite with resolved prefixes
+function readActiveProviderConnections() {
+  const STANDARD_PREFIXES = {
+    github: 'gh',
+    antigravity: 'ag',
+    xai: 'xai',
+    'xiaomi-mimo': 'mimo',
+    freebuff: 'fb',
+    qoder: 'qd',
+    'opencode-zen': 'ocz',
+    'opencode-go': 'ocg',
+    'gemini-cli': 'gc',
+    'grok-cli': 'gcli',
+    gemini: 'gemini',
+    groq: 'groq',
+    cerebras: 'cerebras',
+    ollama: 'ollama',
+    kilocode: 'kc',
+    openrouter: 'openrouter',
+    nvidia: 'nvidia',
+    mistral: 'mistral',
+    poolside: 'poolside',
+    'cloudflare-ai': 'cloudflare-ai'
+  };
+
+  try {
+    const Database = getDbClass();
+    const db = new Database(DB_PATH, { readonly: true });
+    const rows = db.prepare("SELECT id, provider, authType, name, email, priority, isActive, data, createdAt, updatedAt FROM providerConnections WHERE isActive = 1").all();
+    db.close();
+    return rows.map(r => {
+      const data = (() => { try { return JSON.parse(r.data || '{}'); } catch { return {}; } })();
+      const prov = String(r.provider || '').toLowerCase();
+      const prefix = data?.providerSpecificData?.prefix || STANDARD_PREFIXES[prov] || prov.split('-')[0];
+      return {
+        id: r.id,
+        provider: r.provider,
+        authType: r.authType,
+        name: r.name,
+        email: r.email,
+        priority: r.priority,
+        isActive: 1,
+        prefix,
+        data,
+        createdAt: r.createdAt,
+        updatedAt: r.updatedAt
+      };
+    });
+  } catch (err) {
+    console.warn(`[!] Warning: Could not read 9router DB active connections: ${err.message}`);
+    return [];
+  }
+}
+
 // Read a combo's current model list straight from SQLite (pre-write snapshot)
 function readCurrentComboModels(comboName) {
   try {
@@ -554,7 +608,8 @@ module.exports = {
   CUSTOM_PROVIDERS_PATH,
   readCustomProvidersFile,
   writeCustomProvidersFile,
-  getDynamicProviders
+  getDynamicProviders,
+  readActiveProviderConnections
 };
 
 

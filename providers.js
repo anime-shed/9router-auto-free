@@ -6,7 +6,65 @@
  * Exposes a deep discovery interface: discoverProvider(key) and discoverAllProviders().
  */
 
+const fs = require('node:fs');
+const path = require('node:path');
 const storage = require('./storage.js');
+
+const STANDARD_PROVIDER_PREFIXES = {
+  github: 'gh',
+  antigravity: 'ag',
+  xai: 'xai',
+  'xiaomi-mimo': 'mimo',
+  freebuff: 'fb',
+  qoder: 'qd',
+  'opencode-zen': 'ocz',
+  'opencode-go': 'ocg',
+  'gemini-cli': 'gc',
+  'grok-cli': 'gcli',
+  gemini: 'gemini',
+  groq: 'groq',
+  cerebras: 'cerebras',
+  ollama: 'ollama',
+  kilocode: 'kc',
+  openrouter: 'openrouter',
+  nvidia: 'nvidia',
+  mistral: 'mistral',
+  poolside: 'poolside',
+  'cloudflare-ai': 'cloudflare-ai',
+  openagentic: 'oa'
+};
+
+const PROVIDER_DISPLAY_NAMES = {
+  github: 'GitHub Copilot',
+  antigravity: 'Antigravity',
+  xai: 'xAI Grok',
+  'xiaomi-mimo': 'Xiaomi Mimo',
+  freebuff: 'Freebuff',
+  qoder: 'Qoder',
+  'opencode-zen': 'OpenCode Zen',
+  'opencode-go': 'OpenCode Go',
+  'gemini-cli': 'Gemini CLI',
+  'grok-cli': 'Grok CLI',
+  gemini: 'Google Gemini',
+  groq: 'Groq',
+  cerebras: 'Cerebras',
+  ollama: 'Ollama Cloud',
+  kilocode: 'Kilo.ai',
+  openrouter: 'OpenRouter',
+  nvidia: 'NVIDIA NIM',
+  mistral: 'Mistral',
+  poolside: 'Poolside',
+  'cloudflare-ai': 'Cloudflare Workers AI',
+  openagentic: 'OpenAgentic'
+};
+
+function getProviderLabel(providerName, prefix, connectionName) {
+  const p = String(providerName || '').toLowerCase();
+  if (PROVIDER_DISPLAY_NAMES[p]) return PROVIDER_DISPLAY_NAMES[p];
+  if (connectionName && connectionName.trim() && !connectionName.includes('@')) return connectionName.trim();
+  const raw = p.replace(/-/g, ' ');
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
+}
 
 const PROVIDERS = [
   {
@@ -115,7 +173,25 @@ const PROVIDER_BY_KEY = Object.fromEntries(PROVIDERS.map(p => [p.key, p]));
 
 function providerByPrefix(prefix) {
   const head = String(prefix || '').toLowerCase();
-  return PROVIDERS.find(p => p.prefixes.includes(head)) || null;
+  const found = PROVIDERS.find(p => p.prefixes.includes(head));
+  if (found) return found;
+
+  const activeConns = storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : [];
+  for (const conn of activeConns) {
+    const prov = String(conn.provider || '').toLowerCase();
+    const p = String(conn.prefix || STANDARD_PROVIDER_PREFIXES[prov] || prov).toLowerCase();
+    if (p === head || prov === head) {
+      return {
+        key: p,
+        label: getProviderLabel(prov, p, conn.name),
+        combo: `${p}-free`,
+        prefixes: [p, prov],
+        usageName: prov,
+        kind: '9router-active'
+      };
+    }
+  }
+  return null;
 }
 
 // ----------------------------------------------------------------------------
@@ -810,6 +886,143 @@ const PROVIDER_DISCOVERY_MAP = {
 };
 
 /**
+ * Discover all providers and models that are active in the 9router deployment.
+ * Queries 9router /v1/models and active provider connections from SQLite.
+ */
+async function discover9routerActiveProviders(options = {}) {
+  const activeConns = storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : [];
+  if (!activeConns || activeConns.length === 0) return {};
+
+  const activeByPrefix = new Map();
+  const activeByProvider = new Map();
+  for (const conn of activeConns) {
+    const prov = String(conn.provider || '').toLowerCase();
+    const prefix = String(conn.prefix || STANDARD_PROVIDER_PREFIXES[prov] || prov).toLowerCase();
+    activeByPrefix.set(prefix, conn);
+    activeByProvider.set(prov, conn);
+  }
+
+  let modelsList = [];
+  try {
+    const routerUrl = storage.resolveNineRouterUrl();
+    const res = await fetch(`${routerUrl}/v1/models`, {
+      headers: { 'User-Agent': 'Mozilla/5.0' },
+      signal: AbortSignal.timeout(8000)
+    });
+    if (res.ok) {
+      const json = await res.json();
+      modelsList = json.data || json.models || [];
+    }
+  } catch (err) {
+    try {
+      const catPath = path.join(storage.NINE_ROUTER_DIR, 'model-catalog.json');
+      if (fs.existsSync(catPath)) {
+        const cat = JSON.parse(fs.readFileSync(catPath, 'utf8'));
+        modelsList = Object.entries(cat.models || {}).map(([id, meta]) => ({
+          id: id.replace(':', '/'),
+          capabilities: meta
+        }));
+      }
+    } catch {}
+  }
+
+  const NON_TEXT_PATTERNS = [
+    'embed', 'tts', 'whisper', 'audio', 'speech', 'flux', 'diffusion',
+    'rerank', 'guard', 'moderation', 'asr', 'riva', 'parakeet', 'vision-only',
+    'search-a', 'search-b', 'search-c', 'exec-agent', 'trajectory-compaction'
+  ];
+
+  const results = {};
+
+  for (const conn of activeConns) {
+    const prov = String(conn.provider || '').toLowerCase();
+    const prefix = conn.prefix || STANDARD_PROVIDER_PREFIXES[prov] || prov;
+    const key = prefix;
+    const existingRec = PROVIDERS.find(p => p.key === key || p.prefixes.includes(prefix) || p.prefixes.includes(prov));
+    const combo = existingRec?.combo || `${prefix}-free`;
+    if (!results[key]) {
+      results[key] = {
+        key,
+        prefix,
+        label: existingRec?.label || getProviderLabel(prov, prefix, conn.name),
+        combo,
+        provider: prov,
+        models: [],
+        isActive: true,
+        source: '9router'
+      };
+    }
+  }
+
+  const seenFullIds = new Set();
+  for (const m of modelsList) {
+    const id = String(m.id || '');
+    if (!id || seenFullIds.has(id)) continue;
+    if (m.owned_by === 'combo' || id === 'free' || id.startsWith('my9model-') || id.endsWith('-free')) {
+      continue;
+    }
+
+    const slashIdx = id.indexOf('/');
+    const colonIdx = id.indexOf(':');
+    let prefix = '';
+    let modelId = '';
+
+    if (slashIdx !== -1) {
+      prefix = id.slice(0, slashIdx).toLowerCase();
+      modelId = id.slice(slashIdx + 1);
+    } else if (colonIdx !== -1) {
+      prefix = id.slice(0, colonIdx).toLowerCase();
+      modelId = id.slice(colonIdx + 1);
+    } else if (m.owned_by) {
+      prefix = String(m.owned_by).toLowerCase();
+      modelId = id;
+    }
+
+    const conn = activeByPrefix.get(prefix) || activeByProvider.get(prefix);
+    if (!conn) continue; // skip models belonging to inactive providers or unconfigured providers
+
+    const lowerId = id.toLowerCase();
+    if (NON_TEXT_PATTERNS.some(pat => lowerId.includes(pat))) continue;
+
+    const targetKey = conn.prefix || prefix;
+    const existingRec = PROVIDERS.find(p => p.key === targetKey || p.prefixes.includes(targetKey));
+    const combo = existingRec?.combo || `${targetKey}-free`;
+
+    if (!results[targetKey]) {
+      results[targetKey] = {
+        key: targetKey,
+        prefix: targetKey,
+        label: existingRec?.label || getProviderLabel(conn.provider, targetKey, conn.name),
+        combo,
+        provider: conn.provider,
+        models: [],
+        isActive: true,
+        source: '9router'
+      };
+    }
+
+    seenFullIds.add(id);
+
+    const caps = m.capabilities || {};
+    const contextLength = Number(m.context_length || caps.contextWindow || 0) || undefined;
+    const toolsUnsupported = caps.tools === false;
+    const reasoning = Boolean(caps.reasoning);
+
+    results[targetKey].models.push({
+      id: modelId,
+      fullId: id.includes('/') ? id : `${targetKey}/${id}`,
+      name: m.name || modelId,
+      source: `${targetKey}-9router`,
+      contextLength,
+      toolsUnsupported,
+      reasoning
+    });
+  }
+
+  return results;
+}
+
+/**
  * Deep discovery interface: discover free model candidates for a single provider.
  */
 async function discoverProvider(recordOrKey) {
@@ -822,7 +1035,7 @@ async function discoverProvider(recordOrKey) {
 
 /**
  * Deep discovery interface: discover free model candidates for all registered providers in parallel.
- * Automatically combines built-in provider adapters with dynamic 9router connections (OpenAI-compatible).
+ * Automatically combines active 9router deployment providers with built-in adapters and dynamic connections.
  */
 async function discoverAllProviders(options = {}) {
   const excludedProviders = options.excludedProviders || [];
@@ -830,17 +1043,44 @@ async function discoverAllProviders(options = {}) {
 
   const results = {};
 
-  // 1. Discover Built-in Providers
+  // 1. Discover Active Providers directly from 9router deployment
+  try {
+    const nineRouterActive = await discover9routerActiveProviders(options);
+    for (const [key, p] of Object.entries(nineRouterActive)) {
+      if (isExcluded(p) || excludedProviders.includes(key.toLowerCase()) || excludedProviders.includes(p.provider?.toLowerCase())) {
+        results[key] = { ...p, models: [], excluded: true };
+      } else {
+        results[key] = p;
+      }
+    }
+  } catch (err) {
+    console.warn(`[!] 9router active provider discovery notice: ${err.message}`);
+  }
+
+  // 2. Discover Built-in Providers (only if not already discovered and populated with models from 9router)
   await Promise.all(PROVIDERS.map(async rec => {
+    const existing = results[rec.key] || results[rec.prefixes[0]];
+    if (existing && existing.models && existing.models.length > 0) {
+      return;
+    }
+
     if (isExcluded(rec)) {
-      results[rec.key] = { prefix: rec.prefixes[0], models: [], excluded: true, label: rec.label, combo: rec.combo };
+      if (!results[rec.key]) {
+        results[rec.key] = { prefix: rec.prefixes[0], models: [], excluded: true, label: rec.label, combo: rec.combo };
+      }
     } else {
       try {
         const res = await discoverProvider(rec);
-        results[rec.key] = { ...res, label: rec.label, combo: rec.combo };
+        if (results[rec.key]) {
+          if (res.models && res.models.length > 0) results[rec.key].models = res.models;
+        } else {
+          results[rec.key] = { ...res, label: rec.label, combo: rec.combo };
+        }
       } catch (err) {
         console.warn(`[!] Failed to discover ${rec.label}: ${err.message}`);
-        results[rec.key] = { prefix: rec.prefixes[0], models: [], label: rec.label, combo: rec.combo };
+        if (!results[rec.key]) {
+          results[rec.key] = { prefix: rec.prefixes[0], models: [], label: rec.label, combo: rec.combo };
+        }
       }
     }
   }));
@@ -849,13 +1089,18 @@ async function discoverAllProviders(options = {}) {
   try {
     const dynamicProviders = storage.getDynamicProviders ? storage.getDynamicProviders() : [];
     await Promise.all(dynamicProviders.map(async dp => {
+      const isAlreadyHandled = results[dp.key] ||
+        results[dp.prefix] ||
+        results[dp.provider] ||
+        Object.values(results).some(r => (r.prefix && r.prefix === dp.prefix) || (r.provider && r.provider === dp.provider));
+      if (isAlreadyHandled) return;
+
       if (!dp.enabled || isExcluded(dp) || excludedProviders.includes(dp.provider.toLowerCase())) {
         results[dp.key] = { prefix: dp.prefix, models: [], excluded: true, label: dp.label, combo: dp.combo, isDynamic: true };
         return;
       }
 
       if (!dp.baseUrl) {
-        console.log(`[⊘] Dynamic Provider ${dp.label}: No Base URL configured, skipping.`);
         results[dp.key] = { prefix: dp.prefix, models: [], label: dp.label, combo: dp.combo, isDynamic: true };
         return;
       }
@@ -886,8 +1131,12 @@ async function discoverAllProviders(options = {}) {
 module.exports = {
   PROVIDERS,
   PROVIDER_BY_KEY,
+  STANDARD_PROVIDER_PREFIXES,
+  PROVIDER_DISPLAY_NAMES,
+  getProviderLabel,
   providerByPrefix,
   getProviderCredentials,
   discoverProvider,
+  discover9routerActiveProviders,
   discoverAllProviders
 };

@@ -44,9 +44,7 @@ const PRIORITIES_PATH = path.join(__dirname, 'priorities.json');
 const TRANSIENT_HTTP_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504, 529]);
 
 const escapeRegExp = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const PROVIDER_PREFIX_RE = new RegExp(
-  `^(?:${PROVIDERS.flatMap(p => p.prefixes).sort((a, b) => b.length - a.length).map(escapeRegExp).join('|')})/`
-);
+const PROVIDER_PREFIX_RE = /^[a-zA-Z0-9_.-]+\//;
 
 // Managed combos registry
 const MANAGED_COMBOS = [
@@ -58,11 +56,14 @@ const PROVIDER_COMBO_PREFIXES = Object.fromEntries(PROVIDERS.map(p => [p.combo, 
 
 function getDynamicManagedCombos() {
   const dynamicProviders = storage.getDynamicProviders ? storage.getDynamicProviders() : [];
-  return [
+  const activeConns = storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : [];
+  const activeCombos = activeConns.map(c => `${c.prefix}-free`);
+  return Array.from(new Set([
     'my9model-free', 'my9model-smart', 'my9model-fast', 'my9model-cooldown',
     ...PROVIDERS.map(p => p.combo),
-    ...dynamicProviders.map(p => p.combo)
-  ];
+    ...dynamicProviders.map(p => p.combo),
+    ...activeCombos
+  ]));
 }
 
 function getDynamicProviderComboPrefixes() {
@@ -70,6 +71,13 @@ function getDynamicProviderComboPrefixes() {
   const dynamicProviders = storage.getDynamicProviders ? storage.getDynamicProviders() : [];
   for (const dp of dynamicProviders) {
     base[dp.combo] = dp.prefixes || [dp.prefix];
+  }
+  const activeConns = storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : [];
+  for (const c of activeConns) {
+    const combo = `${c.prefix}-free`;
+    if (!base[combo]) {
+      base[combo] = [c.prefix, c.provider];
+    }
   }
   return base;
 }
