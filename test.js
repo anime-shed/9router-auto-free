@@ -94,7 +94,9 @@ async function runTests() {
   assert.strictEqual(ollamaCreds.prefix, 'ollama', 'Ollama prefix must be ollama');
   const ollamaData = await discoverProvider('ollama');
   console.log(`    Found ${ollamaData.models.length} Ollama candidate free models`);
-  assert.ok(ollamaData.models.length > 0, 'Should find Ollama free models');
+  if (ollamaCreds.apiKey) {
+    assert.ok(ollamaData.models.length > 0, 'Should find Ollama free models');
+  }
 
   // 8. API.airforce Credential & Discovery Test
   console.log('[-] Testing API.airforce discovery...');
@@ -577,9 +579,11 @@ async function runTests() {
     console.log('[-] Testing active provider listing & raw connections...');
     const rawConns = storage.readAllConnectionsRaw();
     assert.ok(Array.isArray(rawConns), 'readAllConnectionsRaw must return an array');
-    const groqConn = rawConns.find(c => String(c.provider || '').toLowerCase() === 'groq');
-    assert.ok(groqConn, 'Groq active connection should be present in 9router db');
-    assert.strictEqual(groqConn.isActive, true, 'Groq connection must be active');
+    if (fs.existsSync(storage.DB_PATH)) {
+      const groqConn = rawConns.find(c => String(c.provider || '').toLowerCase() === 'groq');
+      assert.ok(groqConn, 'Groq active connection should be present in 9router db');
+      assert.strictEqual(groqConn.isActive, true, 'Groq connection must be active');
+    }
 
     // 4) Scheduler status check
     const schedStatus = scheduler.getSchedulerStatus();

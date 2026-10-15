@@ -444,6 +444,7 @@ function getAuthSecret() {
 
 function verify9routerPassword(inputPassword, dbPath = resolveDbPath()) {
   if (!inputPassword || typeof inputPassword !== 'string') return false;
+  if (!fs.existsSync(dbPath)) return false;
   try {
     const Database = getDbClass();
     const db = new Database(dbPath, { readonly: true });
@@ -466,12 +467,17 @@ function verify9routerPassword(inputPassword, dbPath = resolveDbPath()) {
 
 function createSessionToken() {
   try {
-    const Database = getDbClass();
-    const db = new Database(DB_PATH, { readonly: true });
-    const row = db.prepare("SELECT data FROM settings LIMIT 1").get();
-    db.close();
-    const settings = row && row.data ? JSON.parse(row.data) : {};
-    const pwdHash = settings.password || 'default';
+    let pwdHash = 'default';
+    if (fs.existsSync(DB_PATH)) {
+      try {
+        const Database = getDbClass();
+        const db = new Database(DB_PATH, { readonly: true });
+        const row = db.prepare("SELECT data FROM settings LIMIT 1").get();
+        db.close();
+        const settings = row && row.data ? JSON.parse(row.data) : {};
+        if (settings.password) pwdHash = settings.password;
+      } catch {}
+    }
     const payload = {
       exp: Date.now() + 7 * 24 * 60 * 60 * 1000,
       ph: crypto.createHash('sha256').update(pwdHash).digest('hex').substring(0, 16)
@@ -493,12 +499,18 @@ function verifySessionToken(token) {
     const payload = JSON.parse(Buffer.from(body, 'base64url').toString('utf8'));
     if (!payload.exp || Date.now() > payload.exp) return false;
 
-    const Database = getDbClass();
-    const db = new Database(DB_PATH, { readonly: true });
-    const row = db.prepare("SELECT data FROM settings LIMIT 1").get();
-    db.close();
-    const settings = row && row.data ? JSON.parse(row.data) : {};
-    const currentPh = crypto.createHash('sha256').update(settings.password || 'default').digest('hex').substring(0, 16);
+    let pwdHash = 'default';
+    if (fs.existsSync(DB_PATH)) {
+      try {
+        const Database = getDbClass();
+        const db = new Database(DB_PATH, { readonly: true });
+        const row = db.prepare("SELECT data FROM settings LIMIT 1").get();
+        db.close();
+        const settings = row && row.data ? JSON.parse(row.data) : {};
+        if (settings.password) pwdHash = settings.password;
+      } catch {}
+    }
+    const currentPh = crypto.createHash('sha256').update(pwdHash).digest('hex').substring(0, 16);
     return payload.ph === currentPh;
   } catch {
     return false;

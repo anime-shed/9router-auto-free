@@ -194,16 +194,9 @@ async function handleApi(req, res, url) {
       const body = await readBody(req);
       const password = body.password || '';
 
-      if (!fs.existsSync(storage.DB_PATH)) {
-        return sendJson(res, 404, {
-          success: false,
-          error: `Database SQLite 9router tidak ditemukan di: ${storage.DB_PATH}. Pastikan 9router sudah terinstall/dijalankan, atau set NINEROUTER_DIR / NINEROUTER_DB_PATH.`
-        });
-      }
-
       const ok = storage.verify9routerPassword(password);
       if (!ok) {
-        return sendJson(res, 401, { success: false, error: 'Password 9router salah' });
+        return sendJson(res, 401, { success: false, error: 'Password 9router salah atau database tidak dapat diakses' });
       }
       const token = storage.createSessionToken();
       if (!token) {
