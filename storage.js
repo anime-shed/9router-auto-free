@@ -337,6 +337,23 @@ async function persistCombos(comboMap) {
       }
     }
 
+    // Prune unwanted provider-specific free combos from SQLite
+    const UNWANTED_PROVIDER_COMBOS = [
+      'ocg-free', 'openrouter-free', 'ag-free', 'ocz-free', 'ollama-free',
+      'groq-free', 'kilo-free', 'kc-free', 'gemini-free', 'nvidia-free',
+      'gcli-free', 'qd-free', 'cerebras-free', 'fb-free', 'gh-free',
+      'opencode-free', 'openagentic-free', 'poolside-free', 'airforce-free',
+      'bazaarlink-free', 'b.ai-free'
+    ];
+    for (const unwanted of UNWANTED_PROVIDER_COMBOS) {
+      if (!comboMap.has(unwanted)) {
+        const deleted = db.prepare("DELETE FROM combos WHERE name = ?").run(unwanted);
+        if (deleted && deleted.changes > 0) {
+          console.log(`[✓] Pruned unwanted provider combo '${unwanted}' from 9router SQLite`);
+        }
+      }
+    }
+
     db.close();
   } catch (err) {
     if (!updatedViaApi) {

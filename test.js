@@ -271,9 +271,11 @@ async function runTests() {
   const msgNoChange = buildDeltaMessage({ mode: 'unit-test', added: [], removed: [], total: 3 });
   assert.ok(msgNoChange.includes('No changes'), 'No-change run must say so');
 
-  for (const required of ['my9model-free', 'my9model-smart', 'my9model-fast', 'groq-free', 'cerebras-free', 'mistral-free', 'cloudflare-free']) {
+  for (const required of ['my9model-free', 'my9model-smart', 'my9model-fast', 'my9model-cooldown', 'opencode-go']) {
     assert.ok(MANAGED_COMBOS.includes(required), `MANAGED_COMBOS must contain ${required}`);
   }
+  assert.ok(!MANAGED_COMBOS.includes('groq-free'), 'groq-free must not be in MANAGED_COMBOS');
+  assert.ok(!MANAGED_COMBOS.includes('ocg-free'), 'ocg-free must not be in MANAGED_COMBOS');
 
   assert.strictEqual(isThinkingVariant('oc/mimo-v2.5-free'), false, 'Plain model is not a thinking variant');
   assert.strictEqual(isThinkingVariant('kc/qwen/qwen3.6-plus-thinking:free'), true, 'Thinking suffix must be detected');
@@ -440,16 +442,17 @@ async function runTests() {
     assert.ok(assembledOcg.unified.includes('openagentic/assistant-sonnet-4.5-thinking'), 'unified must still include non-ocg models');
     assert.ok(assembledOcg.unified.includes('kilo/deepseek/deepseek-chat:free'), 'unified must still include non-ocg models');
 
-    // Dedicated provider combo preserves ocg models
+    // Dedicated opencode-go section preserves ocg models without 'free' suffix
     const comboMap = buildComboMap({
       free: assembledOcg.unified,
       smart: assembledOcg.smart,
       fast: assembledOcg.fast,
       cooldown: assembledOcg.cooldown,
-      providers: [['ocg-free', ['ocg/qwen2.5-coder-32b', 'opencode-go/deepseek-v3']]]
+      opencodeGo: ['ocg/qwen2.5-coder-32b', 'opencode-go/deepseek-v3']
     });
-    assert.deepStrictEqual(comboMap.get('ocg-free'), ['ocg/qwen2.5-coder-32b', 'opencode-go/deepseek-v3'], 'ocg-free dedicated combo must preserve ocg models');
+    assert.deepStrictEqual(comboMap.get('opencode-go'), ['ocg/qwen2.5-coder-32b', 'opencode-go/deepseek-v3'], 'opencode-go dedicated combo must preserve ocg models');
     assert.ok(!comboMap.get('my9model-free').some(id => id.startsWith('ocg/')), 'my9model-free in comboMap must not contain ocg');
+    assert.strictEqual(comboMap.has('ocg-free'), false, 'ocg-free must not be created');
   }
 
   // 23. Registry completeness: every record yields a coherent provider
@@ -462,11 +465,11 @@ async function runTests() {
       assert.ok(typeof rec.kind === 'string' && rec.kind.length > 0, `${rec.key}: kind required`);
       assert.ok(typeof getProviderCredentials === 'function', 'registry-driven credentials available');
     }
-    assert.strictEqual(MANAGED_COMBOS.length, 4 + PROVIDERS.length, 'managed combos = 4 my9model-* super-combos + one per provider');
+    assert.strictEqual(MANAGED_COMBOS.length, 5, 'managed combos = 4 my9model-* super-combos + opencode-go');
     assert.ok(MANAGED_COMBOS.includes('my9model-cooldown'), 'cooldown parking lot must count as managed');
+    assert.ok(MANAGED_COMBOS.includes('opencode-go'), 'opencode-go must count as managed');
     for (const rec of PROVIDERS) {
       assert.ok(Array.isArray(PROVIDER_COMBO_PREFIXES[rec.combo]), `prefix map must cover ${rec.combo}`);
-      assert.ok(MANAGED_COMBOS.includes(rec.combo), `managed combos must include ${rec.combo}`);
     }
     const seen = new Map();
     for (const rec of PROVIDERS) {

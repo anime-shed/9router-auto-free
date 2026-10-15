@@ -55,40 +55,28 @@ function isExcludedFromSuperCombo(fullId) {
   return SUPER_COMBO_EXCLUDED_PREFIXES.includes(prefix);
 }
 
-// Managed combos registry
+// Managed combos registry: super-combos + dedicated opencode-go section
 const MANAGED_COMBOS = [
   'my9model-free', 'my9model-smart', 'my9model-fast', 'my9model-cooldown',
-  ...PROVIDERS.map(p => p.combo)
+  'opencode-go'
 ];
 
-const PROVIDER_COMBO_PREFIXES = Object.fromEntries(PROVIDERS.map(p => [p.combo, p.prefixes]));
+const PROVIDER_COMBO_PREFIXES = {
+  ...Object.fromEntries(PROVIDERS.map(p => [p.combo, p.prefixes])),
+  'opencode-go': ['ocg', 'opencode-go']
+};
 
 function getDynamicManagedCombos() {
-  const dynamicProviders = storage.getDynamicProviders ? storage.getDynamicProviders() : [];
-  const activeConns = storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : [];
-  const activeCombos = activeConns.map(c => `${c.prefix}-free`);
-  return Array.from(new Set([
+  return [
     'my9model-free', 'my9model-smart', 'my9model-fast', 'my9model-cooldown',
-    ...PROVIDERS.map(p => p.combo),
-    ...dynamicProviders.map(p => p.combo),
-    ...activeCombos
-  ]));
+    'opencode-go'
+  ];
 }
 
 function getDynamicProviderComboPrefixes() {
-  const base = Object.fromEntries(PROVIDERS.map(p => [p.combo, p.prefixes]));
-  const dynamicProviders = storage.getDynamicProviders ? storage.getDynamicProviders() : [];
-  for (const dp of dynamicProviders) {
-    base[dp.combo] = dp.prefixes || [dp.prefix];
-  }
-  const activeConns = storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : [];
-  for (const c of activeConns) {
-    const combo = `${c.prefix}-free`;
-    if (!base[combo]) {
-      base[combo] = [c.prefix, c.provider];
-    }
-  }
-  return base;
+  return {
+    'opencode-go': ['ocg', 'opencode-go']
+  };
 }
 
 function idMatchesPrefixes(fullId, prefixes) {
@@ -401,7 +389,7 @@ function deriveTierLists(rankedAll, benchmarks = null) {
   return { smartList, fastList };
 }
 
-function buildComboMap({ free = [], cooldown = [], smart, fast, providers = [] }) {
+function buildComboMap({ free = [], cooldown = [], smart, fast, opencodeGo = [], providers = [] }) {
   const filterSuper = list => (list || []).filter(id => !isExcludedFromSuperCombo(id));
   const comboMap = new Map([
     ['my9model-free', filterSuper(free)],
@@ -409,7 +397,14 @@ function buildComboMap({ free = [], cooldown = [], smart, fast, providers = [] }
   ]);
   if (Array.isArray(smart)) comboMap.set('my9model-smart', filterSuper(smart));
   if (Array.isArray(fast)) comboMap.set('my9model-fast', filterSuper(fast));
-  for (const [name, ids] of providers) comboMap.set(name, ids);
+  if (Array.isArray(opencodeGo) && opencodeGo.length > 0) {
+    comboMap.set('opencode-go', opencodeGo);
+  }
+  for (const [name, ids] of providers) {
+    if (name === 'opencode-go' || !name.endsWith('-free')) {
+      comboMap.set(name, ids);
+    }
+  }
   return comboMap;
 }
 
@@ -906,9 +901,22 @@ async function injectInto9router(providers) {
   console.log(`[+] my9model-smart: ${assembled.smart.length} models | my9model-fast: ${assembled.fast.length} models`);
   console.log(`[+] my9model-cooldown: ${assembled.cooldown.length} model(s) parked (quota-exhausted)`);
 
-  for (const [key, data, label, combo] of defs) {
-    if (!data.excluded && (data.validated || []).length > 0 && activeByProvider[key].length === 0) {
-      console.log(`[i] ${label}: all ${(data.validated || []).length} models currently quota-exhausted — ${combo} cleared until they recover.`);
+  // OpenCode Go models: extract all active ocg models and sort strictly by benchmark score
+  const ocgActiveModels = defs
+    .filter(([key, data]) => {
+      const p = (data?.prefix || key || '').toLowerCase();
+      const prov = (data?.provider || '').toLowerCase();
+      return p === 'ocg' || p === 'opencode-go' || prov === 'opencode-go';
+    })
+    .flatMap(([key]) => activeByProvider[key] || []);
+
+  const uniqueOcg = Array.from(new Set(ocgActiveModels));
+  const sortedOpencodeGo = sortModelsByCodingQuality(uniqueOcg, latencyMap);
+
+  if (sortedOpencodeGo.length > 0) {
+    console.log(`\n[+] Dedicated OpenCode Go section 'opencode-go': ${sortedOpencodeGo.length} models (ordered by empirical benchmark score)`);
+    for (const mId of sortedOpencodeGo) {
+      console.log(`    - ${mId} [Score: ${getCodingScore(mId)}]`);
     }
   }
 
@@ -917,19 +925,12 @@ async function injectInto9router(providers) {
     return;
   }
 
-  const providerEntries = defs
-    .map(([key, data, label, combo]) => {
-      const list = (!data?.excluded && (data?.validated?.length || 0) > 0) ? activeByProvider[key] : null;
-      return list ? [combo, list] : null;
-    })
-    .filter(Boolean);
-
   await persistAndNotifyCombos(buildComboMap({
     free: assembled.unified,
     smart: assembled.smart,
     fast: assembled.fast,
     cooldown: assembled.cooldown,
-    providers: providerEntries
+    opencodeGo: sortedOpencodeGo
   }), 'daily-sync');
 
   saveCandidateState(defs, prefixedByProvider);
