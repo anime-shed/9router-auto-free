@@ -171,8 +171,8 @@ async function runTests() {
     }
   }
 
-  // 11. Exclusion Rules Check (Models & Providers)
-  console.log('[-] Testing exclusions filter engine (models & providers)...');
+  // 11. Exclusion Rules Check (Models, Providers, Combos & Super-combo Prefixes)
+  console.log('[-] Testing exclusions filter engine (models, providers, combos & prefixes)...');
   const { getExclusionList, getExcludedProviders, isProviderExcluded, isModelExcluded } = require('./sync.js');
   const exclusions = getExclusionList();
   const excludedProviders = getExcludedProviders();
@@ -182,10 +182,27 @@ async function runTests() {
   for (const name of ['gemini', 'bazaarlink', 'openrouter', 'kilocode']) {
     assert.strictEqual(isProviderExcluded(name), excludedProviders.includes(name), `isProviderExcluded must agree with the config for ${name}`);
   }
+
+  // Storage exclusions engine verification
+  const storageConfig = storage.getExclusionConfig();
+  assert.ok(Array.isArray(storageConfig.excludedModels), 'storage.getExclusionConfig must return excludedModels');
+  assert.ok(Array.isArray(storageConfig.excludedCombos), 'storage.getExclusionConfig must return excludedCombos');
+  assert.ok(storageConfig.excludedCombos.includes('ocg-free'), 'excludedCombos must contain ocg-free');
+  assert.ok(storageConfig.excludedCombos.includes('openrouter-free'), 'excludedCombos must contain openrouter-free');
+  assert.ok(storageConfig.excludedCombos.includes('groq-free'), 'excludedCombos must contain groq-free');
+  assert.ok(Array.isArray(storageConfig.superComboExcludedPrefixes), 'storage.getExclusionConfig must return superComboExcludedPrefixes');
+  assert.ok(storageConfig.superComboExcludedPrefixes.includes('ocg'), 'superComboExcludedPrefixes must include ocg');
+  assert.strictEqual(typeof storage.isModelExcluded, 'function', 'storage.isModelExcluded must be a function');
+
+  // Verify centralized non-text and small model exclusions
   assert.ok(isModelExcluded('ollama/nemotron-3-nano:30b', exclusions), 'nano models must be excluded');
   assert.ok(isModelExcluded('openrouter/liquid/lfm-2.5-2.6b:free', exclusions), 'lfm small models must be excluded');
   assert.ok(isModelExcluded('openrouter/cohere/north-mini-code:free', exclusions), 'north-mini models must be excluded');
   assert.ok(isModelExcluded('openrouter/tts-1', exclusions), 'tts models must be excluded');
+  assert.ok(isModelExcluded('openai/whisper-large-v3', exclusions), 'whisper models must be excluded');
+  assert.ok(isModelExcluded('nvidia/parakeet-ctc-1.1b', exclusions), 'parakeet models must be excluded');
+  assert.ok(isModelExcluded('groq/playai-tts', exclusions), 'playai models must be excluded');
+  assert.ok(isModelExcluded('nvidia/bge-m3', exclusions), 'bge-m3 embeddings must be excluded');
   assert.strictEqual(isModelExcluded('poolside/poolside/laguna-xs-2.1', exclusions), false, 'laguna-xs models must NOT be excluded');
   assert.strictEqual(isModelExcluded('cerebras/gpt-oss-120b', exclusions), false, 'gpt-oss models must NOT be excluded');
   assert.ok(isModelExcluded('bazaarlink/auto:free', exclusions), 'bazaarlink/auto:free must be excluded');

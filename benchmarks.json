@@ -1,4 +1,32 @@
 {
+  "gemini-4-argon": {
+    "name": "Gemini 4 Argon",
+    "score": 86,
+    "swe_bench": 82,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "google/gemini-4-argon": {
+    "name": "Google Gemini 4 Argon",
+    "score": 86,
+    "swe_bench": 82,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "gpt-6.1-sol": {
+    "name": "GPT-6.1 Sol",
+    "score": 85.5,
+    "swe_bench": 81.5,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "openai/gpt-6.1-sol": {
+    "name": "OpenAI GPT-6.1 Sol",
+    "score": 85.5,
+    "swe_bench": 81.5,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
   "claude-opus-4-6-thinking": {
     "name": "Claude Opus 4.6 Thinking",
     "score": 85,
@@ -15,6 +43,13 @@
   },
   "gemini-3.8-flash": {
     "name": "Gemini 3.8 Flash",
+    "score": 83.5,
+    "swe_bench": 78.5,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "google/gemini-3.8-flash": {
+    "name": "Google Gemini 3.8 Flash",
     "score": 83.5,
     "swe_bench": 78.5,
     "tier": "S+",
@@ -70,6 +105,20 @@
     "tier": "S+",
     "contextLength": 200000
   },
+  "gpt-6-luna": {
+    "name": "GPT-6 Luna",
+    "score": 80.5,
+    "swe_bench": 76,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "openai/gpt-6-luna": {
+    "name": "OpenAI GPT-6 Luna",
+    "score": 80.5,
+    "swe_bench": 76,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
   "z-ai/glm-5.3": {
     "name": "Zhipu GLM 5.3",
     "score": 80,
@@ -91,6 +140,21 @@
     "swe_bench": 74,
     "tier": "S+",
     "contextLength": 131072
+  },
+  "glm-5.3-flash": {
+    "name": "GLM 5.3 Flash",
+    "score": 78,
+    "swe_bench": 74,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "deprecated": true
+  },
+  "z-ai/glm-5.3-flash": {
+    "name": "Z-AI GLM 5.3 Flash",
+    "score": 78,
+    "swe_bench": 74,
+    "tier": "S+",
+    "contextLength": 1048576
   },
   "nvidia/nemotron-3-ultra-550b-a55b": {
     "name": "Nemotron 3 Ultra 550B",
@@ -141,12 +205,56 @@
     "tier": "S+",
     "contextLength": 32768
   },
+  "kimi-k3-eco": {
+    "name": "Kimi K3 Eco",
+    "score": 72,
+    "swe_bench": 68,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
+  "crof/kimi-k3-eco": {
+    "name": "CROF Kimi K3 Eco",
+    "score": 72,
+    "swe_bench": 68,
+    "tier": "S+",
+    "contextLength": 1048576
+  },
   "step-3.7-flash": {
     "name": "StepFun Step 3.7 Flash",
     "score": 70,
     "swe_bench": 66,
     "tier": "S+",
     "contextLength": 262144
+  },
+  "solar-pro4": {
+    "name": "Solar Pro 4",
+    "score": 68,
+    "swe_bench": 65,
+    "tier": "S",
+    "contextLength": 131072
+  },
+  "upstage/solar-pro4": {
+    "name": "Upstage Solar Pro 4",
+    "score": 68,
+    "swe_bench": 65,
+    "tier": "S",
+    "contextLength": 131072
+  },
+  "space-bunny-alpha": {
+    "name": "Space Bunny Alpha",
+    "score": 62,
+    "swe_bench": 58,
+    "tier": "S",
+    "contextLength": 131072,
+    "deprecated": true
+  },
+  "stealth/space-bunny-alpha": {
+    "name": "Stealth Space Bunny Alpha",
+    "score": 62,
+    "swe_bench": 58,
+    "tier": "S",
+    "contextLength": 131072,
+    "deprecated": true
   },
   "cerebras/gpt-oss-120b": {
     "name": "Cerebras GPT-OSS 120B",
@@ -2666,21 +2774,11 @@
   },
   "z-ai-glm-5.3-flash": {
     "name": "GLM-5.3-Flash",
-    "score": 50,
-    "swe_bench": 50,
-    "tier": "A+",
+    "score": 78,
+    "swe_bench": 78,
+    "tier": "S+",
     "contextLength": 1048576,
-    "source": "external-catalog:nvidia",
-    "deprecated": true
-  },
-  "glm-5.3-flash": {
-    "name": "GLM-5.3-Flash",
-    "score": 50,
-    "swe_bench": 50,
-    "tier": "A+",
-    "contextLength": 1048576,
-    "source": "external-catalog:nvidia",
-    "deprecated": true
+    "source": "external-catalog:nvidia"
   },
   "z-ai-glm-5.3": {
     "name": "GLM 5.3",
@@ -4179,17 +4277,9 @@
   },
   "openai-gpt-6-luna": {
     "name": "OpenAI GPT-6 Luna",
-    "score": 50,
-    "swe_bench": 50,
-    "tier": "A+",
-    "contextLength": 1048576,
-    "source": "external-catalog:pollinations"
-  },
-  "gpt-6-luna": {
-    "name": "OpenAI GPT-6 Luna",
-    "score": 50,
-    "swe_bench": 50,
-    "tier": "A+",
+    "score": 80.5,
+    "swe_bench": 80.5,
+    "tier": "S+",
     "contextLength": 1048576,
     "source": "external-catalog:pollinations"
   },
@@ -4251,17 +4341,9 @@
   },
   "openai-gpt-6.1-sol": {
     "name": "OpenAI GPT-6.1 Sol",
-    "score": 50,
-    "swe_bench": 50,
-    "tier": "A+",
-    "contextLength": 1048576,
-    "source": "external-catalog:pollinations"
-  },
-  "gpt-6.1-sol": {
-    "name": "OpenAI GPT-6.1 Sol",
-    "score": 50,
-    "swe_bench": 50,
-    "tier": "A+",
+    "score": 85.5,
+    "swe_bench": 85.5,
+    "tier": "S+",
     "contextLength": 1048576,
     "source": "external-catalog:pollinations"
   },
@@ -4557,19 +4639,10 @@
   },
   "stealth-space-bunny-alpha": {
     "name": "Space Bunny Alpha",
-    "score": 50,
-    "swe_bench": 50,
-    "tier": "A+",
-    "contextLength": 1048576,
-    "source": "external-catalog:onomeo",
-    "deprecated": true
-  },
-  "space-bunny-alpha": {
-    "name": "Space Bunny Alpha",
-    "score": 50,
-    "swe_bench": 50,
-    "tier": "A+",
-    "contextLength": 1048576,
+    "score": 62,
+    "swe_bench": 62,
+    "tier": "S",
+    "contextLength": 131072,
     "source": "external-catalog:onomeo",
     "deprecated": true
   },
@@ -4580,5 +4653,45 @@
     "tier": "A+",
     "contextLength": 1048576,
     "source": "external-catalog:onomeo"
+  },
+  "google-gemini-4-argon": {
+    "name": "Gemini 4 Argon",
+    "score": 86,
+    "swe_bench": 86,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:freebuff"
+  },
+  "google-gemini-3.8-flash": {
+    "name": "Gemini 3.8 Flash",
+    "score": 83.5,
+    "swe_bench": 83.5,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:freebuff"
+  },
+  "crof-kimi-k3-eco": {
+    "name": "Kimi K3 Eco",
+    "score": 72,
+    "swe_bench": 72,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:freebuff"
+  },
+  "upstage-solar-pro4": {
+    "name": "Solar Pro 4",
+    "score": 68,
+    "swe_bench": 68,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:freebuff"
+  },
+  "mimo-mimo-v2.5": {
+    "name": "MiMo 2.5",
+    "score": 50.5,
+    "swe_bench": 50.5,
+    "tier": "A+",
+    "contextLength": 262144,
+    "source": "external-catalog:freebuff"
   }
 }

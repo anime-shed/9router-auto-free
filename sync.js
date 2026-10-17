@@ -47,12 +47,16 @@ const escapeRegExp = s => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const PROVIDER_PREFIX_RE = /^[a-zA-Z0-9_.-]+\//;
 
 // Super-combos (my9model-free, my9model-smart, my9model-fast, my9model-cooldown) excluded prefixes
-const SUPER_COMBO_EXCLUDED_PREFIXES = ['ocg', 'opencode-go'];
+const SUPER_COMBO_EXCLUDED_PREFIXES = ['ocg', 'opencode-go', 'fb', 'freebuff'];
 
 function isExcludedFromSuperCombo(fullId) {
   if (!fullId || typeof fullId !== 'string') return false;
   const prefix = fullId.split('/')[0].toLowerCase();
-  return SUPER_COMBO_EXCLUDED_PREFIXES.includes(prefix);
+  const cfg = getExclusionConfig();
+  const excludedPrefixes = (cfg.superComboExcludedPrefixes && cfg.superComboExcludedPrefixes.length > 0)
+    ? cfg.superComboExcludedPrefixes
+    : ['ocg', 'opencode-go', 'fb', 'freebuff'];
+  return excludedPrefixes.includes(prefix);
 }
 
 // Managed combos registry: super-combos + dedicated opencode-go section
@@ -89,35 +93,14 @@ function idMatchesPrefixes(fullId, prefixes) {
 // ----------------------------------------------------------------------------
 
 function getExclusionConfig() {
-  let excludedModels = [];
-  let excludedProviders = [];
+  const base = storage.getExclusionConfig ? storage.getExclusionConfig() : {
+    excludedModels: [],
+    excludedProviders: [],
+    excludedCombos: [],
+    superComboExcludedPrefixes: ['ocg', 'opencode-go']
+  };
 
-  try {
-    if (fs.existsSync(EXCLUSIONS_PATH)) {
-      const content = fs.readFileSync(EXCLUSIONS_PATH, 'utf8');
-      const data = JSON.parse(content);
-      if (Array.isArray(data)) {
-        for (const item of data) {
-          const str = String(item).trim().toLowerCase();
-          if (str.startsWith('provider:')) {
-            excludedProviders.push(str.replace(/^provider:/, '').trim());
-          } else if (str) {
-            excludedModels.push(str);
-          }
-        }
-      } else if (typeof data === 'object' && data !== null) {
-        if (Array.isArray(data.excludedModels)) {
-          excludedModels = data.excludedModels.map(m => String(m).trim().toLowerCase()).filter(Boolean);
-        }
-        if (Array.isArray(data.excludedProviders)) {
-          excludedProviders = data.excludedProviders.map(p => String(p).trim().toLowerCase()).filter(Boolean);
-        }
-      }
-    }
-  } catch (err) {
-    console.warn(`[!] Warning: Could not read exclusions.json: ${err.message}`);
-  }
-
+  let excludedProviders = [...(base.excludedProviders || [])];
   const cliExcludeArg = args.find(a => a.startsWith('--exclude-provider='));
   if (cliExcludeArg) {
     const raw = cliExcludeArg.split('=')[1] || '';
@@ -125,7 +108,12 @@ function getExclusionConfig() {
     excludedProviders = Array.from(new Set([...excludedProviders, ...cliExcluded]));
   }
 
-  return { excludedModels, excludedProviders };
+  return {
+    excludedModels: base.excludedModels || [],
+    excludedProviders,
+    excludedCombos: base.excludedCombos || [],
+    superComboExcludedPrefixes: base.superComboExcludedPrefixes || ['ocg', 'opencode-go']
+  };
 }
 
 function getExclusionList() {
@@ -455,7 +443,7 @@ async function testModelWith9router(fullModelId, token, attempt = 1, fetchImpl =
         'x-9r-cli-token': token
       },
       body: JSON.stringify({ model: fullModelId, kind: 'llm' }),
-      signal: AbortSignal.timeout(20000)
+      signal: AbortSignal.timeout(45000)
     });
 
     const latencyMs = Date.now() - startTime;
@@ -901,12 +889,12 @@ async function injectInto9router(providers) {
   console.log(`[+] my9model-smart: ${assembled.smart.length} models | my9model-fast: ${assembled.fast.length} models`);
   console.log(`[+] my9model-cooldown: ${assembled.cooldown.length} model(s) parked (quota-exhausted)`);
 
-  // OpenCode Go models: extract all active ocg models and sort strictly by benchmark score
+  // OpenCode Go models & Freebuff credit-funded models: extract all active ocg and fb models and sort strictly by benchmark score
   const ocgActiveModels = defs
     .filter(([key, data]) => {
       const p = (data?.prefix || key || '').toLowerCase();
       const prov = (data?.provider || '').toLowerCase();
-      return p === 'ocg' || p === 'opencode-go' || prov === 'opencode-go';
+      return p === 'ocg' || p === 'opencode-go' || prov === 'opencode-go' || p === 'fb' || p === 'freebuff' || prov === 'freebuff';
     })
     .flatMap(([key]) => activeByProvider[key] || []);
 

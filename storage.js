@@ -337,19 +337,13 @@ async function persistCombos(comboMap) {
       }
     }
 
-    // Prune unwanted provider-specific free combos from SQLite
-    const UNWANTED_PROVIDER_COMBOS = [
-      'ocg-free', 'openrouter-free', 'ag-free', 'ocz-free', 'ollama-free',
-      'groq-free', 'kilo-free', 'kc-free', 'gemini-free', 'nvidia-free',
-      'gcli-free', 'qd-free', 'cerebras-free', 'fb-free', 'gh-free',
-      'opencode-free', 'openagentic-free', 'poolside-free', 'airforce-free',
-      'bazaarlink-free', 'b.ai-free'
-    ];
-    for (const unwanted of UNWANTED_PROVIDER_COMBOS) {
+    // Prune unwanted combos configured in exclusions.json as single source of truth
+    const { excludedCombos } = getExclusionConfig();
+    for (const unwanted of excludedCombos) {
       if (!comboMap.has(unwanted)) {
         const deleted = db.prepare("DELETE FROM combos WHERE name = ?").run(unwanted);
         if (deleted && deleted.changes > 0) {
-          console.log(`[✓] Pruned unwanted provider combo '${unwanted}' from 9router SQLite`);
+          console.log(`[✓] Pruned excluded combo '${unwanted}' from 9router SQLite`);
         }
       }
     }
@@ -439,7 +433,7 @@ function getDynamicProviders() {
       enabled,
       freePattern: config.freePattern || null,
       modelsEndpoint: config.modelsEndpoint || null,
-      skipPatterns: config.skipPatterns || ['tts', 'embed', 'image', 'whisper', 'diffusion', 'rerank', 'guard', 'audio', 'speech']
+      skipPatterns: config.skipPatterns || getExclusionConfig().excludedModels
     });
   }
 
@@ -578,6 +572,64 @@ function readAllConnectionsRaw() {
   }
 }
 
+function getExclusionConfig() {
+  let excludedModels = [];
+  let excludedProviders = [];
+  let excludedCombos = [];
+  let superComboExcludedPrefixes = [];
+
+  try {
+    if (fs.existsSync(EXCLUSIONS_PATH)) {
+      const content = fs.readFileSync(EXCLUSIONS_PATH, 'utf8');
+      const data = JSON.parse(content);
+      if (Array.isArray(data)) {
+        for (const item of data) {
+          const str = String(item).trim().toLowerCase();
+          if (str.startsWith('provider:')) {
+            excludedProviders.push(str.replace(/^provider:/, '').trim());
+          } else if (str.startsWith('combo:')) {
+            excludedCombos.push(str.replace(/^combo:/, '').trim());
+          } else if (str.startsWith('supercombo-prefix:') || str.startsWith('prefix:')) {
+            superComboExcludedPrefixes.push(str.replace(/^(supercombo-prefix|prefix):/, '').trim());
+          } else if (str) {
+            excludedModels.push(str);
+          }
+        }
+      } else if (typeof data === 'object' && data !== null) {
+        if (Array.isArray(data.excludedModels)) {
+          excludedModels = data.excludedModels.map(m => String(m).trim().toLowerCase()).filter(Boolean);
+        }
+        if (Array.isArray(data.excludedProviders)) {
+          excludedProviders = data.excludedProviders.map(p => String(p).trim().toLowerCase()).filter(Boolean);
+        }
+        if (Array.isArray(data.excludedCombos)) {
+          excludedCombos = data.excludedCombos.map(c => String(c).trim().toLowerCase()).filter(Boolean);
+        }
+        if (Array.isArray(data.superComboExcludedPrefixes)) {
+          superComboExcludedPrefixes = data.superComboExcludedPrefixes.map(p => String(p).trim().toLowerCase()).filter(Boolean);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn(`[!] Warning: Could not read exclusions.json: ${err.message}`);
+  }
+
+  return { excludedModels, excludedProviders, excludedCombos, superComboExcludedPrefixes };
+}
+
+function isModelExcluded(modelIdentifier, customExclusions = null) {
+  const exclusions = customExclusions || getExclusionConfig().excludedModels;
+  if (!exclusions || exclusions.length === 0) return false;
+  const str = String(modelIdentifier).toLowerCase();
+  for (const item of exclusions) {
+    if (!item) continue;
+    if (str === item || str.includes(item)) {
+      return item;
+    }
+  }
+  return false;
+}
+
 function readExclusionsFile() {
   try {
     if (fs.existsSync(EXCLUSIONS_PATH)) {
@@ -631,6 +683,8 @@ module.exports = {
   verify9routerPassword,
   createSessionToken,
   verifySessionToken,
+  getExclusionConfig,
+  isModelExcluded,
   readExclusionsFile,
   writeExclusionsFile,
   readPrioritiesFile,

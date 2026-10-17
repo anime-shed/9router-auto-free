@@ -143,22 +143,19 @@ const PROVIDERS = [
     key: 'groq', label: 'Groq', combo: 'groq-free',
     prefixes: ['groq'], usageName: 'groq',
     kind: 'openai-compatible', connection: 'groq', credentialKind: 'default',
-    baseUrl: 'https://api.groq.com/openai/v1',
-    skipPatterns: ['whisper', 'tts', 'guard', 'embed', 'playai']
+    baseUrl: 'https://api.groq.com/openai/v1'
   },
   {
     key: 'cerebras', label: 'Cerebras', combo: 'cerebras-free',
     prefixes: ['cerebras'], usageName: 'cerebras',
     kind: 'openai-compatible', connection: 'cerebras', credentialKind: 'default',
-    baseUrl: 'https://api.cerebras.ai/v1',
-    skipPatterns: ['embed']
+    baseUrl: 'https://api.cerebras.ai/v1'
   },
   {
     key: 'mistral', label: 'Mistral', combo: 'mistral-free',
     prefixes: ['mistral'], usageName: 'mistral',
     kind: 'openai-compatible', connection: 'mistral', credentialKind: 'default',
-    baseUrl: 'https://api.mistral.ai/v1',
-    skipPatterns: ['embed', 'moderation', 'ocr', 'tts', 'voxtral', 'mistral-saba']
+    baseUrl: 'https://api.mistral.ai/v1'
   },
   {
     key: 'cloudflare', label: 'Cloudflare Workers AI', combo: 'cloudflare-free',
@@ -169,13 +166,13 @@ const PROVIDERS = [
     key: 'nvidia', label: 'NVIDIA NIM', combo: 'nvidia-free',
     prefixes: ['nvidia', 'nim'], usageName: 'nvidia',
     kind: 'openai-compatible', connection: 'nvidia', credentialKind: 'default',
-    baseUrl: 'https://integrate.api.nvidia.com/v1',
-    skipPatterns: [
-      'embed', 'bge-m3', 'arctic', 'rerank', 'retriever', 'parse',
-      'tts', 'speech', 'audio', 'asr', 'riva', 'parakeet', 'whisper',
-      'vision', '-vl', 'vlm', 'fuyu', 'kosmos', 'neva', 'vila', 'deplot', 'clip', 'diffusion', 'image', 'video', 'detector',
-      'guard', 'safety', 'topic-control', 'reward', 'moderation'
-    ]
+    baseUrl: 'https://integrate.api.nvidia.com/v1'
+  },
+  {
+    key: 'fb', label: 'Freebuff', combo: 'fb-free',
+    prefixes: ['fb', 'freebuff'], usageName: 'freebuff',
+    kind: 'freebuff', connection: 'freebuff', credentialKind: 'default',
+    baseUrl: 'https://www.codebuff.com/api/v1'
   }
 ];
 
@@ -548,7 +545,7 @@ async function fetchOllamaFreeModels(apiKey, baseUrl = 'https://api.ollama.com/v
       const id = m.id || m.name || '';
       if (!id) continue;
       const lower = id.toLowerCase();
-      if (/embed|image|vision|ocr|tts|rerank|guard/.test(lower)) continue;
+      if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
       freeModels.push({
         id,
         name: m.name || id,
@@ -577,7 +574,7 @@ async function fetchAirforceFreeModels(apiKey, baseUrl = 'https://api.airforce/v
       const id = m.id || '';
       if (!id) continue;
       const lower = id.toLowerCase();
-      if (/embed|image|vision|audio|tts|whisper|flux|diffusion|rerank|moderation/.test(lower)) continue;
+      if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
       freeModels.push({
         id,
         name: m.name || id,
@@ -723,7 +720,10 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
       const name = m.name || m.summary || id;
       const lowerId = id.toLowerCase();
 
-      if (skipPatterns.some(pat => lowerId.includes(pat))) continue;
+      const effectiveExclusions = (skipPatterns && skipPatterns.length > 0)
+        ? skipPatterns
+        : (storage.getExclusionConfig ? storage.getExclusionConfig().excludedModels : []);
+      if (effectiveExclusions.some(pat => lowerId === pat || lowerId.includes(pat))) continue;
 
       // If freePattern is specified (e.g. ":free"), enforce it
       if (freePattern && !lowerId.includes(freePattern.toLowerCase()) && m.is_free !== true) {
@@ -873,8 +873,7 @@ const PROVIDER_DISCOVERY_MAP = {
   bai: async record => {
     const creds = getProviderCredentials(record);
     const models = await fetchOpenAiCompatibleFreeModels({
-      label: 'B.ai', apiKey: creds.apiKey, baseUrl: creds.baseUrl, prefix: creds.prefix,
-      skipPatterns: ['tts', 'embed', 'image', 'whisper', 'diffusion', 'rerank', 'guard', 'audio', 'speech']
+      label: 'B.ai', apiKey: creds.apiKey, baseUrl: creds.baseUrl, prefix: creds.prefix
     });
     return { prefix: creds.prefix || 'b.ai', models };
   },
@@ -935,13 +934,6 @@ async function discover9routerActiveProviders(options = {}) {
       }
     } catch {}
   }
-
-  const NON_TEXT_PATTERNS = [
-    'embed', 'tts', 'whisper', 'audio', 'speech', 'flux', 'diffusion',
-    'rerank', 'guard', 'moderation', 'asr', 'riva', 'parakeet', 'vision-only',
-    'search-a', 'search-b', 'search-c', 'exec-agent', 'trajectory-compaction'
-  ];
-
   const results = {};
 
   for (const conn of activeConns) {
@@ -992,7 +984,7 @@ async function discover9routerActiveProviders(options = {}) {
     if (!conn) continue; // skip models belonging to inactive providers or unconfigured providers
 
     const lowerId = id.toLowerCase();
-    if (NON_TEXT_PATTERNS.some(pat => lowerId.includes(pat))) continue;
+    if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
 
     const targetKey = conn.prefix || prefix;
     const existingRec = PROVIDERS.find(p => p.key === targetKey || p.prefixes.includes(targetKey));
@@ -1080,11 +1072,17 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
     const seenFullIds = new Set(existingModels.map(m => (m.fullId || '').toLowerCase()));
     const NON_TEXT_REGEX = /embed|tts|whisper|audio|speech|flux|diffusion|rerank|guard|moderation|asr|riva|parakeet|vision-only/i;
     for (const extId of candidatesToAdd) {
-      const cleanId = extId.replace(/^[a-zA-Z0-9_.-]+\//, '').replace(/:free$/, '');
+      const preserveNamespace = prefix === 'nvidia' || prefix === 'fb' || prefix === 'freebuff' || prefix === 'openrouter' || targetKey === 'nvidia' || targetKey === 'fb' || targetKey === 'freebuff';
+      let cleanId = extId.replace(/:free$/, '');
+      if (!preserveNamespace) {
+        cleanId = cleanId.replace(/^[a-zA-Z0-9_.-]+\//, '');
+      }
       if (NON_TEXT_REGEX.test(cleanId) || NON_TEXT_REGEX.test(extId)) {
         continue;
       }
-      const fullId = `${prefix}/${cleanId}`;
+      const fullId = (prefix === 'nvidia' && cleanId.startsWith('nvidia/'))
+        ? cleanId
+        : (cleanId.startsWith(`${prefix}/`) ? cleanId : `${prefix}/${cleanId}`);
       if (seenIds.has(cleanId.toLowerCase()) || seenFullIds.has(fullId.toLowerCase())) {
         continue;
       }
