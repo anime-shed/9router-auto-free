@@ -207,6 +207,24 @@ function readUsageFeedback() {
 async function persistCombos(comboMap) {
   let updatedViaApi = false;
 
+  // Guard: never overwrite a previously-populated combo with an empty list.
+  // An unattended sync running before 9router is reachable (or with unreadable
+  // credentials) yields empty discovery/validation; without this guard that
+  // empty result blanks good combo data until the next manual run.
+  for (const [comboName, modelList] of [...comboMap]) {
+    if (Array.isArray(modelList) && modelList.length === 0) {
+      const existing = readCurrentComboModels(comboName);
+      if (existing.length > 0) {
+        console.log(`[!] Skipping combo '${comboName}': new list is empty but ${existing.length} model(s) already stored (likely degraded sync). Keeping existing.`);
+        comboMap.delete(comboName);
+      }
+    }
+  }
+  if (comboMap.size === 0) {
+    console.log('[!] All computed combos were empty; nothing persisted (existing combos preserved).');
+    return;
+  }
+
   // 1. Try updating via 9router API client if server is running
   try {
     let client;
