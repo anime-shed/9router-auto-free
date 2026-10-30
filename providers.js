@@ -805,6 +805,27 @@ async function fetchCloudflareFreeModels(creds) {
 // Deep Discovery Adapters & Dispatch
 // ----------------------------------------------------------------------------
 
+// ----------------------------------------------------------------------------
+// Free-Only Provider Guard
+// ----------------------------------------------------------------------------
+
+const REQUIRE_FREE_SUFFIX_PROVIDERS = new Set([
+  'openrouter',
+  'aihubmix',
+  'aihub-mix',
+  'inferera',
+  'commandcode'
+]);
+
+function isPaidModel(providerOrPrefix, modelId, pricingObj = null) {
+  const p = String(providerOrPrefix || '').toLowerCase();
+  if (!REQUIRE_FREE_SUFFIX_PROVIDERS.has(p)) return false;
+  const lId = String(modelId || '').toLowerCase();
+  if (lId.endsWith(':free')) return false;
+  if (pricingObj && Number(pricingObj.prompt) === 0 && Number(pricingObj.completion) === 0) return false;
+  return true;
+}
+
 const PROVIDER_DISCOVERY_MAP = {
   openagentic: async record => {
     const creds = getProviderCredentials(record);
@@ -986,6 +1007,12 @@ async function discover9routerActiveProviders(options = {}) {
     const lowerId = id.toLowerCase();
     if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
 
+    // Guard against paid models from providers that require :free suffix (e.g. openrouter, aihubmix, inferera)
+    if (isPaidModel(conn.provider, id, m.pricing) || isPaidModel(prefix, id, m.pricing)) {
+      seenFullIds.add(id);
+      continue;
+    }
+
     const targetKey = conn.prefix || prefix;
     const existingRec = PROVIDERS.find(p => p.key === targetKey || p.prefixes.includes(targetKey));
     const combo = existingRec?.combo || `${targetKey}-free`;
@@ -1072,8 +1099,15 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
     const seenFullIds = new Set(existingModels.map(m => (m.fullId || '').toLowerCase()));
     const NON_TEXT_REGEX = /embed|tts|whisper|audio|speech|flux|diffusion|rerank|guard|moderation|asr|riva|parakeet|vision-only/i;
     for (const extId of candidatesToAdd) {
+      // If the target provider requires :free suffix (e.g. openrouter, aihubmix), reject any candidate not ending in :free
+      if (REQUIRE_FREE_SUFFIX_PROVIDERS.has(targetKey.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(prefix.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(String(providerName || '').toLowerCase())) {
+        if (!extId.toLowerCase().endsWith(':free')) {
+          continue;
+        }
+      }
       const preserveNamespace = prefix === 'nvidia' || prefix === 'fb' || prefix === 'freebuff' || prefix === 'openrouter' || targetKey === 'nvidia' || targetKey === 'fb' || targetKey === 'freebuff';
-      let cleanId = extId.replace(/:free$/, '');
+      const isFreeOnlyProvider = REQUIRE_FREE_SUFFIX_PROVIDERS.has(targetKey.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(prefix.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(String(providerName || '').toLowerCase());
+      let cleanId = isFreeOnlyProvider ? (extId.endsWith(':free') ? extId : (extId + ':free')) : extId.replace(/:free$/, '');
       if (!preserveNamespace) {
         cleanId = cleanId.replace(/^[a-zA-Z0-9_.-]+\//, '');
       }
@@ -1153,8 +1187,16 @@ async function discoverAllProviders(options = {}) {
     console.warn(`[!] 9router active provider discovery notice: ${err.message}`);
   }
 
-  // 2. Discover Built-in Providers (only if not already discovered and populated with models from 9router)
+  // 2. Discover Built-in Providers (ONLY if provider is active in 9router, or if there are no active connections at all)
   await Promise.all(PROVIDERS.map(async rec => {
+    // Only run discovery for providers configured and active on 9router
+    const prefixes = (rec.prefixes || [rec.prefix] || []).map(p => String(p).toLowerCase());
+    const prov = String(rec.provider || rec.key || '').toLowerCase();
+    const isProviderActiveIn9router = activeProvidersSet.has(prov) || prefixes.some(p => activePrefixesSet.has(p));
+    if (activeConns.length > 0 && !isProviderActiveIn9router) {
+      return; // Skip providers not active on 9router
+    }
+
     const existing = results[rec.key] || results[rec.prefixes[0]];
     if (existing && existing.models && existing.models.length > 0) {
       return;
@@ -1239,5 +1281,7 @@ module.exports = {
   discoverProvider,
   discover9routerActiveProviders,
   discoverAllProviders,
-  enrichProviderCandidatesFromExternalCatalog
+  enrichProviderCandidatesFromExternalCatalog,
+  REQUIRE_FREE_SUFFIX_PROVIDERS,
+  isPaidModel
 };

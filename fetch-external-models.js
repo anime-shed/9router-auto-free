@@ -20,6 +20,7 @@ const { pathToFileURL } = require('url');
 const SOURCES_JS_URL = 'https://raw.githubusercontent.com/vava-nessa/free-coding-models/main/sources.js';
 const INDEX_JSON_URL = 'https://raw.githubusercontent.com/mvalentsev/awesome-free-ai-coding/main/index.json';
 const README_EN_URL = 'https://raw.githubusercontent.com/peter123023/awesome-free-llm-api/main/README.en.md';
+const MODELS_DEV_URL = 'https://models.dev/api.json';
 const EXTERNAL_MODELS_PATH = path.join(__dirname, 'external-models.json');
 
 const RETRY_HTTP_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504, 529]);
@@ -209,6 +210,59 @@ function parseReadmeContent(content) {
 }
 
 /**
+ * Parse https://models.dev/api.json for free models, context lengths, and deprecations.
+ */
+function parseModelsDevContent(content) {
+  const data = typeof content === 'string' ? JSON.parse(content) : content;
+  const models = [];
+  const providerCatalog = {};
+  const deprecated = [];
+
+  for (const [providerKey, providerData] of Object.entries(data)) {
+    if (!providerData || typeof providerData !== 'object') continue;
+    const rawModels = providerData.models || {};
+    const pKey = String(providerKey).toLowerCase();
+
+    for (const [modelId, modelMeta] of Object.entries(rawModels)) {
+      if (!modelMeta || typeof modelMeta !== 'object') continue;
+      const cost = modelMeta.cost || {};
+      const inputCost = Number(cost.input ?? -1);
+      const outputCost = Number(cost.output ?? -1);
+      const isZeroCost = (inputCost === 0 && outputCost === 0);
+      const isFreeId = String(modelId).endsWith(':free') || String(modelMeta.id || '').endsWith(':free');
+
+      if (modelMeta.status === 'deprecated') {
+        deprecated.push(modelId);
+        if (modelMeta.name) deprecated.push(modelMeta.name);
+      }
+
+      if (isZeroCost || isFreeId) {
+        const ctx = typeof modelMeta.limit?.context === 'number' ? modelMeta.limit.context : 131072;
+        const modelObj = {
+          id: modelId,
+          name: modelMeta.name || modelId,
+          tier: 'A',
+          score: modelMeta.reasoning ? 75 : 60,
+          contextLength: ctx,
+          provider: pKey,
+          addedDate: modelMeta.release_date || modelMeta.last_updated || null,
+          deprecatedAfter: modelMeta.status === 'deprecated' ? 'deprecated' : null,
+          capabilities: {
+            tools: modelMeta.tool_call !== false,
+            reasoning: Boolean(modelMeta.reasoning)
+          }
+        };
+        models.push(modelObj);
+        if (!providerCatalog[pKey]) providerCatalog[pKey] = [];
+        if (!providerCatalog[pKey].includes(modelId)) providerCatalog[pKey].push(modelId);
+      }
+    }
+  }
+
+  return { models, providerCatalog, deprecated };
+}
+
+/**
  * Consolidated Harvester: pull from all sources and write external-models.json.
  */
 async function harvestExternalModels({
@@ -227,8 +281,10 @@ async function harvestExternalModels({
   const sourcesStatus = {
     'vava-nessa': { status: 'failed', count: 0 },
     'mvalentsev': { status: 'failed', count: 0 },
-    'peter123023': { status: 'failed', count: 0 }
+    'peter123023': { status: 'failed', count: 0 },
+    'models.dev': { status: 'failed', count: 0 }
   };
+  let modelsDevJson = null;
 
   // 1. Fetch vava-nessa/free-coding-models
   try {
@@ -253,6 +309,15 @@ async function harvestExternalModels({
     sourcesStatus['peter123023'].status = 'ok';
   } catch (err) {
     console.warn(`[!] Warning: Failed to fetch peter123023 README.en.md: ${err.message}`);
+  }
+
+  // 4. Fetch models.dev/api.json
+  try {
+    const rawModelsDev = await fetchWithBackoff(MODELS_DEV_URL, { retries, baseDelayMs, timeoutMs, fetchImpl });
+    modelsDevJson = JSON.parse(rawModelsDev);
+    sourcesStatus['models.dev'].status = 'ok';
+  } catch (err) {
+    console.warn(`[!] Warning: Failed to fetch models.dev api.json: ${err.message}`);
   }
 
   // Parse or fallback
@@ -286,6 +351,16 @@ async function harvestExternalModels({
     }
   }
 
+  let parsedModelsDev = { models: [], providerCatalog: {}, deprecated: [] };
+  if (modelsDevJson) {
+    try {
+      parsedModelsDev = parseModelsDevContent(modelsDevJson);
+      sourcesStatus['models.dev'].count = parsedModelsDev.models.length;
+    } catch (e) {
+      console.warn(`[!] Failed to parse models.dev api.json: ${e.message}`);
+    }
+  }
+
   // Combine provider catalogs
   const mergedProviderCatalog = { ...parsedSources.providerCatalog };
   for (const [pKey, models] of Object.entries(parsedIndex.providerCatalog)) {
@@ -300,6 +375,29 @@ async function harvestExternalModels({
     }
   }
 
+  for (const [pKey, models] of Object.entries(parsedModelsDev.providerCatalog)) {
+    if (!mergedProviderCatalog[pKey]) {
+      mergedProviderCatalog[pKey] = models;
+    } else {
+      for (const m of models) {
+        if (!mergedProviderCatalog[pKey].includes(m)) {
+          mergedProviderCatalog[pKey].push(m);
+        }
+      }
+    }
+  }
+
+  // Combine models list across sources
+  const mergedModels = [...parsedSources.models];
+  for (const devModel of parsedModelsDev.models) {
+    if (!mergedModels.some(m => m.id === devModel.id && m.provider === devModel.provider)) {
+      mergedModels.push(devModel);
+    }
+  }
+
+  // Combine deprecations
+  const mergedDeprecated = Array.from(new Set([...parsedReadme.deprecated, ...parsedModelsDev.deprecated]));
+
   // Fallback defaults if all networks failed and file doesn't exist
   if (parsedSources.models.length === 0 && fs.existsSync(outputPath)) {
     console.log(`[i] Using existing cached ${outputPath}`);
@@ -311,10 +409,10 @@ async function harvestExternalModels({
   const catalog = {
     lastUpdated: new Date().toISOString(),
     sources: sourcesStatus,
-    models: parsedSources.models,
+    models: mergedModels,
     providerCatalog: mergedProviderCatalog,
     quotas: parsedIndex.quotas,
-    deprecated: parsedReadme.deprecated
+    deprecated: mergedDeprecated
   };
 
   try {
@@ -347,5 +445,7 @@ module.exports = {
   SOURCES_JS_URL,
   INDEX_JSON_URL,
   README_EN_URL,
+  MODELS_DEV_URL,
+  parseModelsDevContent,
   EXTERNAL_MODELS_PATH
 };

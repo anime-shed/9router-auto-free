@@ -431,7 +431,18 @@ function getDynamicProviders() {
       prefixes: [prefix],
       combo: `${prefix}-free`,
       enabled,
-      freePattern: config.freePattern || null,
+      freePattern: (() => {
+        if (config.freePattern !== undefined) return config.freePattern;
+        const lowerUrl = String(baseUrl || '').toLowerCase();
+        const lowerProv = String(provName || '').toLowerCase();
+        const lowerPrefix = String(rawPrefix || '').toLowerCase();
+        if (lowerUrl.includes('aihubmix') || lowerUrl.includes('inferera') || lowerUrl.includes('openrouter') ||
+            lowerProv.includes('aihubmix') || lowerProv.includes('inferera') || lowerProv.includes('openrouter') ||
+            lowerPrefix.includes('aihubmix') || lowerPrefix.includes('inferera') || lowerPrefix.includes('openrouter')) {
+          return ':free';
+        }
+        return null;
+      })(),
       modelsEndpoint: config.modelsEndpoint || null,
       skipPatterns: config.skipPatterns || getExclusionConfig().excludedModels
     });
