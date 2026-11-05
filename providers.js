@@ -725,9 +725,14 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
         : (storage.getExclusionConfig ? storage.getExclusionConfig().excludedModels : []);
       if (effectiveExclusions.some(pat => lowerId === pat || lowerId.includes(pat))) continue;
 
-      // If freePattern is specified (e.g. ":free"), enforce it
-      if (freePattern && !lowerId.includes(freePattern.toLowerCase()) && m.is_free !== true) {
-        continue;
+      // If freePattern is specified (e.g. ":free" or [":free", "-free"]), enforce it
+      if (freePattern && m.is_free !== true) {
+        const patterns = Array.isArray(freePattern) ? freePattern : [freePattern];
+        const matchesAny = patterns.some(pat => {
+          const p = String(pat).toLowerCase();
+          return p.startsWith('-') || p.startsWith(':') ? lowerId.endsWith(p) || lowerId.includes(p) : lowerId.includes(p);
+        });
+        if (!matchesAny) continue;
       }
 
       if (!keepIds.has(lowerId)) continue;
@@ -822,6 +827,8 @@ function isPaidModel(providerOrPrefix, modelId, pricingObj = null) {
   if (!REQUIRE_FREE_SUFFIX_PROVIDERS.has(p)) return false;
   const lId = String(modelId || '').toLowerCase();
   if (lId.endsWith(':free')) return false;
+  // aihubmix/inferera names its free tier models with -free (hyphen) suffix
+  if ((p.includes('aihubmix') || p.includes('inferera')) && lId.endsWith('-free')) return false;
   if (pricingObj && Number(pricingObj.prompt) === 0 && Number(pricingObj.completion) === 0) return false;
   return true;
 }
@@ -1099,9 +1106,15 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
     const seenFullIds = new Set(existingModels.map(m => (m.fullId || '').toLowerCase()));
     const NON_TEXT_REGEX = /embed|tts|whisper|audio|speech|flux|diffusion|rerank|guard|moderation|asr|riva|parakeet|vision-only/i;
     for (const extId of candidatesToAdd) {
-      // If the target provider requires :free suffix (e.g. openrouter, aihubmix), reject any candidate not ending in :free
-      if (REQUIRE_FREE_SUFFIX_PROVIDERS.has(targetKey.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(prefix.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(String(providerName || '').toLowerCase())) {
-        if (!extId.toLowerCase().endsWith(':free')) {
+      // If the target provider requires free suffix (openrouter requires :free; aihubmix allows :free or -free)
+      const tKey = targetKey.toLowerCase();
+      const prefKey = prefix.toLowerCase();
+      const provKey = String(providerName || '').toLowerCase();
+      if (REQUIRE_FREE_SUFFIX_PROVIDERS.has(tKey) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(prefKey) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(provKey)) {
+        const isAihub = tKey.includes('aihub') || prefKey.includes('aihub') || provKey.includes('aihub') || tKey.includes('inferera') || prefKey.includes('inferera') || provKey.includes('inferera');
+        const extLower = extId.toLowerCase();
+        const isValidFree = extLower.endsWith(':free') || (isAihub && extLower.endsWith('-free'));
+        if (!isValidFree) {
           continue;
         }
       }

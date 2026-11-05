@@ -436,9 +436,10 @@ function getDynamicProviders() {
         const lowerUrl = String(baseUrl || '').toLowerCase();
         const lowerProv = String(provName || '').toLowerCase();
         const lowerPrefix = String(rawPrefix || '').toLowerCase();
-        if (lowerUrl.includes('aihubmix') || lowerUrl.includes('inferera') || lowerUrl.includes('openrouter') ||
-            lowerProv.includes('aihubmix') || lowerProv.includes('inferera') || lowerProv.includes('openrouter') ||
-            lowerPrefix.includes('aihubmix') || lowerPrefix.includes('inferera') || lowerPrefix.includes('openrouter')) {
+        if (lowerUrl.includes('aihubmix') || lowerUrl.includes('inferera') || lowerProv.includes('aihubmix') || lowerProv.includes('inferera') || lowerPrefix.includes('aihubmix') || lowerPrefix.includes('inferera')) {
+          return [':free', '-free'];
+        }
+        if (lowerUrl.includes('openrouter') || lowerProv.includes('openrouter') || lowerPrefix.includes('openrouter')) {
           return ':free';
         }
         return null;
