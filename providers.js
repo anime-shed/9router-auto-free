@@ -11,26 +11,32 @@ const path = require('node:path');
 const storage = require('./storage.js');
 
 const CANONICAL_CATALOG_MAP = {
-  openrouter: 'openrouter',
-  nvidia: 'nvidia',
-  ollama: 'ollama',
-  groq: 'groq',
-  cerebras: 'cerebras',
-  gemini: 'googleai',
-  'gemini-cli': 'googleai',
-  mistral: 'mistral',
-  'cloudflare-ai': 'cloudflare',
-  aihubmix: 'aihubmix',
-  inferera: 'inferera',
-  kilocode: 'kilo',
-  kc: 'kilo',
-  'opencode-zen': 'opencode-zen',
-  ocz: 'opencode-zen',
-  'opencode-go': 'opencode-go',
-  ocg: 'opencode-go',
-  xai: 'xai',
-  'grok-cli': 'xai',
-  sambanova: 'sambanova'
+  openrouter: ['openrouter', 'openrouter-free'],
+  nvidia: ['nvidia', 'nvidia-nim'],
+  ollama: ['ollama-cloud'],
+  groq: ['groq', 'groq-free'],
+  cerebras: ['cerebras', 'cerebras-free'],
+  gemini: ['googleai', 'google'],
+  'gemini-cli': ['googleai', 'google'],
+  gc: ['googleai', 'google'],
+  mistral: ['mistral', 'mistral-free'],
+  'cloudflare-ai': ['cloudflare'],
+  aihubmix: ['aihubmix'],
+  inferera: ['aihubmix'],
+  kilocode: ['kilo'],
+  kc: ['kilo'],
+  'opencode-zen': ['opencode-zen'],
+  ocz: ['opencode-zen'],
+  'opencode-go': ['opencode-go'],
+  ocg: ['opencode-go'],
+  oc: ['opencode'],
+  opencode: ['opencode'],
+  xai: ['xai'],
+  'grok-cli': ['xai'],
+  gcli: ['xai'],
+  sambanova: ['sambanova'],
+  'xiaomi-mimo': ['xiaomi-token-plan-cn', 'xiaomi-token-plan-ams', 'xiaomi-token-plan-sgp'],
+  mimo: ['xiaomi-token-plan-cn', 'xiaomi-token-plan-ams', 'xiaomi-token-plan-sgp']
 };
 
 const STANDARD_PROVIDER_PREFIXES = {
@@ -189,7 +195,8 @@ const PROVIDERS = [
     key: 'nvidia', label: 'NVIDIA NIM', combo: 'nvidia-free',
     prefixes: ['nvidia', 'nim'], usageName: 'nvidia',
     kind: 'openai-compatible', connection: 'nvidia', credentialKind: 'default',
-    baseUrl: 'https://integrate.api.nvidia.com/v1'
+    baseUrl: 'https://integrate.api.nvidia.com/v1',
+    skipPatterns: ['embed', 'guard', 'safety', 'tts', 'riva', 'vision', '-vl', 'vlm', 'fuyu', 'kosmos', 'neva', 'vila', 'deplot', 'clip', 'diffusion', 'video', 'detector', 'reward', 'parse']
   },
   {
     key: 'fb', label: 'Freebuff', combo: 'fb-free',
@@ -985,6 +992,14 @@ async function discover9routerActiveProviders(options = {}) {
       }
     } catch {}
   }
+  // Support built-in OpenCode (oc) models if present in 9router models list
+  if (modelsList.some(m => String(m.id || '').startsWith('oc/')) && !activeByPrefix.has('oc')) {
+    const ocConn = { provider: 'opencode', prefix: 'oc', name: 'OpenCode' };
+    activeConns.push(ocConn);
+    activeByPrefix.set('oc', ocConn);
+    activeByProvider.set('opencode', ocConn);
+  }
+
   const results = {};
 
   for (const conn of activeConns) {
@@ -1011,7 +1026,7 @@ async function discover9routerActiveProviders(options = {}) {
   for (const m of modelsList) {
     const id = String(m.id || '');
     if (!id || seenFullIds.has(id)) continue;
-    if (m.owned_by === 'combo' || id === 'free' || id.startsWith('my9model-') || id.endsWith('-free')) {
+    if (m.owned_by === 'combo' || id === 'free' || id.startsWith('my9model-') || (!id.includes('/') && id.endsWith('-free'))) {
       continue;
     }
 
@@ -1100,18 +1115,21 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
     const provLower = String(providerName || '').toLowerCase();
     const prefLower = String(prefix || '').toLowerCase();
     const targetLower = String(targetKey || '').toLowerCase();
-    const catalogKey = CANONICAL_CATALOG_MAP[targetLower] || CANONICAL_CATALOG_MAP[prefLower] || CANONICAL_CATALOG_MAP[provLower];
-    if (!catalogKey) return;
+    const catalogKeysRaw = CANONICAL_CATALOG_MAP[targetLower] || CANONICAL_CATALOG_MAP[prefLower] || CANONICAL_CATALOG_MAP[provLower];
+    if (!catalogKeysRaw) return;
+    const catalogKeys = Array.isArray(catalogKeysRaw) ? catalogKeysRaw : [catalogKeysRaw];
 
     const candidatesToAdd = new Set();
-    const catalogModels = catalog[catalogKey] || [];
-    for (const mId of catalogModels) {
-      candidatesToAdd.add(mId);
+    for (const cKey of catalogKeys) {
+      const catalogModels = catalog[cKey] || [];
+      for (const mId of catalogModels) {
+        candidatesToAdd.add(mId);
+      }
     }
 
     for (const em of modelsMeta) {
       const emProv = String(em.provider || '').toLowerCase();
-      if (emProv === catalogKey) {
+      if (catalogKeys.includes(emProv)) {
         candidatesToAdd.add(em.id);
       }
     }
@@ -1145,7 +1163,12 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
       }
       const preserveNamespace = prefix === 'nvidia' || prefix === 'fb' || prefix === 'freebuff' || prefix === 'openrouter' || targetKey === 'nvidia' || targetKey === 'fb' || targetKey === 'freebuff';
       const isFreeOnlyProvider = REQUIRE_FREE_SUFFIX_PROVIDERS.has(targetKey.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(prefix.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(String(providerName || '').toLowerCase());
-      let cleanId = isFreeOnlyProvider ? (extId.endsWith(':free') ? extId : (extId + ':free')) : extId.replace(/:free$/, '');
+      let cleanId;
+      if (isFreeOnlyProvider) {
+        cleanId = (extId.endsWith(':free') || extId.endsWith('-free')) ? extId : (extId + ':free');
+      } else {
+        cleanId = extId.replace(/:free$/, '');
+      }
       if (!preserveNamespace) {
         cleanId = cleanId.replace(/^[a-zA-Z0-9_.-]+\//, '');
       }
@@ -1199,6 +1222,8 @@ async function discoverAllProviders(options = {}) {
   const activeConns = storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : [];
   const activeProvidersSet = new Set(activeConns.map(c => String(c.provider || '').toLowerCase()));
   const activePrefixesSet = new Set(activeConns.map(c => String(c.prefix || '').toLowerCase()));
+  activePrefixesSet.add('oc');
+  activeProvidersSet.add('opencode');
 
   const isExcluded = rec => {
     const prefixes = (rec.prefixes || [rec.prefix] || []).map(p => String(p).toLowerCase());

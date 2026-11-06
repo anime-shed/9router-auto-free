@@ -769,7 +769,8 @@ async function injectInto9router(providers) {
   const allKeys = new Set([...PROVIDERS.map(r => r.key), ...Object.keys(p)]);
   const defs = Array.from(allKeys).map(key => {
     const rec = PROVIDERS.find(r => r.key === key);
-    const data = p[key] || (rec ? { prefix: rec.prefixes[0], models: [], excluded: true } : { prefix: key, models: [], excluded: true });
+    const isExplicitlyExcluded = isProviderExcluded(key) || (rec && isProviderExcluded(rec.usageName || rec.key));
+    const data = p[key] || (rec ? { prefix: rec.prefixes[0], models: [], excluded: true, notConnected: !isExplicitlyExcluded } : { prefix: key, models: [], excluded: true, notConnected: true });
     const label = data.label || rec?.label || key;
     const combo = data.combo || rec?.combo || `${data.prefix || key}-free`;
     return [key, data, label, combo];
@@ -806,7 +807,11 @@ async function injectInto9router(providers) {
 
   for (const [key, data, label] of defs) {
     if (data.excluded) {
-      console.log(`\n[⊘] ${label}: Skipped (provider excluded)`);
+      if (data.notConnected) {
+        console.log(`\n[⊘] ${label}: Skipped (no active connection in 9router)`);
+      } else {
+        console.log(`\n[⊘] ${label}: Skipped (provider excluded via config)`);
+      }
       continue;
     }
     console.log(`\n[+] Validated ${label}: ${(data.validated || []).length} models:`);

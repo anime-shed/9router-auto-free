@@ -153,13 +153,22 @@ function parseUpstreamFailure(resStatus, rawError) {
   let upstreamStatus = bracketMatch ? parseInt(bracketMatch[1], 10)
     : (httpPrefixMatch ? parseInt(httpPrefixMatch[1], 10) : Number(resStatus || 500));
 
-  const isFatalBillingOrAuth = upstreamStatus === 401 || upstreamStatus === 402 ||
-    /spending.?limit|balance|payment.?required|unauthorized|invalid.?api.?key|account.?suspended|no_available_channel|insufficient.?quota/i.test(text);
+  // Model-level paid / tier / channel errors (specific to this model, NOT fatal to the provider account)
+  const isModelTierOrChannelError =
+    /not included in your plan|payment required to access|not included in you|no_available_channel|model不支持|未开通会员|model_not_found/i.test(text);
+
+  // Account-level fatal billing or authentication failure (kills entire connection)
+  const isFatalBillingOrAuth = !isModelTierOrChannelError && (
+    upstreamStatus === 401 ||
+    /spending.?limit|account.?suspended|invalid.?api.?key|unauthorized/i.test(text)
+  );
 
   const isRateLimit = upstreamStatus === 429 ||
     /quota|rate.?limit|resource.?exhaust|concurrency|too many requests|429/i.test(text);
 
   const isDead = [400, 404, 410].includes(upstreamStatus) ||
+    upstreamStatus === 402 ||
+    isModelTierOrChannelError ||
     /archived|retired|not.?found|does not exist|not included in your plan|model is not included/i.test(text);
 
   const isTimeout = /timed?\s*out|abort/i.test(text);
