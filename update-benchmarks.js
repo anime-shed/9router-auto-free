@@ -275,13 +275,18 @@ async function updateBenchmarks() {
       }
       console.log(`[+] Ingested ${extAdded} models from external-models.json catalog.`);
 
-      // Mark deprecated models
+      // Mark deprecated models (exact match only - never loose substring)
       const deprecated = extData.deprecated || [];
       for (const dep of deprecated) {
+        if (!dep || typeof dep !== 'string') continue;
         const depKey = normalizeKey(dep);
+        if (depKey.length < 3 || depKey.length > 50) continue;
         if (merged[depKey]) merged[depKey].deprecated = true;
         for (const [k, v] of Object.entries(merged)) {
-          if (k.includes(depKey) || depKey.includes(k)) v.deprecated = true;
+          const strippedK = normalizeKey(k.replace(/^[^/]+\//, ''));
+          if (normalizeKey(k) === depKey || strippedK === depKey) {
+            v.deprecated = true;
+          }
         }
       }
     } catch (e) {

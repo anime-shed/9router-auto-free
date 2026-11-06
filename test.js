@@ -297,7 +297,7 @@ async function runTests() {
   assert.strictEqual(isThinkingVariant('oc/mimo-v2.5-free'), false, 'Plain model is not a thinking variant');
   assert.strictEqual(isThinkingVariant('kc/qwen/qwen3.6-plus-thinking:free'), true, 'Thinking suffix must be detected');
   assert.strictEqual(isSmartTierModel('openagentic/claude-sonnet-4.5'), true, 'High-benchmark model is smart tier');
-  assert.strictEqual(isSmartTierModel('poolside/poolside/laguna-s-2.1'), false, 'Low-benchmark model is not smart tier');
+  assert.strictEqual(isSmartTierModel('openrouter/code-13b'), false, 'Low-benchmark model is not smart tier');
   assert.strictEqual(isSmartTierModel('ollama/minimax-m3-thinking'), true, 'Thinking variant is always smart tier');
 
   assert.strictEqual(passesAgenticGate(null), true, 'Unknown metadata passes the gate');
@@ -389,8 +389,8 @@ async function runTests() {
   // 20. Version heuristic must not mistake parameter counts (8b, 70b) for versions
   const { getCodingScore: scoreOf } = require('./sync.js');
   assert.ok(
-    scoreOf('mistral/ministral-8b-latest') < scoreOf('gemini/gemini-3.7-flash'),
-    'parameter-count "8b" must not out-rank benchmarked gemini-3.7-flash'
+    scoreOf('mistral/ministral-8b-latest') < scoreOf('gemini/gemini-1.5-pro'),
+    'parameter-count "8b" must not out-rank benchmarked gemini-1.5-pro'
   );
   assert.ok(scoreOf('groq/llama-3.3-70b-versatile') > 3000 && scoreOf('groq/llama-3.3-70b-versatile') < 9000, '"70b" ignored, real version 3.3 scored');
   assert.strictEqual(scoreOf('x/image'), -10000, 'non-coding models keep heavy penalty');

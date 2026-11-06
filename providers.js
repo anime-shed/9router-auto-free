@@ -10,6 +10,29 @@ const fs = require('node:fs');
 const path = require('node:path');
 const storage = require('./storage.js');
 
+const CANONICAL_CATALOG_MAP = {
+  openrouter: 'openrouter',
+  nvidia: 'nvidia',
+  ollama: 'ollama',
+  groq: 'groq',
+  cerebras: 'cerebras',
+  gemini: 'googleai',
+  'gemini-cli': 'googleai',
+  mistral: 'mistral',
+  'cloudflare-ai': 'cloudflare',
+  aihubmix: 'aihubmix',
+  inferera: 'inferera',
+  kilocode: 'kilo',
+  kc: 'kilo',
+  'opencode-zen': 'opencode-zen',
+  ocz: 'opencode-zen',
+  'opencode-go': 'opencode-go',
+  ocg: 'opencode-go',
+  xai: 'xai',
+  'grok-cli': 'xai',
+  sambanova: 'sambanova'
+};
+
 const STANDARD_PROVIDER_PREFIXES = {
   github: 'gh',
   antigravity: 'ag',
@@ -1074,38 +1097,40 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
     const catalog = extData.providerCatalog || {};
     const modelsMeta = extData.models || [];
 
-    const keysToCheck = new Set([
-      targetKey.toLowerCase(),
-      String(providerName || '').toLowerCase(),
-      prefix.toLowerCase(),
-      `${targetKey.toLowerCase()}-free`,
-      `${prefix.toLowerCase()}-free`,
-      `${String(providerName || '').toLowerCase()}-free`
-    ]);
+    const provLower = String(providerName || '').toLowerCase();
+    const prefLower = String(prefix || '').toLowerCase();
+    const targetLower = String(targetKey || '').toLowerCase();
+    const catalogKey = CANONICAL_CATALOG_MAP[targetLower] || CANONICAL_CATALOG_MAP[prefLower] || CANONICAL_CATALOG_MAP[provLower];
+    if (!catalogKey) return;
 
     const candidatesToAdd = new Set();
-
-    for (const [catKey, modelList] of Object.entries(catalog)) {
-      const lowerCatKey = catKey.toLowerCase();
-      if (keysToCheck.has(lowerCatKey) || [...keysToCheck].some(k => lowerCatKey.includes(k) || k.includes(lowerCatKey))) {
-        for (const mId of modelList) {
-          candidatesToAdd.add(mId);
-        }
-      }
+    const catalogModels = catalog[catalogKey] || [];
+    for (const mId of catalogModels) {
+      candidatesToAdd.add(mId);
     }
 
-    // Also look for models in extData.models with matching provider
     for (const em of modelsMeta) {
       const emProv = String(em.provider || '').toLowerCase();
-      if (keysToCheck.has(emProv) || [...keysToCheck].some(k => emProv.includes(k) || k.includes(emProv))) {
+      if (emProv === catalogKey) {
         candidatesToAdd.add(em.id);
       }
     }
 
+    // Rank candidates by metadata score descending before capping to top 15
+    const candidateList = Array.from(candidatesToAdd);
+    candidateList.sort((a, b) => {
+      const metaA = modelsMeta.find(m => m.id === a) || {};
+      const metaB = modelsMeta.find(m => m.id === b) || {};
+      return (metaB.score || 0) - (metaA.score || 0);
+    });
+
+    const MAX_EXTERNAL_CANDIDATES = 15;
+    const cappedCandidates = candidateList.slice(0, MAX_EXTERNAL_CANDIDATES);
+
     const seenIds = new Set(existingModels.map(m => m.id.toLowerCase()));
     const seenFullIds = new Set(existingModels.map(m => (m.fullId || '').toLowerCase()));
     const NON_TEXT_REGEX = /embed|tts|whisper|audio|speech|flux|diffusion|rerank|guard|moderation|asr|riva|parakeet|vision-only/i;
-    for (const extId of candidatesToAdd) {
+    for (const extId of cappedCandidates) {
       // If the target provider requires free suffix (openrouter requires :free; aihubmix allows :free or -free)
       const tKey = targetKey.toLowerCase();
       const prefKey = prefix.toLowerCase();
@@ -1148,7 +1173,7 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
       });
     }
   } catch (err) {
-    // Non-fatal if external-models.json cannot be read
+    console.warn(`[!] External catalog enrichment warning for ${providerName}: ${err.message}`);
   }
 }
 

@@ -21,6 +21,7 @@ const path = require('node:path');
 
 // Deep modules
 const storage = require('./storage.js');
+const tester = require('./tester.js');
 const scheduler = require('./scheduler.js');
 const { PROVIDERS, PROVIDER_BY_KEY, providerByPrefix, discoverProvider, discoverAllProviders, getProviderCredentials } = require('./providers.js');
 const { BENCHMARKS_PATH, SMART_MIN_SCORE } = require('./update-benchmarks.js');
@@ -430,51 +431,12 @@ function assembleCombos({ candidates, latencyMap = new Map(), metaMap = new Map(
 // ----------------------------------------------------------------------------
 
 async function testModelWith9router(fullModelId, token, attempt = 1, fetchImpl = null) {
-  if (!token) return { valid: true, ok: true, latencyMs: 9999, verdict: 'active', note: '9router token unavailable' };
-
-  const doFetch = fetchImpl || fetch;
-  const startTime = Date.now();
   const routerUrl = storage.resolveNineRouterUrl ? storage.resolveNineRouterUrl() : (process.env.NINEROUTER_URL || 'http://127.0.0.1:20128');
-  try {
-    const res = await doFetch(`${routerUrl}/api/models/test`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-9r-cli-token': token
-      },
-      body: JSON.stringify({ model: fullModelId, kind: 'llm' }),
-      signal: AbortSignal.timeout(45000)
-    });
-
-    const latencyMs = Date.now() - startTime;
-    const data = await res.json().catch(() => ({}));
-
-    if (data.ok) return { valid: true, ok: true, latencyMs, verdict: 'active' };
-
-    const status = Number(data.status || res.status);
-    const fullReason = String(data.error || `HTTP ${data.status || res.status}`).replace(/\s+/g, ' ').trim();
-    const reason = fullReason.slice(0, 75);
-    const quotaish = status === 429 || /quota|rate.?limit|resource.?exhaust|capacity/i.test(fullReason.slice(0, 400));
-
-    if (TRANSIENT_HTTP_STATUSES.has(status) && attempt < 2) {
-      await new Promise(r => setTimeout(r, QUOTA_RETRY_DELAY_MS));
-      return { ...(await testModelWith9router(fullModelId, token, attempt + 1, fetchImpl)), retried: true };
-    }
-
-    const result = { valid: false, ok: false, latencyMs, status, reason };
-    if (quotaish) result.quotaExhausted = true;
-    result.verdict = quotaish ? 'quota' : 'dead';
-    return result;
-  } catch (err) {
-    const latencyMs = Date.now() - startTime;
-    if (attempt < 2) {
-      await new Promise(r => setTimeout(r, QUOTA_RETRY_DELAY_MS));
-      return { ...(await testModelWith9router(fullModelId, token, attempt + 1, fetchImpl)), retried: true };
-    }
-    const result = { valid: false, ok: false, latencyMs, reason: err.message.slice(0, 75), verdict: 'dead' };
-    if (/timed?\s*out|abort/i.test(err.message)) result.timedOut = true;
-    return result;
-  }
+  return tester.testModelWith9router(fullModelId, token, {
+    routerUrl,
+    attempt,
+    fetchImpl
+  });
 }
 
 async function validateCandidateModels(models, prefix) {
@@ -497,43 +459,18 @@ async function validateCandidateModels(models, prefix) {
     return nonExcludedModels;
   }
 
-  const activeModels = [];
-  const quotaLimitedModels = [];
-  const providerRecord = providerByPrefix(prefix);
-  const concurrency = providerRecord?.solo ? 1 : 5;
-  const queue = [...nonExcludedModels];
-
   console.log(`[*] Pre-testing ${nonExcludedModels.length} candidate models for [${prefix}]...`);
+  const routerUrl = storage.resolveNineRouterUrl ? storage.resolveNineRouterUrl() : (process.env.NINEROUTER_URL || 'http://127.0.0.1:20128');
 
-  async function worker() {
-    while (queue.length > 0) {
-      const m = queue.shift();
-      const fullId = m.fullId || `${prefix}/${m.id}`;
-
-      if (providerRecord?.throttleMs) await new Promise(r => setTimeout(r, providerRecord.throttleMs));
-
-      const result = await testModelWith9router(fullId, token);
-      const verdict = classifyTestResult(result);
-
-      if (verdict === 'active') {
-        const msText = `${result.latencyMs}ms`;
-        console.log(`    [✓ Active] ${fullId} (${msText}) ${result.note ? '(' + result.note + ')' : ''}`);
-        activeModels.push({ ...m, latencyMs: result.latencyMs });
-      } else if (verdict === 'quota') {
-        console.log(`    [⏳ Quota] ${fullId} -> Kept at bottom (${result.reason})`);
-        quotaLimitedModels.push({ ...m, latencyMs: QUOTA_LATENCY_SENTINEL, quotaExhausted: true });
-      } else {
-        console.log(`    [✗ Dropped] ${fullId} -> ${result.reason}${result.retried ? ' (after retry)' : ''}`);
-      }
-    }
-  }
-
-  const workers = Array.from({ length: Math.min(concurrency, nonExcludedModels.length) }, () => worker());
-  await Promise.all(workers);
+  const testResult = await tester.testModels(nonExcludedModels, {
+    token,
+    prefix,
+    routerUrl
+  });
 
   return [
-    ...sortModelsByCodingQuality(activeModels),
-    ...sortModelsByCodingQuality(quotaLimitedModels)
+    ...sortModelsByCodingQuality(testResult.active),
+    ...sortModelsByCodingQuality(testResult.quota)
   ];
 }
 
@@ -614,11 +551,12 @@ function loadFullCandidateState() {
 
 function saveFullCandidateState(state) {
   try {
-    fs.writeFileSync(CANDIDATES_STATE_PATH, JSON.stringify({
+    tester.atomicWriteFileSync(CANDIDATES_STATE_PATH, JSON.stringify({
+      version: 2,
       updatedAt: new Date().toISOString(),
       providers: state.providers || {},
       cooldowns: state.cooldowns || {}
-    }, null, 2));
+    }, null, 2) + '\n');
   } catch (err) {
     console.warn(`[!] Warning: Could not save candidates-state.json: ${err.message}`);
   }
@@ -741,41 +679,47 @@ async function refreshCombos() {
     }
   }
 
-  const CONCURRENCY = 8;
-  console.log(`[*] Re-testing ${queue.length} unique combo members (${quotaSet.size} in backoff)...`);
+  console.log(`[*] Re-testing ${queue.length} unique combo members (${quotaSet.size} in backoff)...\n    [i] Grouping candidate models by active provider for rate-paced testing...`);
+  const routerUrl = storage.resolveNineRouterUrl ? storage.resolveNineRouterUrl() : (process.env.NINEROUTER_URL || 'http://127.0.0.1:20128');
 
-  async function worker() {
-    while (queue.length > 0) {
-      const fullId = queue.shift();
-      const providerPrefix = String(fullId).split('/')[0].toLowerCase();
-      const throttled = providerByPrefix(providerPrefix);
-      if (throttled?.throttleMs) await new Promise(r => setTimeout(r, throttled.throttleMs));
-
-      const result = await testModelWith9router(fullId, token);
-      const verdict = classifyTestResult(result);
-      if (verdict === 'active') {
-        latencyRefresh.set(fullId, result.latencyMs);
-        activeSet.add(fullId);
-        if (cooldowns[fullId]) delete cooldowns[fullId];
-      } else if (verdict === 'quota') {
-        console.log(`    [⏳ Quota] ${fullId} demoted to bottom (${result.reason})`);
-        quotaSet.add(fullId);
-        const prevCount = cooldowns[fullId]?.failCount || 0;
-        const newCount = prevCount + 1;
-        const delayMs = getCooldownDelayMs(newCount);
-        cooldowns[fullId] = {
-          failCount: newCount,
-          lastFailedAt: new Date().toISOString(),
-          nextRetryAt: new Date(now + delayMs).toISOString(),
-          reason: result.reason
-        };
-      } else {
-        console.log(`    [✗ Removed] ${fullId} -> ${result.reason}${result.retried ? ' (after retry)' : ''}`);
-        if (cooldowns[fullId]) delete cooldowns[fullId];
-      }
-    }
+  const byProvider = new Map();
+  for (const fullId of queue) {
+    const provPrefix = String(fullId).split('/')[0].toLowerCase();
+    if (!byProvider.has(provPrefix)) byProvider.set(provPrefix, []);
+    byProvider.get(provPrefix).push(fullId);
   }
-  await Promise.all(Array.from({ length: Math.min(CONCURRENCY, queue.length) }, () => worker()));
+
+  // Run testing per-provider in parallel, but with strict internal pacing per provider
+  await Promise.all(Array.from(byProvider.entries()).map(async ([provPrefix, modelIds]) => {
+    const testRes = await tester.testModels(modelIds, {
+      token,
+      prefix: provPrefix,
+      routerUrl
+    });
+
+    for (const m of testRes.active) {
+      latencyRefresh.set(m.fullId, m.latencyMs);
+      activeSet.add(m.fullId);
+      if (cooldowns[m.fullId]) delete cooldowns[m.fullId];
+    }
+
+    for (const m of testRes.quota) {
+      quotaSet.add(m.fullId);
+      const prevCount = cooldowns[m.fullId]?.failCount || 0;
+      const newCount = prevCount + 1;
+      const delayMs = getCooldownDelayMs(newCount);
+      cooldowns[m.fullId] = {
+        failCount: newCount,
+        lastFailedAt: new Date().toISOString(),
+        nextRetryAt: new Date(now + delayMs).toISOString(),
+        reason: m.reason
+      };
+    }
+
+    for (const m of testRes.dead) {
+      if (cooldowns[m.fullId]) delete cooldowns[m.fullId];
+    }
+  }));
   saveFullCandidateState({ ...fullState, cooldowns });
 
   const rankedActive = sortModelsByCodingQuality(Array.from(activeSet), latencyRefresh);

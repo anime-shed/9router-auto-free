@@ -193,14 +193,14 @@ function parseReadmeContent(content) {
     const strikeMatch = trimmed.match(/~~([^~]+)~~/);
     if (strikeMatch) {
       const modelName = strikeMatch[1].trim();
-      if (modelName && !deprecated.includes(modelName)) {
+      if (modelName && modelName.length >= 3 && modelName.length <= 50 && !modelName.includes('http') && !deprecated.includes(modelName)) {
         deprecated.push(modelName);
       }
     }
-    // Explicit deprecation note
+    // Explicit deprecation note in headings: e.g. "### Model Name (retired)"
     if (/retired|deprecated|offline|410 gone|shutdown/i.test(trimmed) && trimmed.startsWith('#')) {
-      const cleanHeading = trimmed.replace(/^#+\s*/, '').trim();
-      if (cleanHeading && !deprecated.includes(cleanHeading)) {
+      const cleanHeading = trimmed.replace(/^#+\s*/, '').replace(/\s*\([^)]*\)/g, '').replace(/~~[^~]+~~/g, '').trim();
+      if (cleanHeading && cleanHeading.length >= 3 && cleanHeading.length <= 50 && !cleanHeading.includes('http') && !deprecated.includes(cleanHeading)) {
         deprecated.push(cleanHeading);
       }
     }
@@ -232,8 +232,11 @@ function parseModelsDevContent(content) {
       const isFreeId = String(modelId).endsWith(':free') || String(modelMeta.id || '').endsWith(':free');
 
       if (modelMeta.status === 'deprecated') {
-        deprecated.push(modelId);
-        if (modelMeta.name) deprecated.push(modelMeta.name);
+        const isAggregator = ['aihubmix', 'opper', 'kenari', 'unorouter', 'github-copilot', 'poe', 'venice'].includes(pKey);
+        if (!isAggregator) {
+          deprecated.push(modelId);
+          if (modelMeta.name && !modelMeta.name.includes(' ')) deprecated.push(modelMeta.name);
+        }
       }
 
       if (isZeroCost || isFreeId) {
