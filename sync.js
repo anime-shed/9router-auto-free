@@ -23,7 +23,7 @@ const path = require('node:path');
 const storage = require('./storage.js');
 const tester = require('./tester.js');
 const scheduler = require('./scheduler.js');
-const { PROVIDERS, PROVIDER_BY_KEY, providerByPrefix, discoverProvider, discoverAllProviders, getProviderCredentials } = require('./providers.js');
+const { PROVIDERS, PROVIDER_BY_KEY, providerByPrefix, discoverProvider, discoverAllProviders, getProviderCredentials, formatRoutingFullId } = require('./providers.js');
 const { BENCHMARKS_PATH, SMART_MIN_SCORE } = require('./update-benchmarks.js');
 
 // Options
@@ -870,6 +870,18 @@ async function injectInto9router(providers) {
     opencodeGo: sortedOpencodeGo
   }), 'daily-sync');
 
+  // Update enabledModels in 9router SQLite connection table for providers with active models
+  if (storage.updateProviderEnabledModels) {
+    for (const [key, data] of defs) {
+      if (data && !data.excluded && Array.isArray(data.validated) && data.validated.length > 0) {
+        const activeOnly = data.validated.filter(m => !m.quotaExhausted);
+        if (activeOnly.length > 0) {
+          storage.updateProviderEnabledModels(data.prefix || key, activeOnly);
+        }
+      }
+    }
+  }
+
   saveCandidateState(defs, prefixedByProvider);
   console.log('\n[🎉] Synchronization completed successfully.');
 }
@@ -994,6 +1006,7 @@ module.exports = {
   PROVIDERS,
   PROVIDER_BY_KEY,
   providerByPrefix,
+  formatRoutingFullId,
   isVerbose,
   SUPER_COMBO_EXCLUDED_PREFIXES,
   isExcludedFromSuperCombo

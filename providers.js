@@ -231,6 +231,24 @@ function providerByPrefix(prefix) {
   return null;
 }
 
+/**
+ * Format full routing ID for 9router requests: `${prefix}/${modelId}`.
+ * Preserves upstream publisher namespaces (e.g. `nvidia/nemotron-...` -> `nvidia/nvidia/nemotron-...`).
+ */
+function formatRoutingFullId(prefix, modelId) {
+  const p = String(prefix || '').toLowerCase();
+  let mId = String(modelId || '').trim();
+  if (!mId) return '';
+  if (p === 'nvidia') {
+    if (mId.startsWith('nvidia/nvidia/')) return mId;
+    if (mId.startsWith('nvidia/')) return `nvidia/${mId}`;
+    if (mId.startsWith('nemotron')) return `nvidia/nvidia/${mId}`;
+    return `nvidia/${mId}`;
+  }
+  if (mId.startsWith(`${p}/`)) return mId;
+  return `${p}/${mId}`;
+}
+
 // ----------------------------------------------------------------------------
 // Internal Credential Resolution
 // ----------------------------------------------------------------------------
@@ -433,7 +451,7 @@ async function fetchKiloFreeModels(accessToken, gatewayUrl) {
   return freeModels;
 }
 
-async function fetchOpenRouterFreeModels(apiKey, baseUrl = 'https://openrouter.ai/api/v1') {
+async function fetchOpenRouterFreeModels(apiKey, baseUrl = 'https://openrouter.ai/api/v1', prefix = 'openrouter') {
   const freeModels = [];
   try {
     console.log('[-] Fetching free models from OpenRouter API (/api/v1/models)...');
@@ -452,6 +470,7 @@ async function fetchOpenRouterFreeModels(apiKey, baseUrl = 'https://openrouter.a
       if (isFree && id) {
         freeModels.push({
           id,
+          fullId: formatRoutingFullId(prefix, id),
           name: m.name || id,
           source: 'openrouter-free',
           contextLength: Number(m.context_length || m.max_context_length || 0) || undefined
@@ -464,7 +483,7 @@ async function fetchOpenRouterFreeModels(apiKey, baseUrl = 'https://openrouter.a
   return freeModels;
 }
 
-async function fetchPoolsideFreeModels(apiKey, baseUrl = 'https://inference.poolside.ai/v1') {
+async function fetchPoolsideFreeModels(apiKey, baseUrl = 'https://inference.poolside.ai/v1', prefix = 'poolside') {
   const freeModels = [];
   if (!apiKey) return freeModels;
   try {
@@ -481,6 +500,7 @@ async function fetchPoolsideFreeModels(apiKey, baseUrl = 'https://inference.pool
       if (id) {
         freeModels.push({
           id,
+          fullId: formatRoutingFullId(prefix, id),
           name: m.name || id,
           source: 'poolside-free',
           contextLength: Number(m.context_length || m.max_context_length || 0) || undefined
@@ -522,7 +542,7 @@ function getOpenCodeFreeModels() {
   }
 }
 
-async function fetchGeminiFreeModels(apiKey, baseUrl = 'https://generativelanguage.googleapis.com/v1beta') {
+async function fetchGeminiFreeModels(apiKey, baseUrl = 'https://generativelanguage.googleapis.com/v1beta', prefix = 'gemini') {
   const freeModels = [];
   if (!apiKey) return freeModels;
   try {
@@ -547,6 +567,7 @@ async function fetchGeminiFreeModels(apiKey, baseUrl = 'https://generativelangua
       if (id) {
         freeModels.push({
           id,
+          fullId: formatRoutingFullId(prefix, id),
           name: m.displayName || id,
           source: 'gemini-api-free',
           contextLength: Number(m.inputTokenLimit || 0) || undefined
@@ -559,7 +580,7 @@ async function fetchGeminiFreeModels(apiKey, baseUrl = 'https://generativelangua
   return freeModels;
 }
 
-async function fetchOllamaFreeModels(apiKey, baseUrl = 'https://api.ollama.com/v1') {
+async function fetchOllamaFreeModels(apiKey, baseUrl = 'https://api.ollama.com/v1', prefix = 'ollama') {
   const freeModels = [];
   if (!apiKey) return freeModels;
   try {
@@ -578,6 +599,7 @@ async function fetchOllamaFreeModels(apiKey, baseUrl = 'https://api.ollama.com/v
       if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
       freeModels.push({
         id,
+        fullId: formatRoutingFullId(prefix, id),
         name: m.name || id,
         source: 'ollama-api-free',
         contextLength: Number(m.context_length || 0) || undefined
@@ -589,7 +611,7 @@ async function fetchOllamaFreeModels(apiKey, baseUrl = 'https://api.ollama.com/v
   return freeModels;
 }
 
-async function fetchAirforceFreeModels(apiKey, baseUrl = 'https://api.airforce/v1') {
+async function fetchAirforceFreeModels(apiKey, baseUrl = 'https://api.airforce/v1', prefix = 'api-airforce') {
   const freeModels = [];
   try {
     console.log('[-] Fetching free models from API.airforce API (/v1/models)...');
@@ -607,6 +629,7 @@ async function fetchAirforceFreeModels(apiKey, baseUrl = 'https://api.airforce/v
       if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
       freeModels.push({
         id,
+        fullId: formatRoutingFullId(prefix, id),
         name: m.name || id,
         source: 'airforce-api-free',
         contextLength: Number(m.context_length || 0) || undefined
@@ -618,7 +641,7 @@ async function fetchAirforceFreeModels(apiKey, baseUrl = 'https://api.airforce/v
   return freeModels;
 }
 
-async function fetchBazaarlinkFreeModels(apiKey, baseUrl = 'https://bazaarlink.ai/api/v1') {
+async function fetchBazaarlinkFreeModels(apiKey, baseUrl = 'https://bazaarlink.ai/api/v1', prefix = 'bazaarlink') {
   const freeModels = [];
   try {
     console.log('[-] Fetching free models from Bazaarlink API (/v1/models)...');
@@ -637,6 +660,7 @@ async function fetchBazaarlinkFreeModels(apiKey, baseUrl = 'https://bazaarlink.a
       if (isFree && id) {
         freeModels.push({
           id,
+          fullId: formatRoutingFullId(prefix, id),
           name: m.name || id,
           source: 'bazaarlink-free',
           contextLength: Number(m.context_length || 0) || undefined
@@ -770,6 +794,7 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
 
       freeModels.push({
         id,
+        fullId: formatRoutingFullId(prefix, id),
         name,
         source: `${prefix}-api-free`,
         contextLength: Number(m.context_window || m.context_length || m.max_context_length || 0) || undefined
@@ -781,7 +806,7 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
   return freeModels;
 }
 
-async function fetchCloudflareFreeModels(creds) {
+async function fetchCloudflareFreeModels(creds, prefix = 'cloudflare-ai') {
   const freeModels = [];
   if (!creds.apiKey || !creds.accountId) {
     console.log('[⊘] Cloudflare Workers AI: no "cloudflare-ai" connection found in 9router, skipping.');
@@ -822,6 +847,7 @@ async function fetchCloudflareFreeModels(creds) {
 
         freeModels.push({
           id,
+          fullId: formatRoutingFullId(prefix, id),
           name: m.name || id,
           source: 'cloudflare-workersai-free',
           contextLength: Number(props.context_window || 0) || undefined
@@ -894,37 +920,37 @@ const PROVIDER_DISCOVERY_MAP = {
 
   openrouter: async record => {
     const creds = getProviderCredentials(record);
-    const models = await fetchOpenRouterFreeModels(creds.apiKey, creds.baseUrl);
+    const models = await fetchOpenRouterFreeModels(creds.apiKey, creds.baseUrl, creds.prefix || 'openrouter');
     return { prefix: creds.prefix || 'openrouter', models };
   },
 
   poolside: async record => {
     const creds = getProviderCredentials(record);
-    const models = await fetchPoolsideFreeModels(creds.apiKey, creds.baseUrl);
+    const models = await fetchPoolsideFreeModels(creds.apiKey, creds.baseUrl, creds.prefix || 'poolside');
     return { prefix: creds.prefix || 'poolside', models };
   },
 
   gemini: async record => {
     const creds = getProviderCredentials(record);
-    const models = await fetchGeminiFreeModels(creds.apiKey, creds.baseUrl);
+    const models = await fetchGeminiFreeModels(creds.apiKey, creds.baseUrl, creds.prefix || 'gemini');
     return { prefix: creds.prefix || 'gemini', models };
   },
 
   ollama: async record => {
     const creds = getProviderCredentials(record);
-    const models = await fetchOllamaFreeModels(creds.apiKey, creds.baseUrl);
+    const models = await fetchOllamaFreeModels(creds.apiKey, creds.baseUrl, creds.prefix || 'ollama');
     return { prefix: creds.prefix || 'ollama', models };
   },
 
   airforce: async record => {
     const creds = getProviderCredentials(record);
-    const models = await fetchAirforceFreeModels(creds.apiKey, creds.baseUrl);
+    const models = await fetchAirforceFreeModels(creds.apiKey, creds.baseUrl, creds.prefix || 'api-airforce');
     return { prefix: creds.prefix || 'api-airforce', models };
   },
 
   bazaarlink: async record => {
     const creds = getProviderCredentials(record);
-    const models = await fetchBazaarlinkFreeModels(creds.apiKey, creds.baseUrl);
+    const models = await fetchBazaarlinkFreeModels(creds.apiKey, creds.baseUrl, creds.prefix || 'bazaarlink');
     return { prefix: creds.prefix || 'bazaarlink', models };
   },
 
@@ -938,7 +964,7 @@ const PROVIDER_DISCOVERY_MAP = {
 
   cloudflare: async () => {
     const creds = cloudflareConnectionCredentials();
-    const models = await fetchCloudflareFreeModels(creds);
+    const models = await fetchCloudflareFreeModels(creds, creds.prefix || 'cloudflare-ai');
     return { prefix: creds.prefix || 'cloudflare-ai', models };
   },
 
@@ -1084,7 +1110,7 @@ async function discover9routerActiveProviders(options = {}) {
 
     results[targetKey].models.push({
       id: modelId,
-      fullId: id.includes('/') ? id : `${targetKey}/${id}`,
+      fullId: formatRoutingFullId(targetKey, modelId),
       name: m.name || modelId,
       source: `${targetKey}-9router`,
       contextLength,
@@ -1175,9 +1201,7 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
       if (NON_TEXT_REGEX.test(cleanId) || NON_TEXT_REGEX.test(extId)) {
         continue;
       }
-      const fullId = (prefix === 'nvidia' && cleanId.startsWith('nvidia/'))
-        ? cleanId
-        : (cleanId.startsWith(`${prefix}/`) ? cleanId : `${prefix}/${cleanId}`);
+      const fullId = formatRoutingFullId(prefix, cleanId);
       if (seenIds.has(cleanId.toLowerCase()) || seenFullIds.has(fullId.toLowerCase())) {
         continue;
       }
@@ -1260,58 +1284,90 @@ async function discoverAllProviders(options = {}) {
       return; // Skip providers not active on 9router
     }
 
-    const existing = results[rec.key] || results[rec.prefixes[0]];
-    if (existing && existing.models && existing.models.length > 0) {
-      return;
-    }
-
     if (isExcluded(rec)) {
       if (!results[rec.key]) {
         results[rec.key] = { prefix: rec.prefixes[0], models: [], excluded: true, label: rec.label, combo: rec.combo };
       }
-    } else {
-      try {
-        const res = await discoverProvider(rec);
-        const prefix = rec.prefixes[0];
-        enrichProviderCandidatesFromExternalCatalog(rec.key, rec.usageName || rec.key, res.models, prefix);
-        if (results[rec.key]) {
-          if (res.models && res.models.length > 0) results[rec.key].models = res.models;
-        } else {
-          results[rec.key] = { ...res, label: rec.label, combo: rec.combo };
+      return;
+    }
+
+    try {
+      const res = await discoverProvider(rec);
+      const prefix = rec.prefixes[0];
+      const liveModels = (res && res.models) ? res.models : [];
+      const targetKey = results[rec.key] ? rec.key : (results[prefix] ? prefix : rec.key);
+      const existingModels = results[targetKey]?.models || [];
+
+      const seenFullIds = new Set();
+      const mergedModels = [];
+
+      // 1. Upstream live models first
+      for (const m of liveModels) {
+        const fId = (m.fullId || formatRoutingFullId(prefix, m.id)).toLowerCase();
+        if (!seenFullIds.has(fId)) {
+          seenFullIds.add(fId);
+          mergedModels.push({
+            ...m,
+            fullId: m.fullId || formatRoutingFullId(prefix, m.id),
+            source: `${prefix}-upstream-live`
+          });
         }
-      } catch (err) {
-        console.warn(`[!] Failed to discover ${rec.label}: ${err.message}`);
-        if (!results[rec.key]) {
-          const fallbackModels = [];
-          enrichProviderCandidatesFromExternalCatalog(rec.key, rec.usageName || rec.key, fallbackModels, rec.prefixes[0]);
-          results[rec.key] = { prefix: rec.prefixes[0], models: fallbackModels, label: rec.label, combo: rec.combo };
+      }
+
+      // 2. Existing 9router/external models
+      for (const m of existingModels) {
+        const fId = (m.fullId || formatRoutingFullId(prefix, m.id)).toLowerCase();
+        // Drop single-prefixed nemotron if nvidia provider
+        if (prefix === 'nvidia' && fId.startsWith('nvidia/nemotron-') && !fId.startsWith('nvidia/nvidia/')) {
+          continue;
         }
+        if (!seenFullIds.has(fId)) {
+          seenFullIds.add(fId);
+          mergedModels.push(m);
+        }
+      }
+
+      enrichProviderCandidatesFromExternalCatalog(rec.key, rec.usageName || rec.key, mergedModels, prefix);
+
+      if (results[targetKey]) {
+        results[targetKey].models = mergedModels;
+      } else {
+        results[targetKey] = { ...res, prefix, models: mergedModels, label: rec.label, combo: rec.combo };
+      }
+    } catch (err) {
+      console.warn(`[!] Failed to discover ${rec.label}: ${err.message}`);
+      const prefix = rec.prefixes[0];
+      const targetKey = results[rec.key] ? rec.key : (results[prefix] ? prefix : rec.key);
+      if (!results[targetKey]) {
+        const fallbackModels = [];
+        enrichProviderCandidatesFromExternalCatalog(rec.key, rec.usageName || rec.key, fallbackModels, prefix);
+        results[targetKey] = { prefix, models: fallbackModels, label: rec.label, combo: rec.combo };
       }
     }
   }));
 
-  // 2. Discover Dynamic Providers from 9router Active Connections
+  // 3. Discover Dynamic Providers from 9router Active Connections
   try {
     const dynamicProviders = storage.getDynamicProviders ? storage.getDynamicProviders() : [];
     await Promise.all(dynamicProviders.map(async dp => {
-      const isAlreadyHandled = results[dp.key] ||
-        results[dp.prefix] ||
-        results[dp.provider] ||
-        Object.values(results).some(r => (r.prefix && r.prefix === dp.prefix) || (r.provider && r.provider === dp.provider));
-      if (isAlreadyHandled) return;
+      const targetKey = results[dp.key] ? dp.key : (results[dp.prefix] ? dp.prefix : dp.key);
 
       if (!dp.enabled || isExcluded(dp) || excludedProviders.includes(dp.provider.toLowerCase())) {
-        results[dp.key] = { prefix: dp.prefix, models: [], excluded: true, label: dp.label, combo: dp.combo, isDynamic: true };
+        if (!results[targetKey]) {
+          results[targetKey] = { prefix: dp.prefix, models: [], excluded: true, label: dp.label, combo: dp.combo, isDynamic: true };
+        }
         return;
       }
 
       if (!dp.baseUrl) {
-        results[dp.key] = { prefix: dp.prefix, models: [], label: dp.label, combo: dp.combo, isDynamic: true };
+        if (!results[targetKey]) {
+          results[targetKey] = { prefix: dp.prefix, models: [], label: dp.label, combo: dp.combo, isDynamic: true };
+        }
         return;
       }
 
       try {
-        const models = await fetchOpenAiCompatibleFreeModels({
+        const liveModels = await fetchOpenAiCompatibleFreeModels({
           label: dp.label,
           apiKey: dp.apiKey,
           baseUrl: dp.baseUrl,
@@ -1320,10 +1376,43 @@ async function discoverAllProviders(options = {}) {
           freePattern: dp.freePattern,
           requireApiKey: false
         });
-        results[dp.key] = { prefix: dp.prefix, models, label: dp.label, combo: dp.combo, isDynamic: true };
+
+        const existingModels = results[targetKey]?.models || [];
+        const seenFull = new Set();
+        const merged = [];
+
+        for (const m of liveModels) {
+          const fId = (m.fullId || formatRoutingFullId(dp.prefix, m.id)).toLowerCase();
+          if (!seenFull.has(fId)) {
+            seenFull.add(fId);
+            merged.push({
+              ...m,
+              fullId: m.fullId || formatRoutingFullId(dp.prefix, m.id),
+              source: `${dp.prefix}-upstream-live`
+            });
+          }
+        }
+
+        for (const m of existingModels) {
+          const fId = (m.fullId || formatRoutingFullId(dp.prefix, m.id)).toLowerCase();
+          if (!seenFull.has(fId)) {
+            seenFull.add(fId);
+            merged.push(m);
+          }
+        }
+
+        enrichProviderCandidatesFromExternalCatalog(dp.prefix, dp.provider, merged, dp.prefix);
+
+        if (results[targetKey]) {
+          results[targetKey].models = merged;
+        } else {
+          results[targetKey] = { prefix: dp.prefix, models: merged, label: dp.label, combo: dp.combo, isDynamic: true };
+        }
       } catch (err) {
         console.warn(`[!] Failed to discover dynamic provider ${dp.label}: ${err.message}`);
-        results[dp.key] = { prefix: dp.prefix, models: [], label: dp.label, combo: dp.combo, isDynamic: true };
+        if (!results[targetKey]) {
+          results[targetKey] = { prefix: dp.prefix, models: [], label: dp.label, combo: dp.combo, isDynamic: true };
+        }
       }
     }));
   } catch (err) {
@@ -1345,6 +1434,7 @@ module.exports = {
   discover9routerActiveProviders,
   discoverAllProviders,
   enrichProviderCandidatesFromExternalCatalog,
+  formatRoutingFullId,
   REQUIRE_FREE_SUFFIX_PROVIDERS,
   isPaidModel
 };

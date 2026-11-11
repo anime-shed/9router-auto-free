@@ -160,7 +160,15 @@ async function runTests() {
     assert.ok(Object.keys(nineRouterProviders).length > 0, 'Must discover active providers from 9router');
     assert.strictEqual('kimi' in nineRouterProviders, false, 'Inactive provider kimi must not be included');
     const foundPrefixes = Object.keys(nineRouterProviders);
-    assert.ok(foundPrefixes.includes('ag') || foundPrefixes.includes('gh') || foundPrefixes.includes('gemini'), 'Expected active providers (ag, gh, gemini) to be found');
+    assert.ok(
+      foundPrefixes.includes('ag') ||
+      foundPrefixes.includes('gh') ||
+      foundPrefixes.includes('gemini') ||
+      foundPrefixes.includes('gc') ||
+      foundPrefixes.includes('nvidia') ||
+      foundPrefixes.includes('groq'),
+      'Expected active providers (nvidia, groq, gc, ag, gh, or gemini) to be found'
+    );
     for (const [key, p] of Object.entries(nineRouterProviders)) {
       assert.ok(p.combo && p.combo.endsWith('-free'), `Combo name must end with -free, got ${p.combo}`);
       assert.ok(Array.isArray(p.models), 'Provider models must be an array');
@@ -918,6 +926,50 @@ async function runTests() {
     ], null, null, { benchmarks: mockBenchmarks });
     assert.strictEqual(sortedDep[0].id, 'test-model-32k', 'Active model must rank ahead of deprecated model despite lower base score');
   }
+
+  // 12) Routing Full ID & Publisher Namespace Resolution Tests
+  console.log('[-] Testing formatRoutingFullId publisher namespace preservation & updateProviderEnabledModels...');
+  const { formatRoutingFullId } = require('./providers.js');
+  assert.strictEqual(
+    formatRoutingFullId('nvidia', 'nvidia/nemotron-3-ultra-550b-a55b'),
+    'nvidia/nvidia/nemotron-3-ultra-550b-a55b',
+    'NVIDIA Nemotron model must be prefixed with nvidia/nvidia/ to allow 9router connection stripping'
+  );
+  assert.strictEqual(
+    formatRoutingFullId('nvidia', 'nemotron-3-ultra-550b-a55b'),
+    'nvidia/nvidia/nemotron-3-ultra-550b-a55b',
+    'Nemotron root ID without nvidia/ must get nvidia/nvidia/ prefix'
+  );
+  assert.strictEqual(
+    formatRoutingFullId('nvidia', 'nvidia/nvidia/nemotron-3-ultra-550b-a55b'),
+    'nvidia/nvidia/nemotron-3-ultra-550b-a55b',
+    'Already properly formatted nvidia/nvidia/ model must not be double prefixed'
+  );
+  assert.strictEqual(
+    formatRoutingFullId('nvidia', 'poolside/laguna-xs-2.1'),
+    'nvidia/poolside/laguna-xs-2.1',
+    'NVIDIA partner model poolside/laguna-xs-2.1 must keep single nvidia/ prefix'
+  );
+  assert.strictEqual(
+    formatRoutingFullId('groq', 'qwen/qwen3.8-27b'),
+    'groq/qwen/qwen3.8-27b',
+    'Groq model with publisher prefix must preserve publisher subfolder'
+  );
+  assert.strictEqual(
+    formatRoutingFullId('groq', 'groq/qwen3.8-27b'),
+    'groq/qwen3.8-27b',
+    'Groq model with groq/ prefix must not be double prefixed'
+  );
+  assert.strictEqual(
+    formatRoutingFullId('openrouter', 'google/gemma-2-9b-it:free'),
+    'openrouter/google/gemma-2-9b-it:free',
+    'OpenRouter model must include openrouter/ prefix'
+  );
+
+  // Test updateProviderEnabledModels guard
+  assert.strictEqual(typeof storage.updateProviderEnabledModels, 'function', 'updateProviderEnabledModels must be exported');
+  assert.strictEqual(storage.updateProviderEnabledModels(null, []), false, 'Should return false for null provider');
+  assert.strictEqual(storage.updateProviderEnabledModels('nvidia', null), false, 'Should return false for null models');
 
   console.log('[✓] All tests passed successfully!');
 

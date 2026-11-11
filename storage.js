@@ -357,6 +357,66 @@ async function persistCombos(comboMap) {
   }
 }
 
+/**
+ * Update enabledModels in providerSpecificData for a given provider or connection.
+ * @param {string} providerOrPrefix - e.g. 'nvidia', 'groq', or connection ID
+ * @param {Array<string|object>} activeModels - list of verified active model objects or IDs
+ */
+function updateProviderEnabledModels(providerOrPrefix, activeModels) {
+  if (!providerOrPrefix || !Array.isArray(activeModels)) return false;
+  try {
+    const Database = getDbClass();
+    const db = new Database(DB_PATH);
+    const rows = db.prepare("SELECT id, provider, data FROM providerConnections").all();
+    const target = String(providerOrPrefix).toLowerCase();
+
+    let updatedCount = 0;
+    const now = new Date().toISOString();
+
+    for (const r of rows) {
+      const p = String(r.provider || '').toLowerCase();
+      const data = (() => { try { return JSON.parse(r.data || '{}'); } catch { return {}; } })();
+      const prefix = String(data?.providerSpecificData?.prefix || p).toLowerCase();
+
+      if (p === target || prefix === target || r.id === providerOrPrefix) {
+        // Extract upstream model IDs (strip leading `${prefix}/` or `${p}/`)
+        const cleanIds = [];
+        const seen = new Set();
+        for (const m of activeModels) {
+          const rawId = typeof m === 'object' && m !== null ? (m.fullId || m.id) : String(m);
+          if (!rawId) continue;
+          let cleanId = rawId;
+          if (cleanId.toLowerCase().startsWith(`${prefix}/`)) {
+            cleanId = cleanId.slice(prefix.length + 1);
+          } else if (cleanId.toLowerCase().startsWith(`${p}/`)) {
+            cleanId = cleanId.slice(p.length + 1);
+          }
+          if (cleanId && !seen.has(cleanId.toLowerCase())) {
+            seen.add(cleanId.toLowerCase());
+            cleanIds.push(cleanId);
+          }
+        }
+
+        data.providerSpecificData = data.providerSpecificData || {};
+        data.providerSpecificData.enabledModels = cleanIds;
+
+        db.prepare("UPDATE providerConnections SET data = ?, updatedAt = ? WHERE id = ?").run(
+          JSON.stringify(data),
+          now,
+          r.id
+        );
+        console.log(`[✓] Updated enabledModels for connection '${r.provider}' (${cleanIds.length} models)`);
+        updatedCount++;
+      }
+    }
+    db.close();
+    return updatedCount > 0;
+  } catch (err) {
+    console.warn(`[!] Warning: Could not update enabledModels for ${providerOrPrefix}: ${err.message}`);
+    return false;
+  }
+}
+
 // ----------------------------------------------------------------------------
 // Web Console & Auth helpers
 // ----------------------------------------------------------------------------
@@ -709,6 +769,7 @@ module.exports = {
   readCustomProvidersFile,
   writeCustomProvidersFile,
   getDynamicProviders,
+  updateProviderEnabledModels,
   readActiveProviderConnections
 };
 
