@@ -150,7 +150,7 @@ async function runTests() {
   assert.strictEqual(typeof storage.readActiveProviderConnections, 'function', 'storage.readActiveProviderConnections must be a function');
   const activeConns = storage.readActiveProviderConnections();
   assert.ok(Array.isArray(activeConns), 'readActiveProviderConnections must return an array');
-  assert.strictEqual(activeConns.some(c => c.provider === 'kimi' && c.isActive === 0), false, 'Inactive connections must not be returned');
+  assert.strictEqual(activeConns.some(c => c.isActive === 0), false, 'Inactive connections must not be returned');
 
   assert.strictEqual(typeof discover9routerActiveProviders, 'function', 'discover9routerActiveProviders must be a function');
   const nineRouterProviders = await discover9routerActiveProviders();
@@ -158,7 +158,12 @@ async function runTests() {
   if (activeConns.length > 0) {
     console.log(`    Discovered ${Object.keys(nineRouterProviders).length} active 9router providers:`, Object.keys(nineRouterProviders));
     assert.ok(Object.keys(nineRouterProviders).length > 0, 'Must discover active providers from 9router');
-    assert.strictEqual('kimi' in nineRouterProviders, false, 'Inactive provider kimi must not be included');
+    const allConns = storage.readAllConnectionsRaw ? storage.readAllConnectionsRaw() : [];
+    const inactiveProv = allConns.find(c => c.isActive === 0);
+    if (inactiveProv) {
+      const inactiveKey = inactiveProv.prefix || inactiveProv.provider;
+      assert.strictEqual(inactiveKey in nineRouterProviders, false, `Inactive provider ${inactiveKey} must not be included`);
+    }
     const foundPrefixes = Object.keys(nineRouterProviders);
     assert.ok(
       foundPrefixes.includes('ag') ||

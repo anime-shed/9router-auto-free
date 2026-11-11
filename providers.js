@@ -117,7 +117,7 @@ const PROVIDERS = [
     key: 'kilo', label: 'Kilo.ai', combo: 'kilo-free',
     prefixes: ['kc', 'kilocode'], usageName: 'kilocode',
     kind: 'kilo', connection: 'kilocode', credentialKind: 'kilo',
-    baseUrl: 'https://api.kilo.ai/api/gateway'
+    baseUrl: 'https://ai-gateway.kilo.ai/api/v1'
   },
   {
     key: 'oc', label: 'OpenCode', combo: 'opencode-free',
@@ -422,7 +422,7 @@ async function fetchFreeModelsFromApi(apiKey, baseUrl) {
 async function fetchKiloFreeModels(accessToken, gatewayUrl) {
   const freeModels = [];
   try {
-    console.log('[-] Fetching free models from Kilo.ai Gateway (/api/gateway/models)...');
+    console.log('[-] Fetching free models from Kilo.ai Gateway (/api/v1/models)...');
     const headers = { 'User-Agent': 'Mozilla/5.0' };
     if (accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
 
@@ -432,10 +432,12 @@ async function fetchKiloFreeModels(accessToken, gatewayUrl) {
     const models = json.data || json.models || [];
     for (const m of models) {
       const id = m.id || '';
+      if (!id) continue;
+      if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
       const pricing = m.pricing || {};
       const promptCost = Number(pricing.prompt ?? -1);
-      const isFree = id.endsWith(':free') || (promptCost === 0) || m.is_free === true;
-      if (isFree && id) {
+      const isFree = id.endsWith(':free') || (promptCost === 0) || m.is_free === true || m.isFree === true;
+      if (isFree) {
         freeModels.push({
           id,
           name: m.name || id,
