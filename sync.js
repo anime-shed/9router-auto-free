@@ -219,7 +219,7 @@ function getCodingScore(modelIdentifier, customBenchmarks = null) {
     else if (size <= 8) baseScore -= 300;
   }
 
-  if (id.includes('embed') || id.includes('image') || id.includes('vision') || id.includes('audio') || id.includes('tts') || id.includes('whisper') || id.includes('flux') || id.includes('diffusion')) {
+  if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) {
     baseScore = -10000;
   }
 

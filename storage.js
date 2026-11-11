@@ -124,6 +124,20 @@ function get9routerCliToken() {
   }
 }
 
+// Read active 9router API key from SQLite for /v1/chat/completions fallback
+function get9routerApiKey() {
+  if (process.env.NINEROUTER_API_KEY) return process.env.NINEROUTER_API_KEY;
+  if (process.env.NINE_ROUTER_API_KEY) return process.env.NINE_ROUTER_API_KEY;
+  try {
+    const Database = getDbClass();
+    const db = new Database(DB_PATH, { readonly: true });
+    const row = db.prepare("SELECT key FROM apiKeys WHERE isActive = 1 ORDER BY createdAt ASC LIMIT 1").get();
+    db.close();
+    if (row && row.key) return row.key;
+  } catch {}
+  return null;
+}
+
 // Read one active provider connection from SQLite
 function readProviderConnection(providerName) {
   try {
@@ -745,6 +759,7 @@ module.exports = {
   CANDIDATES_STATE_PATH,
   getDbClass,
   get9routerCliToken,
+  get9routerApiKey,
   readProviderConnection,
   readAllProviderConnections,
   readAllConnectionsRaw,

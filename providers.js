@@ -195,8 +195,7 @@ const PROVIDERS = [
     key: 'nvidia', label: 'NVIDIA NIM', combo: 'nvidia-free',
     prefixes: ['nvidia', 'nim'], usageName: 'nvidia',
     kind: 'openai-compatible', connection: 'nvidia', credentialKind: 'default',
-    baseUrl: 'https://integrate.api.nvidia.com/v1',
-    skipPatterns: ['embed', 'guard', 'safety', 'tts', 'riva', 'vision', '-vl', 'vlm', 'fuyu', 'kosmos', 'neva', 'vila', 'deplot', 'clip', 'diffusion', 'video', 'detector', 'reward', 'parse']
+    baseUrl: 'https://integrate.api.nvidia.com/v1'
   },
   {
     key: 'fb', label: 'Freebuff', combo: 'fb-free',
@@ -563,7 +562,7 @@ async function fetchGeminiFreeModels(apiKey, baseUrl = 'https://generativelangua
       const lower = id.toLowerCase();
       const methods = m.supportedGenerationMethods || [];
       if (!methods.includes('generateContent')) continue;
-      if (lower.includes('embedding') || lower.includes('aqa') || lower.includes('imagen')) continue;
+      if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
       if (id) {
         freeModels.push({
           id,
@@ -774,10 +773,8 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
       const name = m.name || m.summary || id;
       const lowerId = id.toLowerCase();
 
-      const effectiveExclusions = (skipPatterns && skipPatterns.length > 0)
-        ? skipPatterns
-        : (storage.getExclusionConfig ? storage.getExclusionConfig().excludedModels : []);
-      if (effectiveExclusions.some(pat => lowerId === pat || lowerId.includes(pat))) continue;
+      if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
+      if (skipPatterns && skipPatterns.some(pat => lowerId === pat || lowerId.includes(pat))) continue;
 
       // If freePattern is specified (e.g. ":free" or [":free", "-free"]), enforce it
       if (freePattern && m.is_free !== true) {
@@ -835,8 +832,7 @@ async function fetchCloudflareFreeModels(creds, prefix = 'cloudflare-ai') {
       for (const m of models) {
         const id = m.name || '';
         if (!id) continue;
-        const lowerId = id.toLowerCase();
-        if (/embed|image|audio|speech|tts|whisper|flux|diffusion|rerank|guard|moderation/.test(lowerId)) continue;
+        if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
 
         const props = Object.fromEntries((Array.isArray(m.properties) ? m.properties : [])
           .map(prop => [prop.property_id, prop.value]));
@@ -1173,7 +1169,6 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
 
     const seenIds = new Set(existingModels.map(m => m.id.toLowerCase()));
     const seenFullIds = new Set(existingModels.map(m => (m.fullId || '').toLowerCase()));
-    const NON_TEXT_REGEX = /embed|tts|whisper|audio|speech|flux|diffusion|rerank|guard|moderation|asr|riva|parakeet|vision-only/i;
     for (const extId of cappedCandidates) {
       // If the target provider requires free suffix (openrouter requires :free; aihubmix allows :free or -free)
       const tKey = targetKey.toLowerCase();
@@ -1198,7 +1193,7 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
       if (!preserveNamespace) {
         cleanId = cleanId.replace(/^[a-zA-Z0-9_.-]+\//, '');
       }
-      if (NON_TEXT_REGEX.test(cleanId) || NON_TEXT_REGEX.test(extId)) {
+      if (storage.isModelExcluded && (storage.isModelExcluded(cleanId) || storage.isModelExcluded(extId))) {
         continue;
       }
       const fullId = formatRoutingFullId(prefix, cleanId);

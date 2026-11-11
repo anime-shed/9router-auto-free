@@ -134,8 +134,8 @@ async function runTests() {
     assert.ok(nimData.models.length > 0, 'NVIDIA NIM discovery must find models when an API key exists');
   }
   for (const m of nimData.models) {
-    assert.ok(!/embed|guard|safety|tts|riva|vision|-vl|vlm|fuyu|kosmos|neva|vila|deplot|clip|diffusion|video|detector|reward|parse/i.test(m.id),
-      `NVIDIA NIM candidate must be a text LLM, got: ${m.id}`);
+    const matched = storage.isModelExcluded(m.id);
+    assert.strictEqual(matched, false, `NVIDIA NIM candidate ${m.id} matched exclusion rule "${matched}" in exclusions.json`);
   }
 
   // 10. OpenCode from 9router Discovery Test
@@ -174,7 +174,8 @@ async function runTests() {
       assert.ok(Array.isArray(p.models), 'Provider models must be an array');
       for (const m of p.models) {
         assert.ok(m.fullId.startsWith(`${p.prefix}/`) || m.fullId.startsWith(`${key}/`), `Model fullId must start with prefix ${p.prefix}/`);
-        assert.ok(!/embed|tts|whisper|speech|audio|flux|diffusion|guard|moderation/i.test(m.id), `Non-text model must be filtered out: ${m.id}`);
+        const matched = storage.isModelExcluded(m.id);
+        assert.strictEqual(matched, false, `Discovered model ${m.id} should not match exclusions.json rule "${matched}"`);
       }
     }
   }

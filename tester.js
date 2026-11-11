@@ -10,6 +10,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const storage = require('./storage.js');
 
 const DEAD_MODELS_PATH = path.join(__dirname, 'dead-models.json');
 const DEFAULT_TIMEOUT_MS = 45000; // 45 seconds per user requirement
@@ -266,6 +267,82 @@ class CircuitBreaker {
 }
 
 /**
+ * Fallback chat completions test when 9router's 15s /api/models/test bottleneck trips.
+ */
+async function testModelWithChatCompletions(fullModelId, options = {}) {
+  const doFetch = options.fetchImpl || fetch;
+  const routerUrl = options.routerUrl || (process.env.NINEROUTER_URL || 'http://127.0.0.1:20128').replace(/\/+$/, '');
+  const timeoutMs = options.timeoutMs || DEFAULT_TIMEOUT_MS;
+  const apiKey = options.apiKey || (storage.get9routerApiKey ? storage.get9routerApiKey() : null);
+
+  const headers = { 'Content-Type': 'application/json' };
+  if (apiKey) {
+    headers['Authorization'] = `Bearer ${apiKey}`;
+  } else if (options.token) {
+    headers['Authorization'] = `Bearer ${options.token}`;
+  }
+
+  const startTime = Date.now();
+  try {
+    const res = await doFetch(`${routerUrl}/v1/chat/completions`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model: fullModelId,
+        messages: [{ role: 'user', content: 'hi' }],
+        max_tokens: 5
+      }),
+      signal: AbortSignal.timeout(timeoutMs)
+    });
+
+    const latencyMs = Date.now() - startTime;
+    if (res.ok) {
+      return { valid: true, ok: true, latencyMs, verdict: 'active', status: 200, viaChatCompletions: true };
+    }
+
+    const text = await res.text().catch(() => '');
+    const failure = parseUpstreamFailure(res.status, text || `HTTP ${res.status}`);
+
+    if (failure.isRateLimit) {
+      return {
+        valid: false,
+        ok: false,
+        latencyMs,
+        status: failure.upstreamStatus,
+        reason: failure.reason,
+        quotaExhausted: true,
+        verdict: 'quota',
+        isRateLimit: true
+      };
+    }
+
+    return {
+      valid: false,
+      ok: false,
+      latencyMs,
+      status: failure.upstreamStatus,
+      reason: failure.reason,
+      verdict: 'dead',
+      isFatal: failure.isFatalBillingOrAuth,
+      isDead: failure.isDead,
+      timedOut: failure.isTimeout
+    };
+  } catch (err) {
+    const latencyMs = Date.now() - startTime;
+    const failure = parseUpstreamFailure(504, err.message);
+    return {
+      valid: false,
+      ok: false,
+      latencyMs,
+      status: failure.upstreamStatus,
+      reason: failure.reason,
+      verdict: 'dead',
+      timedOut: true
+    };
+  }
+}
+
+/**
  * Execute a single model test ping against 9router with unwrapped inspection.
  */
 async function testModelWith9router(fullModelId, token, options = {}) {
@@ -300,6 +377,12 @@ async function testModelWith9router(fullModelId, token, options = {}) {
 
     const rawError = data.error || `HTTP ${data.status || res.status}`;
     const failure = parseUpstreamFailure(data.status || res.status, rawError);
+
+    // If 9router's internal 15s /api/models/test bottleneck tripped, fallback to /v1/chat/completions with full timeout
+    if (failure.isTimeout && !options.isChatFallback) {
+      const chatRes = await testModelWithChatCompletions(fullModelId, { ...options, token, isChatFallback: true });
+      return chatRes;
+    }
 
     // If fatal or dead, NEVER retry
     if ((failure.isFatalBillingOrAuth || failure.isDead) && attempt >= 1) {
@@ -352,6 +435,12 @@ async function testModelWith9router(fullModelId, token, options = {}) {
   } catch (err) {
     const latencyMs = Date.now() - startTime;
     const failure = parseUpstreamFailure(504, err.message);
+
+    // If fetch itself timed out on /api/models/test, fallback to /v1/chat/completions with full timeout
+    if (failure.isTimeout && !options.isChatFallback) {
+      const chatRes = await testModelWithChatCompletions(fullModelId, { ...options, token, isChatFallback: true });
+      return chatRes;
+    }
 
     if (attempt <= maxRetries && !failure.isDead && !failure.isFatalBillingOrAuth) {
       await new Promise(r => setTimeout(r, 1200));
@@ -508,5 +597,6 @@ module.exports = {
   ProviderPacer,
   CircuitBreaker,
   testModelWith9router,
+  testModelWithChatCompletions,
   testModels
 };

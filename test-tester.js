@@ -90,6 +90,39 @@ async function main() {
     assert.strictEqual(dummyStore.models['prov/dead-1'], undefined, 'Must clear dead model on success');
   }
 
+  // 5. Fallback to /v1/chat/completions on timeout bottleneck
+  {
+    let endpointCalled = '';
+    const mockFetch = async (url, opts) => {
+      if (url.includes('/api/models/test')) {
+        endpointCalled = '/api/models/test';
+        return {
+          ok: false,
+          status: 500,
+          json: async () => ({ ok: false, error: 'The operation was aborted due to timeout' })
+        };
+      }
+      if (url.includes('/v1/chat/completions')) {
+        endpointCalled = '/v1/chat/completions';
+        return {
+          ok: true,
+          status: 200,
+          text: async () => JSON.stringify({ choices: [{ message: { content: 'hello' } }] })
+        };
+      }
+      throw new Error('Unexpected URL: ' + url);
+    };
+
+    const res = await tester.testModelWith9router('nvidia/mistralai/mistral-large-4-1t-a52b', 'dummy-token', {
+      fetchImpl: mockFetch,
+      apiKey: 'dummy-api-key'
+    });
+
+    assert.strictEqual(endpointCalled, '/v1/chat/completions', 'Must fallback to /v1/chat/completions when /api/models/test times out');
+    assert.strictEqual(res.valid, true, 'Fallback response must be valid');
+    assert.strictEqual(res.viaChatCompletions, true, 'Result should indicate viaChatCompletions');
+  }
+
   console.log('[✓] All tester.js unit tests passed successfully!');
 }
 
