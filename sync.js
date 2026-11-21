@@ -32,6 +32,9 @@ const isDryRun = args.includes('--dry-run');
 const isRefreshMode = args.includes('--refresh') || args.includes('--watchdog');
 const isCronSetup = args.includes('--setup-cron') || args.includes('--setup-scheduler');
 const isLiveBenchmarks = args.includes('--live-benchmarks') || args.includes('--update-benchmarks');
+const isSkipExternal = args.includes('--skip-external') || args.includes('--no-external');
+const isSkipBenchmarks = args.includes('--skip-benchmarks') || args.includes('--no-benchmarks');
+const isFastMode = args.includes('--fast') || args.includes('--quick');
 // ponytail: standard verbose flag for transparent terminal diagnostics
 const isVerbose = args.includes('--verbose') || args.includes('-v') || process.env.VERBOSE === '1' || process.env.DEBUG === '1';
 
@@ -913,44 +916,46 @@ async function main() {
     return;
   }
 
-  if (isLiveBenchmarks) {
-    try {
-      const { updateBenchmarks } = require('./update-benchmarks.js');
-      await updateBenchmarks();
-    } catch (err) {
-      console.warn(`[!] Failed to update live benchmarks: ${err.message}`);
-    }
-  }
-
   if (isRefreshMode) {
     await refreshCombos();
     return;
   }
 
-  // Auto-harvest external free models catalog if missing or older than 24 hours
-  const externalModelsPath = path.join(__dirname, 'external-models.json');
-  let shouldHarvest = !fs.existsSync(externalModelsPath);
-  if (!shouldHarvest) {
-    try {
-      const stat = fs.statSync(externalModelsPath);
-      if (Date.now() - stat.mtimeMs > 24 * 60 * 60 * 1000) shouldHarvest = true;
-    } catch {}
-  }
-  if (shouldHarvest) {
+  // Phase 1: External Catalog Harvest & Dead Model Synchronization
+  if (!isFastMode && !isSkipExternal) {
+    console.log('[1/4] Harvesting external free model catalogs & syncing dead models...');
     try {
       const { harvestExternalModels } = require('./fetch-external-models.js');
       await harvestExternalModels();
-    } catch (e) {
-      console.warn(`[!] External model harvesting notice: ${e.message}`);
+    } catch (err) {
+      console.warn(`[!] External model harvesting notice (proceeding with cached catalog): ${err.message}`);
     }
+  } else {
+    console.log('[1/4] Skipping external catalog harvest (fast/skip flag enabled).');
+  }
+
+  // Phase 2: Empirical Coding Benchmarks Update
+  if (!isFastMode && !isSkipBenchmarks) {
+    console.log('\n[2/4] Updating empirical coding benchmarks database...');
+    try {
+      const { updateBenchmarks } = require('./update-benchmarks.js');
+      await updateBenchmarks();
+    } catch (err) {
+      console.warn(`[!] Benchmark update notice (proceeding with cached benchmarks): ${err.message}`);
+    }
+  } else {
+    console.log('\n[2/4] Skipping empirical coding benchmarks update (fast/skip flag enabled).');
   }
 
   const excludedProviders = getExcludedProviders();
   if (excludedProviders.length > 0) {
-    console.log(`[⊘] Excluded providers via config (${excludedProviders.length}): ${excludedProviders.join(', ')}\n`);
+    console.log(`\n[⊘] Excluded providers via config (${excludedProviders.length}): ${excludedProviders.join(', ')}`);
   }
 
+  console.log('\n[3/4] Discovering active 9router providers and candidate models...');
   const results = await discoverAllProviders({ excludedProviders });
+
+  console.log('\n[4/4] Validating models, assembling combos, and updating 9router...');
   await injectInto9router(results);
 }
 
