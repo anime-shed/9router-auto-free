@@ -228,6 +228,9 @@ async function runTests() {
   assert.strictEqual(isModelExcluded('gemini/gemini-3.5-flash', exclusions), false, 'gemini-3.5-flash must not be excluded');
   assert.strictEqual(isModelExcluded('poolside/poolside/laguna-s-2.1', exclusions), false, 'laguna-s-2.1 must not be excluded');
   assert.strictEqual(isModelExcluded('bazaarlink/qwen/qwen3.7-flash:free', exclusions), false, 'qwen3.7-flash must not be excluded');
+  assert.strictEqual(isModelExcluded('moonshotai/kimi-k3.1-pro', exclusions), false, 'kimi-k3.1-pro must NOT be excluded');
+  assert.strictEqual(isModelExcluded('nvidia/moonshotai/kimi-k3.1-pro', exclusions), false, 'nvidia/moonshotai/kimi-k3.1-pro must NOT be excluded');
+  assert.strictEqual(isModelExcluded('stepfun-ai/step-5-preview', exclusions), false, 'step-5-preview must NOT be excluded');
 
   // 12. Custom Priorities Engine Check
   console.log('[-] Testing custom priorities engine & latency ranking...');
@@ -862,6 +865,22 @@ async function runTests() {
     const parsedReadme = harvester.parseReadmeContent(sampleReadme);
     assert.ok(Array.isArray(parsedReadme.deprecated), 'deprecated must be an array');
     assert.ok(parsedReadme.deprecated.some(d => d.includes('DeepSeek V4 Pro')), 'Must detect strikethrough deprecated model');
+
+    // Test parseKiloGatewayContent
+    if (typeof harvester.parseKiloGatewayContent === 'function') {
+      const sampleKilo = {
+        data: [
+          { id: 'reflection/beam-free', name: 'Reflection Beam Free', is_free: true },
+          { id: 'openai/gpt-5-pro', name: 'GPT-5 Pro', is_free: false, pricing: { prompt: 5, completion: 15 } },
+          { id: 'recursive/flint-v1.0:free', name: 'Recursive Flint Free', pricing: { prompt: 0, completion: 0 } }
+        ]
+      };
+      const parsedKilo = harvester.parseKiloGatewayContent(sampleKilo);
+      assert.strictEqual(parsedKilo.models.length, 2, 'Must parse exactly 2 free models from Kilo gateway');
+      assert.strictEqual(parsedKilo.models[0].id, 'reflection/beam-free');
+      assert.strictEqual(parsedKilo.models[1].id, 'recursive/flint-v1.0:free');
+      assert.strictEqual(parsedKilo.providerCatalog.kilo.length, 2);
+    }
 
     // 9) Active Provider Auto-Consideration & Dynamic Catalog Enrichment Tests
     console.log('[-] Testing active provider auto-consideration & external catalog enrichment...');

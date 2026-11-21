@@ -459,8 +459,18 @@ function getDynamicProviders() {
   const activeConnections = rawConnections.filter(c => c.isActive);
 
   // Built-in provider keys & prefixes to avoid duplicate processing
-  const builtInKeys = new Set(['oa', 'kilo', 'oc', 'openrouter', 'poolside', 'gemini', 'ollama', 'airforce', 'bazaarlink', 'bai', 'groq', 'cerebras', 'mistral', 'cloudflare', 'nvidia']);
-  const builtInPrefixes = new Set(['openagentic', 'oa', 'kc', 'kilocode', 'oc', 'opencode', 'openrouter', 'poolside', 'gemini', 'ollama', 'api-airforce', 'airforce', 'bazaarlink', 'bzl', 'b-ai', 'b.ai', 'bai', 'groq', 'cerebras', 'mistral', 'cloudflare-ai', 'cloudflare', 'cf', 'nvidia']);
+  const builtInKeys = new Set([
+    'oa', 'kilo', 'oc', 'openrouter', 'poolside', 'gemini', 'ollama', 'airforce', 'bazaarlink', 'bai',
+    'groq', 'cerebras', 'mistral', 'cloudflare', 'nvidia', 'freebuff', 'fb',
+    'xai', 'grok-cli', 'gcli', 'gemini-cli', 'gc', 'qoder', 'qd', 'opencode-zen', 'ocz',
+    'opencode-go', 'ocg', 'xiaomi-mimo', 'mimo', 'aihubmix', 'inferera', 'glm', 'trae', 'nous'
+  ]);
+  const builtInPrefixes = new Set([
+    'openagentic', 'oa', 'kc', 'kilocode', 'oc', 'opencode', 'openrouter', 'poolside', 'gemini',
+    'ollama', 'api-airforce', 'airforce', 'bazaarlink', 'bzl', 'b-ai', 'b.ai', 'bai', 'groq',
+    'cerebras', 'mistral', 'cloudflare-ai', 'cloudflare', 'cf', 'nvidia', 'freebuff', 'fb',
+    'xai', 'gcli', 'gc', 'qd', 'ocz', 'ocg', 'mimo', 'aihubmix', 'inferera', 'glm', 'trae', 'nous'
+  ]);
 
   const dynamicProviders = [];
 
@@ -470,8 +480,13 @@ function getDynamicProviders() {
     const spec = data.providerSpecificData || {};
     const rawPrefix = (spec.prefix || conn.name || provName.split('-')[0] || 'custom').toLowerCase();
 
-    // If matches built-in provider, skip (it's handled by built-in adapter)
+    // If matches built-in provider or active prefix, skip (handled by standard adapter)
     if (builtInKeys.has(provName) || builtInPrefixes.has(provName) || builtInPrefixes.has(rawPrefix)) {
+      continue;
+    }
+
+    // Skip connection if prefix or name is an email address or generic router alias
+    if (rawPrefix.includes('@') || String(conn.name || '').includes('@') || rawPrefix === 'router' || conn.name === 'router') {
       continue;
     }
 
@@ -709,8 +724,16 @@ function isModelExcluded(modelIdentifier, customExclusions = null) {
   const str = String(modelIdentifier).toLowerCase();
   for (const item of exclusions) {
     if (!item) continue;
-    if (str === item || str.includes(item)) {
-      return item;
+    const rule = String(item).toLowerCase();
+    if (rule.includes('/')) {
+      // Specific model ID rule: match exact ID or with :free suffix or trailing model ID
+      if (str === rule || str === `${rule}:free` || str.endsWith(`/${rule}`) || str.endsWith(`/${rule}:free`)) {
+        return item;
+      }
+    } else {
+      if (str === rule || str.includes(rule)) {
+        return item;
+      }
     }
   }
   return false;

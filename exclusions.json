@@ -58,10 +58,8 @@
     "search-c",
     "exec-agent",
     "trajectory-compaction",
-    "openai/gpt-oss-120b",
     "meta/llama-4-maverick-17b-128e-instruct",
-    "stepfun-ai/step-3.7-flash",
-    "moonshotai/kimi-k3"
+    "stepfun-ai/step-3.7-flash"
   ],
   "excludedCombos": [
     "ocg-free",

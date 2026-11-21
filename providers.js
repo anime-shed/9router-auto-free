@@ -1158,15 +1158,23 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
       }
     }
 
-    // Rank candidates by metadata score descending before capping to top 15
+    // Rank candidates by coding capability & metadata score descending before capping
     const candidateList = Array.from(candidatesToAdd);
-    candidateList.sort((a, b) => {
-      const metaA = modelsMeta.find(m => m.id === a) || {};
-      const metaB = modelsMeta.find(m => m.id === b) || {};
-      return (metaB.score || 0) - (metaA.score || 0);
-    });
+    const scoreCandidate = id => {
+      const lower = String(id || '').toLowerCase();
+      let score = 50;
+      if (lower.includes('claude') || lower.includes('sonnet') || lower.includes('opus')) score += 50;
+      else if (lower.includes('gemini') || lower.includes('gpt-4') || lower.includes('o1') || lower.includes('o3') || lower.includes('r1')) score += 40;
+      else if (lower.includes('qwen') || lower.includes('deepseek') || lower.includes('codestral') || lower.includes('mistral') || lower.includes('glm') || lower.includes('kimi')) score += 30;
+      else if (lower.includes('nemotron') || lower.includes('gemma') || lower.includes('flint') || lower.includes('beam')) score += 25;
+      else if (lower.includes('coder') || lower.includes('code') || lower.includes('instruct') || lower.includes('preview')) score += 15;
+      const meta = modelsMeta.find(m => m.id === id) || {};
+      if (typeof meta.score === 'number') score += meta.score;
+      return score;
+    };
+    candidateList.sort((a, b) => scoreCandidate(b) - scoreCandidate(a));
 
-    const MAX_EXTERNAL_CANDIDATES = 15;
+    const MAX_EXTERNAL_CANDIDATES = 30;
     const cappedCandidates = candidateList.slice(0, MAX_EXTERNAL_CANDIDATES);
 
     const seenIds = new Set(existingModels.map(m => m.id.toLowerCase()));

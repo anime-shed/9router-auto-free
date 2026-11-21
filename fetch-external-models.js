@@ -21,6 +21,7 @@ const SOURCES_JS_URL = 'https://raw.githubusercontent.com/vava-nessa/free-coding
 const INDEX_JSON_URL = 'https://raw.githubusercontent.com/mvalentsev/awesome-free-ai-coding/main/index.json';
 const README_EN_URL = 'https://raw.githubusercontent.com/peter123023/awesome-free-llm-api/main/README.en.md';
 const MODELS_DEV_URL = 'https://models.dev/api.json';
+const KILO_GATEWAY_URL = 'https://ai-gateway.kilo.ai/api/v1/models';
 const EXTERNAL_MODELS_PATH = path.join(__dirname, 'external-models.json');
 
 const RETRY_HTTP_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504, 529]);
@@ -266,6 +267,38 @@ function parseModelsDevContent(content) {
 }
 
 /**
+ * Parse https://ai-gateway.kilo.ai/api/v1/models for live free tier models.
+ */
+function parseKiloGatewayContent(content) {
+  const data = typeof content === 'string' ? JSON.parse(content) : content;
+  const rawList = Array.isArray(data) ? data : (data.data || []);
+  const models = [];
+  const providerCatalog = { kilo: [] };
+
+  for (const m of rawList) {
+    if (!m || !m.id) continue;
+    const id = String(m.id);
+    const isFree = id.endsWith(':free') || m.is_free === true || (m.pricing && Number(m.pricing.prompt) === 0 && Number(m.pricing.completion) === 0);
+    if (!isFree) continue;
+
+    const ctx = Number(m.context_length || 131072);
+    const modelObj = {
+      id,
+      name: m.name || id,
+      tier: 'A',
+      score: id.includes('beam') || id.includes('flint') ? 80 : 65,
+      contextLength: ctx,
+      provider: 'kilo',
+      isFree: true
+    };
+    models.push(modelObj);
+    providerCatalog.kilo.push(id);
+  }
+
+  return { models, providerCatalog };
+}
+
+/**
  * Consolidated Harvester: pull from all sources and write external-models.json.
  */
 async function harvestExternalModels({
@@ -285,9 +318,11 @@ async function harvestExternalModels({
     'vava-nessa': { status: 'failed', count: 0 },
     'mvalentsev': { status: 'failed', count: 0 },
     'peter123023': { status: 'failed', count: 0 },
-    'models.dev': { status: 'failed', count: 0 }
+    'models.dev': { status: 'failed', count: 0 },
+    'kilo.ai': { status: 'failed', count: 0 }
   };
   let modelsDevJson = null;
+  let kiloGatewayJson = null;
 
   // 1. Fetch vava-nessa/free-coding-models
   try {
@@ -321,6 +356,15 @@ async function harvestExternalModels({
     sourcesStatus['models.dev'].status = 'ok';
   } catch (err) {
     console.warn(`[!] Warning: Failed to fetch models.dev api.json: ${err.message}`);
+  }
+
+  // 5. Fetch ai-gateway.kilo.ai/api/v1/models
+  try {
+    const rawKilo = await fetchWithBackoff(KILO_GATEWAY_URL, { retries, baseDelayMs, timeoutMs, fetchImpl });
+    kiloGatewayJson = JSON.parse(rawKilo);
+    sourcesStatus['kilo.ai'].status = 'ok';
+  } catch (err) {
+    console.warn(`[!] Warning: Failed to fetch kilo.ai models: ${err.message}`);
   }
 
   // Parse or fallback
@@ -364,6 +408,16 @@ async function harvestExternalModels({
     }
   }
 
+  let parsedKilo = { models: [], providerCatalog: {} };
+  if (kiloGatewayJson) {
+    try {
+      parsedKilo = parseKiloGatewayContent(kiloGatewayJson);
+      sourcesStatus['kilo.ai'].count = parsedKilo.models.length;
+    } catch (e) {
+      console.warn(`[!] Failed to parse kilo.ai models: ${e.message}`);
+    }
+  }
+
   // Combine provider catalogs
   const mergedProviderCatalog = { ...parsedSources.providerCatalog };
   for (const [pKey, models] of Object.entries(parsedIndex.providerCatalog)) {
@@ -390,11 +444,28 @@ async function harvestExternalModels({
     }
   }
 
+  for (const [pKey, models] of Object.entries(parsedKilo.providerCatalog)) {
+    if (!mergedProviderCatalog[pKey]) {
+      mergedProviderCatalog[pKey] = models;
+    } else {
+      for (const m of models) {
+        if (!mergedProviderCatalog[pKey].includes(m)) {
+          mergedProviderCatalog[pKey].push(m);
+        }
+      }
+    }
+  }
+
   // Combine models list across sources
   const mergedModels = [...parsedSources.models];
   for (const devModel of parsedModelsDev.models) {
     if (!mergedModels.some(m => m.id === devModel.id && m.provider === devModel.provider)) {
       mergedModels.push(devModel);
+    }
+  }
+  for (const kiloModel of parsedKilo.models) {
+    if (!mergedModels.some(m => m.id === kiloModel.id && m.provider === kiloModel.provider)) {
+      mergedModels.push(kiloModel);
     }
   }
 
@@ -449,6 +520,8 @@ module.exports = {
   INDEX_JSON_URL,
   README_EN_URL,
   MODELS_DEV_URL,
+  KILO_GATEWAY_URL,
   parseModelsDevContent,
+  parseKiloGatewayContent,
   EXTERNAL_MODELS_PATH
 };

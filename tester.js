@@ -281,6 +281,9 @@ async function testModelWithChatCompletions(fullModelId, options = {}) {
   } else if (options.token) {
     headers['Authorization'] = `Bearer ${options.token}`;
   }
+  if (options.token) {
+    headers['x-9r-cli-token'] = options.token;
+  }
 
   const startTime = Date.now();
   try {
@@ -352,7 +355,8 @@ async function testModelWith9router(fullModelId, token, options = {}) {
 
   const doFetch = options.fetchImpl || fetch;
   const routerUrl = options.routerUrl || (process.env.NINEROUTER_URL || 'http://127.0.0.1:20128').replace(/\/+$/, '');
-  const timeoutMs = options.timeoutMs || DEFAULT_TIMEOUT_MS;
+  // 9router internal /api/models/test bottleneck is 15s; use 16s so client falls back immediately without hanging 45s
+  const timeoutMs = options.timeoutMs || (options.isChatFallback ? DEFAULT_TIMEOUT_MS : 16000);
   const maxRetries = options.maxRetries != null ? options.maxRetries : 1;
   const attempt = options.attempt || 1;
 
@@ -434,10 +438,11 @@ async function testModelWith9router(fullModelId, token, options = {}) {
     };
   } catch (err) {
     const latencyMs = Date.now() - startTime;
+    const isTimeoutErr = err.name === 'AbortError' || String(err.message).toLowerCase().includes('timeout') || String(err.message).toLowerCase().includes('aborted');
     const failure = parseUpstreamFailure(504, err.message);
 
-    // If fetch itself timed out on /api/models/test, fallback to /v1/chat/completions with full timeout
-    if (failure.isTimeout && !options.isChatFallback) {
+    // If fetch itself timed out on /api/models/test (15s bottleneck), fallback to /v1/chat/completions with full timeout
+    if ((failure.isTimeout || isTimeoutErr) && !options.isChatFallback) {
       const chatRes = await testModelWithChatCompletions(fullModelId, { ...options, token, isChatFallback: true });
       return chatRes;
     }
