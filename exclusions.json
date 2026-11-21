@@ -57,6 +57,8 @@
     "search-b",
     "search-c",
     "exec-agent",
+    "gpt-oss",
+    "xs",
     "trajectory-compaction",
     "meta/llama-4-maverick-17b-128e-instruct",
     "stepfun-ai/step-3.7-flash"
@@ -76,18 +78,10 @@
     "qd-free",
     "cerebras-free",
     "fb-free",
-    "gh-free",
-    "opencode-free",
-    "openagentic-free",
-    "poolside-free",
-    "airforce-free",
-    "bazaarlink-free",
-    "b.ai-free"
+    "gh-free"
   ],
   "superComboExcludedPrefixes": [
     "ocg",
-    "opencode-go",
-    "fb",
-    "freebuff"
+    "opencode-go"
   ]
 }
