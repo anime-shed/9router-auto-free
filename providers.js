@@ -1216,13 +1216,8 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
         continue;
       }
       const fullId = formatRoutingFullId(prefix, cleanId);
-      if (deadStore && deadStore.models) {
-        const isDead = (deadStore.models[fullId]?.confirmedDead) ||
-                       (deadStore.models[cleanId]?.confirmedDead) ||
-                       (deadStore.models[extId]?.confirmedDead);
-        if (isDead) {
-          continue;
-        }
+      if (deadStore && deadStore.models && deadStore.models[fullId]?.confirmedDead) {
+        continue;
       }
       if (seenIds.has(cleanId.toLowerCase()) || seenFullIds.has(fullId.toLowerCase())) {
         continue;

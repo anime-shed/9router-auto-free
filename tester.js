@@ -93,11 +93,7 @@ function saveDeadModels(store) {
 
 function isModelConfirmedDead(fullId, deadStore, suppressionTtlMs = DEFAULT_SUPPRESSION_TTL_MS) {
   if (!deadStore || !deadStore.models) return false;
-  let entry = deadStore.models[fullId];
-  if (!entry) {
-    const bareId = String(fullId || '').replace(/^[a-zA-Z0-9_.-]+\//, '');
-    entry = deadStore.models[bareId];
-  }
+  const entry = deadStore.models[fullId];
   if (!entry || !entry.confirmedDead) return false;
 
   const deadTime = new Date(entry.confirmedDeadAt || entry.lastSeenDead).getTime();

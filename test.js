@@ -925,10 +925,9 @@ async function runTests() {
     testerMod.recordDeadModel('nvidia/retired-unit-test', 'HTTP 410: Gone', 410, mockDeadStore);
     assert.strictEqual(mockDeadStore.models['nvidia/retired-unit-test'].confirmedDead, true, 'HTTP 410 must be immediately confirmed dead');
 
-    // Test isModelConfirmedDead with both fullId and bareId fallback
+    // Test isModelConfirmedDead with fullId
     assert.ok(testerMod.isModelConfirmedDead('nvidia/retired-unit-test', mockDeadStore), 'isModelConfirmedDead must find fullId');
-    mockDeadStore.models['bare-retired'] = { confirmedDead: true, lastSeenDead: new Date().toISOString() };
-    assert.ok(testerMod.isModelConfirmedDead('any-prefix/bare-retired', mockDeadStore), 'isModelConfirmedDead must fallback to bareId');
+    assert.strictEqual(testerMod.isModelConfirmedDead('other-prefix/unrecorded-model', mockDeadStore), false, 'Unrecorded model must not be confirmed dead');
 
     // 10) 2026 SWE-bench Verified Benchmarks Upgrade Tests
     console.log('[-] Testing 2026 SWE-bench Verified benchmarks & tiers...');

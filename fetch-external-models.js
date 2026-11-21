@@ -569,8 +569,12 @@ async function harvestExternalModels({
 
   const now = new Date().toISOString();
 
-  // Clean up any stale future-dated deprecations in deadStore
+  // Clean up any stale future-dated deprecations or bare keys without prefix in deadStore
   for (const [k, v] of Object.entries(deadStore.models)) {
+    if (!k.includes('/')) {
+      delete deadStore.models[k];
+      continue;
+    }
     const match = (v.reason || '').match(/Deprecated after ([0-9]{4}-[0-9]{2}-[0-9]{2})/);
     if (match) {
       const depDate = new Date(match[1]).getTime();
@@ -616,22 +620,6 @@ async function harvestExternalModels({
       confirmedDead: true,
       confirmedDeadAt: existing?.confirmedDeadAt || now
     };
-
-    // Only record bare ID if depRec has NO provider, to prevent one provider from poisoning another
-    if (!depRec.provider) {
-      const bareId = depRec.modelId.replace(/^[a-zA-Z0-9_.-]+\//, '');
-      if (bareId && !deadStore.models[bareId]) {
-        deadStore.models[bareId] = {
-          firstSeenDead: now,
-          lastSeenDead: now,
-          status: 410,
-          reason: depRec.reason || 'Deprecated / removed upstream in external catalog',
-          failCount: 5,
-          confirmedDead: true,
-          confirmedDeadAt: now
-        };
-      }
-    }
   }
 
   deadStore.updatedAt = now;
