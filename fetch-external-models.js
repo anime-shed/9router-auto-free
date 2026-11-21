@@ -24,6 +24,13 @@ const MODELS_DEV_URL = 'https://models.dev/api.json';
 const KILO_GATEWAY_URL = 'https://ai-gateway.kilo.ai/api/v1/models';
 const EXTERNAL_MODELS_PATH = path.join(__dirname, 'external-models.json');
 
+const DEAD_MODELS_PATH = path.join(__dirname, 'dead-models.json');
+
+let providersHelper = null;
+try {
+  providersHelper = require('./providers.js');
+} catch {}
+
 const RETRY_HTTP_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504, 529]);
 
 /**
@@ -87,12 +94,23 @@ function parseContextLength(raw) {
   return isNaN(parsed) ? 131072 : parsed;
 }
 
+function isDeprecatedDateOrStatus(val) {
+  if (!val) return false;
+  if (val === 'deprecated' || val === 'shutdown') return true;
+  const parsed = new Date(val).getTime();
+  if (!isNaN(parsed)) {
+    return parsed <= Date.now();
+  }
+  return false;
+}
+
 /**
  * Parse sources.js content from vava-nessa/free-coding-models.
  */
 async function parseSourcesContent(content) {
   const models = [];
   const providerCatalog = {};
+  const deprecatedRecords = [];
 
   const tmpFile = path.join(os.tmpdir(), `sources_${Date.now()}_${Math.random().toString(36).slice(2)}.mjs`);
   try {
@@ -107,6 +125,15 @@ async function parseSourcesContent(content) {
       for (const m of sourceData.models) {
         if (!Array.isArray(m)) continue;
         const [modelId, label, tier, sweScore, ctx, addedDate, deprecatedAfter] = m;
+        if (isDeprecatedDateOrStatus(deprecatedAfter)) {
+          deprecatedRecords.push({
+            modelId,
+            name: label || modelId,
+            provider: providerKey,
+            reason: `Deprecated after ${deprecatedAfter} in sources.js`
+          });
+          continue;
+        }
         const modelObj = {
           id: modelId,
           name: label || modelId,
@@ -115,7 +142,7 @@ async function parseSourcesContent(content) {
           contextLength: parseContextLength(ctx),
           provider: providerKey,
           addedDate: addedDate || null,
-          deprecatedAfter: deprecatedAfter || null
+          deprecatedAfter: null
         };
         models.push(modelObj);
         providerCatalog[providerKey].push(modelId);
@@ -126,7 +153,16 @@ async function parseSourcesContent(content) {
     if (Array.isArray(mod.MODELS)) {
       for (const m of mod.MODELS) {
         if (!Array.isArray(m)) continue;
-        const [modelId, label, tier, sweScore, ctx, providerKey, addedDate] = m;
+        const [modelId, label, tier, sweScore, ctx, providerKey, addedDate, deprecatedAfter] = m;
+        if (isDeprecatedDateOrStatus(deprecatedAfter)) {
+          deprecatedRecords.push({
+            modelId,
+            name: label || modelId,
+            provider: providerKey || 'general',
+            reason: `Deprecated after ${deprecatedAfter} in sources.js`
+          });
+          continue;
+        }
         if (!models.some(existing => existing.id === modelId && existing.provider === providerKey)) {
           const modelObj = {
             id: modelId,
@@ -135,7 +171,8 @@ async function parseSourcesContent(content) {
             score: typeof sweScore === 'number' ? sweScore : parseFloat(sweScore) || 50,
             contextLength: parseContextLength(ctx),
             provider: providerKey || 'general',
-            addedDate: addedDate || null
+            addedDate: addedDate || null,
+            deprecatedAfter: null
           };
           models.push(modelObj);
           if (providerKey) {
@@ -149,7 +186,7 @@ async function parseSourcesContent(content) {
     try { fs.unlinkSync(tmpFile); } catch {}
   }
 
-  return { models, providerCatalog };
+  return { models, providerCatalog, deprecatedRecords };
 }
 
 /**
@@ -186,6 +223,7 @@ function parseIndexJsonContent(content) {
  */
 function parseReadmeContent(content) {
   const deprecated = [];
+  const deprecatedRecords = [];
   const lines = String(content).split('\n');
 
   for (const line of lines) {
@@ -196,6 +234,10 @@ function parseReadmeContent(content) {
       const modelName = strikeMatch[1].trim();
       if (modelName && modelName.length >= 3 && modelName.length <= 50 && !modelName.includes('http') && !deprecated.includes(modelName)) {
         deprecated.push(modelName);
+        deprecatedRecords.push({
+          modelId: modelName,
+          reason: 'Strikethrough in awesome-free-llm-api README'
+        });
       }
     }
     // Explicit deprecation note in headings: e.g. "### Model Name (retired)"
@@ -203,11 +245,15 @@ function parseReadmeContent(content) {
       const cleanHeading = trimmed.replace(/^#+\s*/, '').replace(/\s*\([^)]*\)/g, '').replace(/~~[^~]+~~/g, '').trim();
       if (cleanHeading && cleanHeading.length >= 3 && cleanHeading.length <= 50 && !cleanHeading.includes('http') && !deprecated.includes(cleanHeading)) {
         deprecated.push(cleanHeading);
+        deprecatedRecords.push({
+          modelId: cleanHeading,
+          reason: 'Retired heading in awesome-free-llm-api README'
+        });
       }
     }
   }
 
-  return { deprecated };
+  return { deprecated, deprecatedRecords };
 }
 
 /**
@@ -218,6 +264,7 @@ function parseModelsDevContent(content) {
   const models = [];
   const providerCatalog = {};
   const deprecated = [];
+  const deprecatedRecords = [];
 
   for (const [providerKey, providerData] of Object.entries(data)) {
     if (!providerData || typeof providerData !== 'object') continue;
@@ -232,12 +279,21 @@ function parseModelsDevContent(content) {
       const isZeroCost = (inputCost === 0 && outputCost === 0);
       const isFreeId = String(modelId).endsWith(':free') || String(modelMeta.id || '').endsWith(':free');
 
-      if (modelMeta.status === 'deprecated') {
+      const isDeprecated = modelMeta.status === 'deprecated' || modelMeta.status === 'shutdown';
+      if (isDeprecated) {
         const isAggregator = ['aihubmix', 'opper', 'kenari', 'unorouter', 'github-copilot', 'poe', 'venice'].includes(pKey);
         if (!isAggregator) {
           deprecated.push(modelId);
           if (modelMeta.name && !modelMeta.name.includes(' ')) deprecated.push(modelMeta.name);
+          deprecatedRecords.push({
+            modelId,
+            name: modelMeta.name || modelId,
+            provider: pKey,
+            reason: `Deprecated status in models.dev (${modelMeta.status})`
+          });
         }
+        // Do NOT add deprecated models to active pool
+        continue;
       }
 
       if (isZeroCost || isFreeId) {
@@ -250,7 +306,7 @@ function parseModelsDevContent(content) {
           contextLength: ctx,
           provider: pKey,
           addedDate: modelMeta.release_date || modelMeta.last_updated || null,
-          deprecatedAfter: modelMeta.status === 'deprecated' ? 'deprecated' : null,
+          deprecatedAfter: null,
           capabilities: {
             tools: modelMeta.tool_call !== false,
             reasoning: Boolean(modelMeta.reasoning)
@@ -263,7 +319,7 @@ function parseModelsDevContent(content) {
     }
   }
 
-  return { models, providerCatalog, deprecated };
+  return { models, providerCatalog, deprecated, deprecatedRecords };
 }
 
 /**
@@ -303,6 +359,7 @@ function parseKiloGatewayContent(content) {
  */
 async function harvestExternalModels({
   outputPath = EXTERNAL_MODELS_PATH,
+  deadModelsPath = DEAD_MODELS_PATH,
   retries = 3,
   baseDelayMs = 1000,
   timeoutMs = 15000,
@@ -472,8 +529,145 @@ async function harvestExternalModels({
   // Combine deprecations
   const mergedDeprecated = Array.from(new Set([...parsedReadme.deprecated, ...parsedModelsDev.deprecated]));
 
+  // Combine structured deprecation records across all sources
+  const allDeprecatedRecords = [
+    ...(parsedSources.deprecatedRecords || []),
+    ...(parsedModelsDev.deprecatedRecords || []),
+    ...(parsedReadme.deprecatedRecords || [])
+  ];
+
+  // Compare against previous external catalog to detect models removed from external repo
+  if (fs.existsSync(outputPath) && sourcesStatus['vava-nessa'].status === 'ok' && sourcesStatus['models.dev'].status === 'ok') {
+    try {
+      const prevData = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+      const prevCatalog = prevData.providerCatalog || {};
+      for (const [pKey, oldModels] of Object.entries(prevCatalog)) {
+        if (!Array.isArray(oldModels)) continue;
+        const newModels = mergedProviderCatalog[pKey] || [];
+        for (const oldId of oldModels) {
+          if (!newModels.includes(oldId) && !mergedModels.some(m => m.id === oldId && m.provider === pKey)) {
+            allDeprecatedRecords.push({
+              modelId: oldId,
+              provider: pKey,
+              reason: `Removed from upstream ${pKey} external catalog`
+            });
+          }
+        }
+      }
+    } catch {}
+  }
+
+  // Populate dead-models.json with confirmed dead models
+  const targetDeadPath = deadModelsPath || DEAD_MODELS_PATH;
+  let deadStore = { updatedAt: new Date().toISOString(), models: {} };
+  if (fs.existsSync(targetDeadPath)) {
+    try {
+      deadStore = JSON.parse(fs.readFileSync(targetDeadPath, 'utf8'));
+      if (!deadStore.models) deadStore.models = {};
+    } catch {}
+  }
+
+  const now = new Date().toISOString();
+
+  // Clean up any stale future-dated deprecations in deadStore
+  for (const [k, v] of Object.entries(deadStore.models)) {
+    const match = (v.reason || '').match(/Deprecated after ([0-9]{4}-[0-9]{2}-[0-9]{2})/);
+    if (match) {
+      const depDate = new Date(match[1]).getTime();
+      if (!isNaN(depDate) && depDate > Date.now()) {
+        delete deadStore.models[k];
+      }
+    }
+  }
+
+  // Upgrade existing entries in deadStore that are known to be permanently dead (HTTP 410, retired, archived)
+  for (const [mId, mData] of Object.entries(deadStore.models)) {
+    if (!mData) continue;
+    const isPerma = Number(mData.status) === 410 ||
+      /retired|archived|does not exist|model_not_found|permanently|no longer available/i.test(String(mData.reason || ''));
+    if (isPerma && !mData.confirmedDead) {
+      mData.confirmedDead = true;
+      if (!mData.confirmedDeadAt) mData.confirmedDeadAt = mData.lastSeenDead || now;
+    }
+  }
+
+  const stdPrefixes = (providersHelper && providersHelper.STANDARD_PROVIDER_PREFIXES) || {
+    openrouter: 'openrouter', nvidia: 'nvidia', groq: 'groq', cerebras: 'cerebras',
+    ollama: 'ollama', kilo: 'kc', kilocode: 'kc', mistral: 'mistral',
+    gemini: 'gemini', googleai: 'gemini', google: 'gemini', aihubmix: 'aihubmix',
+    opencode: 'oc', 'opencode-zen': 'ocz', 'opencode-go': 'ocg', xai: 'xai'
+  };
+
+  for (const depRec of allDeprecatedRecords) {
+    if (!depRec || !depRec.modelId) continue;
+    const pKey = depRec.provider ? String(depRec.provider).toLowerCase() : '';
+    const prefix = stdPrefixes[pKey] || pKey;
+    const fullId = (providersHelper && typeof providersHelper.formatRoutingFullId === 'function' && prefix)
+      ? providersHelper.formatRoutingFullId(prefix, depRec.modelId)
+      : (prefix ? `${prefix}/${depRec.modelId}` : depRec.modelId);
+
+    const existing = deadStore.models[fullId];
+    deadStore.models[fullId] = {
+      firstSeenDead: existing?.firstSeenDead || now,
+      lastSeenDead: now,
+      status: 410,
+      reason: depRec.reason || 'Deprecated / removed upstream in external catalog',
+      failCount: Math.max(existing?.failCount || 0, 5),
+      confirmedDead: true,
+      confirmedDeadAt: existing?.confirmedDeadAt || now
+    };
+
+    // Only record bare ID if depRec has NO provider, to prevent one provider from poisoning another
+    if (!depRec.provider) {
+      const bareId = depRec.modelId.replace(/^[a-zA-Z0-9_.-]+\//, '');
+      if (bareId && !deadStore.models[bareId]) {
+        deadStore.models[bareId] = {
+          firstSeenDead: now,
+          lastSeenDead: now,
+          status: 410,
+          reason: depRec.reason || 'Deprecated / removed upstream in external catalog',
+          failCount: 5,
+          confirmedDead: true,
+          confirmedDeadAt: now
+        };
+      }
+    }
+  }
+
+  deadStore.updatedAt = now;
+  try {
+    fs.writeFileSync(targetDeadPath, JSON.stringify(deadStore, null, 2) + '\n', 'utf8');
+    const confirmedCount = Object.values(deadStore.models).filter(m => m.confirmedDead).length;
+    console.log(`[✓] Updated ${targetDeadPath} (${Object.keys(deadStore.models).length} entries, ${confirmedCount} confirmed dead)`);
+  } catch (err) {
+    console.warn(`[!] Warning: Failed to save ${targetDeadPath}: ${err.message}`);
+  }
+
+  // Filter out any confirmed dead models from active external-models.json catalog
+  const filteredModels = mergedModels.filter(m => {
+    const pKey = String(m.provider || '').toLowerCase();
+    const prefix = stdPrefixes[pKey] || pKey;
+    const fullId = (providersHelper && typeof providersHelper.formatRoutingFullId === 'function' && prefix)
+      ? providersHelper.formatRoutingFullId(prefix, m.id)
+      : (prefix ? `${prefix}/${m.id}` : m.id);
+    if (deadStore.models[fullId]?.confirmedDead) return false;
+    return true;
+  });
+
+  const filteredProviderCatalog = {};
+  for (const [pKey, mList] of Object.entries(mergedProviderCatalog)) {
+    const prefix = stdPrefixes[pKey] || pKey;
+    filteredProviderCatalog[pKey] = mList.filter(mId => {
+      const fullId = (providersHelper && typeof providersHelper.formatRoutingFullId === 'function' && prefix)
+        ? providersHelper.formatRoutingFullId(prefix, mId)
+        : (prefix ? `${prefix}/${mId}` : mId);
+      if (deadStore.models[fullId]?.confirmedDead) return false;
+      return true;
+    });
+  }
+
   // Fallback defaults if all networks failed and file doesn't exist
-  if (parsedSources.models.length === 0 && fs.existsSync(outputPath)) {
+  if (filteredModels.length === 0 && fs.existsSync(outputPath)) {
     console.log(`[i] Using existing cached ${outputPath}`);
     try {
       return JSON.parse(fs.readFileSync(outputPath, 'utf8'));
@@ -483,8 +677,8 @@ async function harvestExternalModels({
   const catalog = {
     lastUpdated: new Date().toISOString(),
     sources: sourcesStatus,
-    models: mergedModels,
-    providerCatalog: mergedProviderCatalog,
+    models: filteredModels,
+    providerCatalog: filteredProviderCatalog,
     quotas: parsedIndex.quotas,
     deprecated: mergedDeprecated
   };
@@ -523,5 +717,6 @@ module.exports = {
   KILO_GATEWAY_URL,
   parseModelsDevContent,
   parseKiloGatewayContent,
-  EXTERNAL_MODELS_PATH
+  EXTERNAL_MODELS_PATH,
+  DEAD_MODELS_PATH
 };

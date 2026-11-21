@@ -1136,6 +1136,15 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
     const catalog = extData.providerCatalog || {};
     const modelsMeta = extData.models || [];
 
+    // Load dead-models.json to avoid seeding confirmed dead models
+    let deadStore = null;
+    const deadModelsPath = path.join(__dirname, 'dead-models.json');
+    if (fs.existsSync(deadModelsPath)) {
+      try {
+        deadStore = JSON.parse(fs.readFileSync(deadModelsPath, 'utf8'));
+      } catch {}
+    }
+
     const provLower = String(providerName || '').toLowerCase();
     const prefLower = String(prefix || '').toLowerCase();
     const targetLower = String(targetKey || '').toLowerCase();
@@ -1207,6 +1216,14 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
         continue;
       }
       const fullId = formatRoutingFullId(prefix, cleanId);
+      if (deadStore && deadStore.models) {
+        const isDead = (deadStore.models[fullId]?.confirmedDead) ||
+                       (deadStore.models[cleanId]?.confirmedDead) ||
+                       (deadStore.models[extId]?.confirmedDead);
+        if (isDead) {
+          continue;
+        }
+      }
       if (seenIds.has(cleanId.toLowerCase()) || seenFullIds.has(fullId.toLowerCase())) {
         continue;
       }
@@ -1428,6 +1445,7 @@ async function discoverAllProviders(options = {}) {
 }
 
 module.exports = {
+  CANONICAL_CATALOG_MAP,
   PROVIDERS,
   PROVIDER_BY_KEY,
   STANDARD_PROVIDER_PREFIXES,

@@ -1,9 +1,9 @@
 {
-  "lastUpdated": "2026-11-21T14:20:08.228Z",
+  "lastUpdated": "2026-11-21T14:51:34.634Z",
   "sources": {
     "vava-nessa": {
       "status": "ok",
-      "count": 258
+      "count": 257
     },
     "mvalentsev": {
       "status": "ok",
@@ -15,7 +15,7 @@
     },
     "models.dev": {
       "status": "ok",
-      "count": 586
+      "count": 444
     },
     "kilo.ai": {
       "status": "ok",
@@ -74,16 +74,6 @@
       "deprecatedAfter": null
     },
     {
-      "id": "moonshotai/kimi-k2.6",
-      "name": "Kimi K2.6",
-      "tier": "S+",
-      "score": 80.2,
-      "contextLength": 262144,
-      "provider": "nvidia",
-      "addedDate": null,
-      "deprecatedAfter": null
-    },
-    {
       "id": "minimaxai/minimax-m3.1-flash",
       "name": "MiniMax M3.1 Flash",
       "tier": "S+",
@@ -114,16 +104,6 @@
       "deprecatedAfter": null
     },
     {
-      "id": "nvidia/nemotron-3-super-120b-a12b",
-      "name": "Nemotron 3 Super",
-      "tier": "S",
-      "score": 60.5,
-      "contextLength": 1048576,
-      "provider": "nvidia",
-      "addedDate": null,
-      "deprecatedAfter": null
-    },
-    {
       "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
       "name": "Nemotron 3 Omni",
       "tier": "A+",
@@ -144,16 +124,6 @@
       "deprecatedAfter": null
     },
     {
-      "id": "deepseek-ai/deepseek-v4.1-flash",
-      "name": "DeepSeek V4.1 Flash",
-      "tier": "S+",
-      "score": 50,
-      "contextLength": 1048576,
-      "provider": "nvidia",
-      "addedDate": null,
-      "deprecatedAfter": null
-    },
-    {
       "id": "openai/gpt-oss-20b",
       "name": "GPT OSS 20B",
       "tier": "A+",
@@ -168,16 +138,6 @@
       "name": "Gemma 4 31B",
       "tier": "A+",
       "score": 52,
-      "contextLength": 268288,
-      "provider": "nvidia",
-      "addedDate": null,
-      "deprecatedAfter": null
-    },
-    {
-      "id": "google/diffusiongemma-26b-a4b-it",
-      "name": "DiffusionGemma 26B",
-      "tier": "B+",
-      "score": 50,
       "contextLength": 268288,
       "provider": "nvidia",
       "addedDate": null,
@@ -281,7 +241,7 @@
       "contextLength": 1048576,
       "provider": "googleai",
       "addedDate": null,
-      "deprecatedAfter": "2027-05-07"
+      "deprecatedAfter": null
     },
     {
       "id": "gemini-2.5-flash",
@@ -291,7 +251,7 @@
       "contextLength": 1048576,
       "provider": "googleai",
       "addedDate": null,
-      "deprecatedAfter": "2026-12-01"
+      "deprecatedAfter": null
     },
     {
       "id": "gemini-2.5-flash-lite",
@@ -301,7 +261,7 @@
       "contextLength": 1048576,
       "provider": "googleai",
       "addedDate": null,
-      "deprecatedAfter": "2026-12-01"
+      "deprecatedAfter": null
     },
     {
       "id": "gemini-3-flash-preview",
@@ -321,7 +281,7 @@
       "contextLength": 1048576,
       "provider": "googleai",
       "addedDate": null,
-      "deprecatedAfter": "2026-12-01"
+      "deprecatedAfter": null
     },
     {
       "id": "mistral-large-4",
@@ -624,31 +584,11 @@
       "deprecatedAfter": null
     },
     {
-      "id": "thinkingmachines/inkling:free",
-      "name": "Inkling",
-      "tier": "B+",
-      "score": 50,
-      "contextLength": 1048576,
-      "provider": "openrouter",
-      "addedDate": null,
-      "deprecatedAfter": null
-    },
-    {
       "id": "openrouter/free",
       "name": "Free Models Router",
       "tier": "A",
       "score": 50,
       "contextLength": 204800,
-      "provider": "openrouter",
-      "addedDate": null,
-      "deprecatedAfter": null
-    },
-    {
-      "id": "thinkingmachines/inkling-small:free",
-      "name": "Inkling Small",
-      "tier": "B",
-      "score": 50,
-      "contextLength": 1048576,
       "provider": "openrouter",
       "addedDate": null,
       "deprecatedAfter": null
@@ -774,16 +714,6 @@
       "deprecatedAfter": null
     },
     {
-      "id": "Mistral-Small-3.2-24B-Instruct-2506",
-      "name": "Mistral Small 3.2 24B",
-      "tier": "B+",
-      "score": 20,
-      "contextLength": 134144,
-      "provider": "ovhcloud",
-      "addedDate": null,
-      "deprecatedAfter": "2026-11-04"
-    },
-    {
       "id": "Qwen3.5-9B",
       "name": "Qwen3.5 9B",
       "tier": "B+",
@@ -831,7 +761,7 @@
       "contextLength": 8192,
       "provider": "ovhcloud",
       "addedDate": null,
-      "deprecatedAfter": "2027-01-21"
+      "deprecatedAfter": null
     },
     {
       "id": "Qwen3Guard-Gen-8B",
@@ -2758,20 +2688,6 @@
       }
     },
     {
-      "id": "meituan/longcat-flash-lite",
-      "name": "Meituan/Longcat-Flash-Lite",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 256000,
-      "provider": "qiniu-ai",
-      "addedDate": "2026-02-06",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "gemma-4-26b-a4b-it",
       "name": "Gemma 4 26B A4B IT",
       "tier": "A",
@@ -3038,34 +2954,6 @@
       }
     },
     {
-      "id": "duo-chat-gpt-5-mini",
-      "name": "Agentic Chat (GPT-5 Mini)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 400000,
-      "provider": "gitlab",
-      "addedDate": "2025-08-07",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "duo-chat-gpt-5-codex",
-      "name": "Agentic Chat (GPT-5 Codex)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 400000,
-      "provider": "gitlab",
-      "addedDate": "2025-09-15",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "duo-chat-sonnet-5-5",
       "name": "Agentic Chat (Claude Sonnet 5.5)",
       "tier": "A",
@@ -3122,20 +3010,6 @@
       }
     },
     {
-      "id": "duo-chat-gpt-5-3-codex",
-      "name": "Agentic Chat (GPT-5.3 Codex)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 400000,
-      "provider": "gitlab",
-      "addedDate": "2026-02-05",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "duo-chat-gpt-5-5",
       "name": "Agentic Chat (GPT-5.5)",
       "tier": "A",
@@ -3158,20 +3032,6 @@
       "provider": "gitlab",
       "addedDate": "2026-07-24",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "duo-chat-gpt-5-4-nano",
-      "name": "Agentic Chat (GPT-5.4 Nano)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 400000,
-      "provider": "gitlab",
-      "addedDate": "2026-03-17",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -3248,20 +3108,6 @@
       }
     },
     {
-      "id": "duo-chat-sonnet-4-5",
-      "name": "Agentic Chat (Claude Sonnet 4.5)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 200000,
-      "provider": "gitlab",
-      "addedDate": "2025-09-29",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "duo-chat-gpt-5-6-luna",
       "name": "Agentic Chat (GPT-5.6 Luna)",
       "tier": "A",
@@ -3298,20 +3144,6 @@
       "provider": "gitlab",
       "addedDate": "2026-09-01",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "duo-chat-gpt-5-2-codex",
-      "name": "Agentic Chat (GPT-5.2 Codex)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 400000,
-      "provider": "gitlab",
-      "addedDate": "2025-12-11",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -3368,20 +3200,6 @@
       "provider": "gitlab",
       "addedDate": "2025-12-11",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "duo-chat-gpt-5-1",
-      "name": "Agentic Chat (GPT-5.1)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 400000,
-      "provider": "gitlab",
-      "addedDate": "2025-11-13",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -3612,104 +3430,6 @@
       }
     },
     {
-      "id": "MiniMax-M2.7",
-      "name": "MiniMax-M2.7",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-coding-plan",
-      "addedDate": "2026-03-18",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2.5",
-      "name": "MiniMax-M2.5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-coding-plan",
-      "addedDate": "2026-02-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M3.1-Flash-Preview",
-      "name": "MiniMax-M3.1-Flash-Preview",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "minimax-coding-plan",
-      "addedDate": "2026-09-27",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2.1",
-      "name": "MiniMax-M2.1",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-coding-plan",
-      "addedDate": "2025-12-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2.7-highspeed",
-      "name": "MiniMax-M2.7-highspeed",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-coding-plan",
-      "addedDate": "2026-03-18",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2",
-      "name": "MiniMax-M2",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-coding-plan",
-      "addedDate": "2025-10-27",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2.5-highspeed",
-      "name": "MiniMax-M2.5-highspeed",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-coding-plan",
-      "addedDate": "2026-02-13",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "MiniMax-M3.1-Flash",
       "name": "MiniMax-M3.1-Flash",
       "tier": "A",
@@ -3738,20 +3458,6 @@
       }
     },
     {
-      "id": "glm-4.7",
-      "name": "GLM-4.7",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "zai-coding-plan",
-      "addedDate": "2025-12-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "glm-5.3-flash",
       "name": "GLM-5.3-Flash",
       "tier": "A",
@@ -3760,20 +3466,6 @@
       "provider": "zai-coding-plan",
       "addedDate": "2026-08-26",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "glm-5-turbo",
-      "name": "GLM-5-Turbo",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 200000,
-      "provider": "zai-coding-plan",
-      "addedDate": "2026-03-16",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -3802,34 +3494,6 @@
       "provider": "zai-coding-plan",
       "addedDate": "2026-08-14",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "glm-5.2",
-      "name": "GLM-5.2",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "zai-coding-plan",
-      "addedDate": "2026-06-13",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "glm-5.2-highspeed",
-      "name": "GLM-5.2 Highspeed",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "zai-coding-plan",
-      "addedDate": "2026-06-13",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -3990,20 +3654,6 @@
       }
     },
     {
-      "id": "inclusionai/ling-3.1-flash:free",
-      "name": "Ling 3.1 Flash",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "commandcode",
-      "addedDate": "2026-09-29",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "stealth/glyph-cluster:free",
       "name": "Glyph Cluster",
       "tier": "A",
@@ -4015,34 +3665,6 @@
       "capabilities": {
         "tools": true,
         "reasoning": true
-      }
-    },
-    {
-      "id": "glm-4.7",
-      "name": "GLM-4.7",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 202752,
-      "provider": "alibaba-coding-plan-cn",
-      "addedDate": "2025-12-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "qwen3-max-2026-01-23",
-      "name": "Qwen3 Max",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 262144,
-      "provider": "alibaba-coding-plan-cn",
-      "addedDate": "2026-01-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
       }
     },
     {
@@ -4102,20 +3724,6 @@
       }
     },
     {
-      "id": "qwen3-coder-plus",
-      "name": "Qwen3 Coder Plus",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 1000000,
-      "provider": "alibaba-coding-plan-cn",
-      "addedDate": "2025-07-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
       "id": "qwen3.5-plus",
       "name": "Qwen3.5 Plus",
       "tier": "A",
@@ -4127,20 +3735,6 @@
       "capabilities": {
         "tools": true,
         "reasoning": true
-      }
-    },
-    {
-      "id": "qwen3-coder-next",
-      "name": "Qwen3 Coder Next",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 262144,
-      "provider": "alibaba-coding-plan-cn",
-      "addedDate": "2026-02-03",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
       }
     },
     {
@@ -4169,104 +3763,6 @@
       "capabilities": {
         "tools": true,
         "reasoning": false
-      }
-    },
-    {
-      "id": "glm-5",
-      "name": "GLM-5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 202752,
-      "provider": "tencent-coding-plan",
-      "addedDate": "2026-02-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "minimax-m2.5",
-      "name": "MiniMax-M2.5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "tencent-coding-plan",
-      "addedDate": "2026-02-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "hunyuan-2.0-instruct",
-      "name": "Tencent HY 2.0 Instruct",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 131072,
-      "provider": "tencent-coding-plan",
-      "addedDate": "2026-03-08",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "hunyuan-turbos",
-      "name": "Hunyuan-TurboS",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 131072,
-      "provider": "tencent-coding-plan",
-      "addedDate": "2026-03-08",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "hunyuan-t1",
-      "name": "Hunyuan-T1",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 131072,
-      "provider": "tencent-coding-plan",
-      "addedDate": "2026-03-08",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "kimi-k2.5",
-      "name": "Kimi-K2.5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "tencent-coding-plan",
-      "addedDate": "2026-01-27",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "hunyuan-2.0-thinking",
-      "name": "Tencent HY 2.0 Think",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 131072,
-      "provider": "tencent-coding-plan",
-      "addedDate": "2026-03-08",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
       }
     },
     {
@@ -4334,34 +3830,6 @@
       "provider": "reflection",
       "addedDate": "2026-10-05",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "labs-devstral-small-2512",
-      "name": "Devstral Small 2",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 256000,
-      "provider": "mistral",
-      "addedDate": "2025-12-09",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "labs-leanstral-1-5-1",
-      "name": "Leanstral 1.5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "mistral",
-      "addedDate": "2026-06-30",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -4452,34 +3920,6 @@
       }
     },
     {
-      "id": "doubao-seed-2.1-turbo",
-      "name": "Seed 2.1 Turbo",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 256000,
-      "provider": "volcengine-coding-plan",
-      "addedDate": "2026-06-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "minimax-m3",
-      "name": "MiniMax-M3",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "volcengine-coding-plan",
-      "addedDate": "2026-06-01",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "doubao-seed-2.0-mini",
       "name": "Seed 2.0 Mini",
       "tier": "A",
@@ -4502,20 +3942,6 @@
       "provider": "volcengine-coding-plan",
       "addedDate": "2026-09-10",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "kimi-k2.7-code",
-      "name": "Kimi K2.7 Code",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "volcengine-coding-plan",
-      "addedDate": "2026-06-12",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -4586,20 +4012,6 @@
       "provider": "volcengine-coding-plan",
       "addedDate": "2026-06-23",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "doubao-seed-2.0-lite",
-      "name": "Seed 2.0 Lite",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 256000,
-      "provider": "volcengine-coding-plan",
-      "addedDate": "2026-02-14",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -4844,20 +4256,6 @@
       }
     },
     {
-      "id": "deepseek-v4-flash",
-      "name": "DeepSeek V4 Flash",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "alibaba-token-plan",
-      "addedDate": "2026-04-24",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "happyhorse-1.1-i2v",
       "name": "HappyHorse 1.1 Image-to-Video",
       "tier": "A",
@@ -4911,20 +4309,6 @@
       "capabilities": {
         "tools": false,
         "reasoning": false
-      }
-    },
-    {
-      "id": "deepseek-v3.2",
-      "name": "DeepSeek V3.2",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 131072,
-      "provider": "alibaba-token-plan",
-      "addedDate": "2025-12-03",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
       }
     },
     {
@@ -4995,20 +4379,6 @@
       "capabilities": {
         "tools": false,
         "reasoning": false
-      }
-    },
-    {
-      "id": "qwen3.8-max-preview",
-      "name": "Qwen3.8 Max Preview",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "alibaba-token-plan",
-      "addedDate": "2026-07-19",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
       }
     },
     {
@@ -5104,20 +4474,6 @@
       "provider": "zhipuai-coding-plan",
       "addedDate": "2026-08-26",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "glm-4.6v",
-      "name": "GLM-4.6V",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 128000,
-      "provider": "zhipuai-coding-plan",
-      "addedDate": "2025-12-08",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -5292,34 +4648,6 @@
       }
     },
     {
-      "id": "glm-4.7",
-      "name": "GLM-4.7",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 202752,
-      "provider": "alibaba-coding-plan",
-      "addedDate": "2025-12-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "qwen3-max-2026-01-23",
-      "name": "Qwen3 Max",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 262144,
-      "provider": "alibaba-coding-plan",
-      "addedDate": "2026-01-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
       "id": "glm-5",
       "name": "GLM-5",
       "tier": "A",
@@ -5376,20 +4704,6 @@
       }
     },
     {
-      "id": "qwen3-coder-plus",
-      "name": "Qwen3 Coder Plus",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 1000000,
-      "provider": "alibaba-coding-plan",
-      "addedDate": "2025-07-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
       "id": "qwen3.5-plus",
       "name": "Qwen3.5 Plus",
       "tier": "A",
@@ -5404,20 +4718,6 @@
       }
     },
     {
-      "id": "qwen3-coder-next",
-      "name": "Qwen3 Coder Next",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 262144,
-      "provider": "alibaba-coding-plan",
-      "addedDate": "2026-02-03",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
       "id": "qwen3.7-plus",
       "name": "Qwen3.7 Plus",
       "tier": "A",
@@ -5426,20 +4726,6 @@
       "provider": "alibaba-coding-plan",
       "addedDate": "2026-06-02",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "agnes-2.0-flash",
-      "name": "Agnes 2.0 Flash",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 512000,
-      "provider": "agnes",
-      "addedDate": "2026-05-25",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -5698,20 +4984,6 @@
       }
     },
     {
-      "id": "mimo-v2.5-pro",
-      "name": "MiMo-V2.5-Pro",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "xiaomi-token-plan-ams",
-      "addedDate": "2026-04-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "mimo-v2.5-tts",
       "name": "MiMo-V2.5-TTS",
       "tier": "A",
@@ -5723,20 +4995,6 @@
       "capabilities": {
         "tools": false,
         "reasoning": false
-      }
-    },
-    {
-      "id": "mimo-v2.5",
-      "name": "MiMo-V2.5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "xiaomi-token-plan-ams",
-      "addedDate": "2026-04-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
       }
     },
     {
@@ -5776,20 +5034,6 @@
       "provider": "aihubmix",
       "addedDate": "2026-08-14",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "xiaomi-mimo-v2.5-free",
-      "name": "Xiaomi MiMo-V2.5 (free)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "aihubmix",
-      "addedDate": "2026-04-22",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -5846,20 +5090,6 @@
       "provider": "aihubmix",
       "addedDate": "2026-08-03",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "xiaomi-mimo-v2.5-pro-free",
-      "name": "Xiaomi MiMo-V2.5-Pro (free)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "aihubmix",
-      "addedDate": "2026-04-22",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -5992,20 +5222,6 @@
       }
     },
     {
-      "id": "google/gemma-3-4b-it",
-      "name": "Gemma 3 4B IT",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 131072,
-      "provider": "nvidia",
-      "addedDate": "2025-03-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
       "id": "google/google-paligemma",
       "name": "paligemma",
       "tier": "A",
@@ -6017,34 +5233,6 @@
       "capabilities": {
         "tools": false,
         "reasoning": false
-      }
-    },
-    {
-      "id": "google/gemma-3-12b-it",
-      "name": "Gemma 3 12B IT",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 131072,
-      "provider": "nvidia",
-      "addedDate": "2025-03-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "moonshotai/kimi-k3",
-      "name": "Kimi K3",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "nvidia",
-      "addedDate": "2026-07-16",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
       }
     },
     {
@@ -6101,20 +5289,6 @@
       "capabilities": {
         "tools": false,
         "reasoning": false
-      }
-    },
-    {
-      "id": "z-ai/glm-5.3",
-      "name": "GLM-5.3",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "nvidia",
-      "addedDate": "2026-08-14",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
       }
     },
     {
@@ -6216,20 +5390,6 @@
       }
     },
     {
-      "id": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
-      "name": "Llama 3.1 Nemotron Ultra 253B",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 128000,
-      "provider": "nvidia",
-      "addedDate": "2025-04-07",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "nvidia/studiovoice",
       "name": "studiovoice",
       "tier": "A",
@@ -6252,20 +5412,6 @@
       "provider": "nvidia",
       "addedDate": "2025-10-28",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": false,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "nvidia/usdcode",
-      "name": "usdcode",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 128000,
-      "provider": "nvidia",
-      "addedDate": "2026-01-01",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": false,
         "reasoning": false
@@ -6328,34 +5474,6 @@
       }
     },
     {
-      "id": "nvidia/usdvalidate",
-      "name": "usdvalidate",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 0,
-      "provider": "nvidia",
-      "addedDate": "2024-07-24",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": false,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "nvidia/rerank-qa-mistral-4b",
-      "name": "rerank-qa-mistral-4b",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 128000,
-      "provider": "nvidia",
-      "addedDate": "2024-03-17",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": false,
-        "reasoning": false
-      }
-    },
-    {
       "id": "nvidia/active-speaker-detection",
       "name": "Active Speaker Detection",
       "tier": "A",
@@ -6370,20 +5488,6 @@
       }
     },
     {
-      "id": "nvidia/cosmos-reason2-8b",
-      "name": "Cosmos Reason2 8B",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 131072,
-      "provider": "nvidia",
-      "addedDate": "2025-12-01",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "nvidia/llama-nemotron-rerank-vl-1b-v2",
       "name": "llama-nemotron-rerank-vl-1b-v2",
       "tier": "A",
@@ -6394,34 +5498,6 @@
       "deprecatedAfter": null,
       "capabilities": {
         "tools": false,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "nvidia/riva-translate-4b-instruct-v1.1",
-      "name": "riva-translate-4b-instruct-v1_1",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 128000,
-      "provider": "nvidia",
-      "addedDate": "2025-12-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": false,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "nvidia/llama-3.1-nemotron-70b-instruct",
-      "name": "Llama 3.1 Nemotron 70B Instruct",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 128000,
-      "provider": "nvidia",
-      "addedDate": "2025-04-15",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
         "reasoning": false
       }
     },
@@ -6462,48 +5538,6 @@
       "provider": "nvidia",
       "addedDate": "2026-04-16",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": false,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "mistralai/mistral-7b-instruct-v0.3",
-      "name": "Mistral-7B-Instruct-v0.3",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 65536,
-      "provider": "nvidia",
-      "addedDate": "2024-05-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "mistralai/magistral-small-2506",
-      "name": "Magistral Small 2506",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 32768,
-      "provider": "nvidia",
-      "addedDate": "2025-06-10",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": false,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "mistralai/mistral-medium-3-instruct",
-      "name": "Mistral Medium 3",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 131072,
-      "provider": "nvidia",
-      "addedDate": "2025-05-07",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": false,
         "reasoning": false
@@ -6576,20 +5610,6 @@
       "deprecatedAfter": null,
       "capabilities": {
         "tools": false,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "deepseek-r1-distill-llama-8b",
-      "name": "DeepSeek R1 Distill Llama 8B",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 32768,
-      "provider": "alibaba-cn",
-      "addedDate": "2025-01-01",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
         "reasoning": true
       }
     },
@@ -6748,20 +5768,6 @@
       }
     },
     {
-      "id": "deepseek-v4-flash",
-      "name": "DeepSeek V4 Flash",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "alibaba-token-plan-cn",
-      "addedDate": "2026-04-24",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "happyhorse-1.1-i2v",
       "name": "HappyHorse 1.1 Image-to-Video",
       "tier": "A",
@@ -6815,20 +5821,6 @@
       "capabilities": {
         "tools": false,
         "reasoning": false
-      }
-    },
-    {
-      "id": "deepseek-v3.2",
-      "name": "DeepSeek V3.2",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 131072,
-      "provider": "alibaba-token-plan-cn",
-      "addedDate": "2025-12-03",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
       }
     },
     {
@@ -6899,20 +5891,6 @@
       "capabilities": {
         "tools": false,
         "reasoning": false
-      }
-    },
-    {
-      "id": "qwen3.8-max-preview",
-      "name": "Qwen3.8 Max Preview",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "alibaba-token-plan-cn",
-      "addedDate": "2026-07-19",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
       }
     },
     {
@@ -7000,20 +5978,6 @@
       }
     },
     {
-      "id": "mimo-v2.5",
-      "name": "MiMo-V2.5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "xiaomi-token-plan-cn",
-      "addedDate": "2026-04-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "mimo-v2.5-tts",
       "name": "MiMo-V2.5-TTS",
       "tier": "A",
@@ -7050,20 +6014,6 @@
       "provider": "xiaomi-token-plan-cn",
       "addedDate": "2026-09-22",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "mimo-v2.5-pro",
-      "name": "MiMo-V2.5-Pro",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "xiaomi-token-plan-cn",
-      "addedDate": "2026-04-22",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -7364,20 +6314,6 @@
       }
     },
     {
-      "id": "gemma-3-27b",
-      "name": "Gemma 3 27B",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 131072,
-      "provider": "empiriolabs",
-      "addedDate": "2025-03-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": false,
-        "reasoning": false
-      }
-    },
-    {
       "id": "glm-4-6v-flash",
       "name": "GLM 4.6V Flash",
       "tier": "A",
@@ -7476,20 +6412,6 @@
       }
     },
     {
-      "id": "ling-3.0-flash-free",
-      "name": "Ling-3.0-flash Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "opencode",
-      "addedDate": "2026-07-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "nemotron-3.5-super-vl-free",
       "name": "Nemotron 3.5 Super VL Free",
       "tier": "A",
@@ -7498,34 +6420,6 @@
       "provider": "opencode",
       "addedDate": "2026-10-15",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "mimo-v2-omni-free",
-      "name": "MiMo V2 Omni Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "opencode",
-      "addedDate": "2026-03-18",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "north-mini-code-free",
-      "name": "North Mini Code Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 256000,
-      "provider": "opencode",
-      "addedDate": "2026-06-09",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -7546,104 +6440,6 @@
       }
     },
     {
-      "id": "kimi-k2.5-free",
-      "name": "Kimi K2.5 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "opencode",
-      "addedDate": "2026-01-27",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "longcat-2.5-preview-free",
-      "name": "LongCat 2.5 Preview Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "opencode",
-      "addedDate": "2026-09-25",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "glm-5.3-flash-free",
-      "name": "GLM-5.3-Flash Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 200000,
-      "provider": "opencode",
-      "addedDate": "2026-08-26",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "hy3-free",
-      "name": "Hy3 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 190000,
-      "provider": "opencode",
-      "addedDate": "2026-07-06",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "minimax-m2.1-free",
-      "name": "MiniMax-M2.1 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "opencode",
-      "addedDate": "2025-12-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "ll-alpha-free",
-      "name": "LL Alpha Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "opencode",
-      "addedDate": "2026-10-15",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "exo-free",
-      "name": "Exo Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-10-06",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "iceman-free",
       "name": "Iceman Free",
       "tier": "A",
@@ -7658,76 +6454,6 @@
       }
     },
     {
-      "id": "muse-spark-1.2-contributor-free",
-      "name": "Muse Spark 1.2 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-08-05",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "pulse-alpha-free",
-      "name": "Pulse Alpha Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-11-02",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "glm-4.7-free",
-      "name": "GLM-4.7 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "opencode",
-      "addedDate": "2025-12-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "inkling-2-small-free",
-      "name": "Inkling 2 Small Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-11-05",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "nemotron-3-ultra-free",
-      "name": "Nemotron 3 Ultra Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "opencode",
-      "addedDate": "2026-06-04",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "nemotron-3.5-lightning-free",
       "name": "Nemotron 3.5 Lightning Free",
       "tier": "A",
@@ -7736,62 +6462,6 @@
       "provider": "opencode",
       "addedDate": "2026-08-11",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "minimax-m3-free",
-      "name": "MiniMax-M3 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 200000,
-      "provider": "opencode",
-      "addedDate": "2026-06-01",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "ling-3.0-tiny-free",
-      "name": "Ling-3.0-tiny Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "opencode",
-      "addedDate": "2026-08-06",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "ling-2.6-flash-free",
-      "name": "Ling 2.6 Flash Free",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 262100,
-      "provider": "opencode",
-      "addedDate": "2026-04-21",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "mimo-v2-flash-free",
-      "name": "MiMo V2 Flash Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "opencode",
-      "addedDate": "2025-12-16",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -7826,20 +6496,6 @@
       }
     },
     {
-      "id": "nemotron-3-super-free",
-      "name": "Nemotron 3 Super Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "opencode",
-      "addedDate": "2026-03-11",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "longcat-2.5-free",
       "name": "LongCat 2.5 Free",
       "tier": "A",
@@ -7868,48 +6524,6 @@
       }
     },
     {
-      "id": "space-bunny-free",
-      "name": "Space Bunny Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-09-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "laguna-s-2.1-free",
-      "name": "Laguna S 2.1 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 256000,
-      "provider": "opencode",
-      "addedDate": "2026-07-21",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "trinity-large-preview-free",
-      "name": "Trinity Large Preview",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 131072,
-      "provider": "opencode",
-      "addedDate": "2026-01-27",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
       "id": "beam-free",
       "name": "Beam Free",
       "tier": "A",
@@ -7918,104 +6532,6 @@
       "provider": "opencode",
       "addedDate": "2026-10-05",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "mimo-v2.5-free",
-      "name": "MiMo V2.5 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 200000,
-      "provider": "opencode",
-      "addedDate": "2026-04-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "cat-jam-free",
-      "name": "Cat Jam Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-10-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "glm-5-free",
-      "name": "GLM-5 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "opencode",
-      "addedDate": "2026-02-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "hy3-preview-free",
-      "name": "Hy3 preview Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 256000,
-      "provider": "opencode",
-      "addedDate": "2026-04-20",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "deepseek-v4-flash-free",
-      "name": "DeepSeek V4 Flash Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 200000,
-      "provider": "opencode",
-      "addedDate": "2026-07-31",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "minimax-m2.5-free",
-      "name": "MiniMax-M2.5 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "opencode",
-      "addedDate": "2026-02-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "fledge-alpha-free",
-      "name": "Fledge Alpha Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-10-01",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -8036,132 +6552,6 @@
       }
     },
     {
-      "id": "x-preview-f-free",
-      "name": "Ox Alpha Free (Unlimited)",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "opencode",
-      "addedDate": "2026-08-21",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "mimo-v2-pro-free",
-      "name": "MiMo V2 Pro Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-03-18",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "step-5-preview-free",
-      "name": "Step 5 Preview Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "opencode",
-      "addedDate": "2026-09-16",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "minimax-m3.1-flash-free",
-      "name": "MiniMax M3.1 Flash Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "opencode",
-      "addedDate": "2026-10-19",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "longcat-2.0-free",
-      "name": "LongCat-2.0 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "opencode",
-      "addedDate": "2026-06-30",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "muse-spark-1.3-contributor-free",
-      "name": "Muse Spark 1.3 Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-09-02",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "ling-3.0-flash-fin-free",
-      "name": "Ling 3.0 Flash Fin Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "opencode",
-      "addedDate": "2026-08-27",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "grok-code",
-      "name": "Grok Code Fast 1",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 256000,
-      "provider": "opencode",
-      "addedDate": "2025-09-02",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "ling-3.1-flash-free",
-      "name": "Ling 3.1 Flash Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "opencode",
-      "addedDate": "2026-09-29",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "deepseek-v4.1-flash-free",
       "name": "DeepSeek V4.1 Flash Free",
       "tier": "A",
@@ -8170,48 +6560,6 @@
       "provider": "opencode",
       "addedDate": "2026-10-17",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "qwen3.6-plus-free",
-      "name": "Qwen3.6 Plus Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "opencode",
-      "addedDate": "2026-04-02",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "crouton-alpha-free",
-      "name": "Crouton Alpha Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode",
-      "addedDate": "2026-11-03",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "ring-2.6-1t-free",
-      "name": "Ring 2.6 1T Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262000,
-      "provider": "opencode",
-      "addedDate": "2026-05-08",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -8442,20 +6790,6 @@
       }
     },
     {
-      "id": "mimo-v2.5-pro",
-      "name": "MiMo-V2.5-Pro",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "xiaomi-token-plan-sgp",
-      "addedDate": "2026-04-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "mimo-v2.5-tts",
       "name": "MiMo-V2.5-TTS",
       "tier": "A",
@@ -8470,20 +6804,6 @@
       }
     },
     {
-      "id": "mimo-v2.5",
-      "name": "MiMo-V2.5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "xiaomi-token-plan-sgp",
-      "addedDate": "2026-04-22",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "hy4-flash-free",
       "name": "Hy4 flash Free",
       "tier": "A",
@@ -8492,20 +6812,6 @@
       "provider": "opencode-go",
       "addedDate": "2026-11-16",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "longcat-2.5-preview-free",
-      "name": "LongCat 2.5 Preview Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "opencode-go",
-      "addedDate": "2026-09-25",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -8540,20 +6846,6 @@
       }
     },
     {
-      "id": "cat-jam-free",
-      "name": "Cat Jam Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode-go",
-      "addedDate": "2026-10-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "iceman-contributor-free",
       "name": "Iceman Contributor Free",
       "tier": "A",
@@ -8562,48 +6854,6 @@
       "provider": "opencode-go",
       "addedDate": "2026-10-24",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "step-5-preview-free",
-      "name": "Step 5 Preview Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "opencode-go",
-      "addedDate": "2026-09-16",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "minimax-m3.1-flash-free",
-      "name": "MiniMax M3.1 Flash Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "opencode-go",
-      "addedDate": "2026-10-19",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "crouton-alpha-free",
-      "name": "Crouton Alpha Free",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "opencode-go",
-      "addedDate": "2026-11-03",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -8674,20 +6924,6 @@
       "provider": "poe",
       "addedDate": "2026-04-02",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "fireworks-ai/kimi-k2.5-fw",
-      "name": "Kimi-K2.5-FW",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 262144,
-      "provider": "poe",
-      "addedDate": "2026-01-27",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": false
@@ -8912,20 +7148,6 @@
       "provider": "amd",
       "addedDate": "2026-09-06",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "DeepSeek-V4-Flash-Vision-Exp",
-      "name": "DeepSeek V4 Flash Vision Exp",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "amd",
-      "addedDate": "2026-08-21",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -9716,20 +7938,6 @@
       }
     },
     {
-      "id": "gpt-oss-120b",
-      "name": "GPT OSS 120B",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 131072,
-      "provider": "qvac",
-      "addedDate": "2025-08-05",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "gpt-oss-20b",
       "name": "GPT OSS 20B",
       "tier": "A",
@@ -9898,34 +8106,6 @@
       }
     },
     {
-      "id": "qwen3.5-397b-a17b:free",
-      "name": "Qwen3.5 397B-A17B",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "unorouter",
-      "addedDate": "2026-02-15",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "gpt-5.5:free",
-      "name": "GPT-5.5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1050000,
-      "provider": "unorouter",
-      "addedDate": "2026-04-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "gemma-4-31b-it:free",
       "name": "Gemma 4 31B IT",
       "tier": "A",
@@ -9940,48 +8120,6 @@
       }
     },
     {
-      "id": "glm-5.2:free",
-      "name": "GLM-5.2",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "unorouter",
-      "addedDate": "2026-06-13",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "deepseek-v4-flash:free",
-      "name": "DeepSeek V4 Flash",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "unorouter",
-      "addedDate": "2026-04-24",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "gpt-5.4:free",
-      "name": "GPT-5.4",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1050000,
-      "provider": "unorouter",
-      "addedDate": "2026-03-05",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "minimax-m2.7:free",
       "name": "MiniMax-M2.7",
       "tier": "A",
@@ -9990,20 +8128,6 @@
       "provider": "unorouter",
       "addedDate": "2026-03-18",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "step-3.7-flash:free",
-      "name": "Step 3.7 Flash",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 256000,
-      "provider": "unorouter",
-      "addedDate": "2026-05-29",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -10038,20 +8162,6 @@
       }
     },
     {
-      "id": "deepseek-v4-pro:free",
-      "name": "DeepSeek V4 Pro",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "unorouter",
-      "addedDate": "2026-04-24",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "umans-flash",
       "name": "Umans Flash",
       "tier": "A",
@@ -10060,20 +8170,6 @@
       "provider": "umans-ai-coding-plan",
       "addedDate": "2026-10-17",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "umans-glm-5.3-flash",
-      "name": "GLM 5.3 Flash",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "umans-ai-coding-plan",
-      "addedDate": "2026-08-26",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -10108,34 +8204,6 @@
       }
     },
     {
-      "id": "umans-kimi-k3",
-      "name": "Kimi K3.1 Pro",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "umans-ai-coding-plan",
-      "addedDate": "2026-10-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "umans-qwen3.6-35b-a3b",
-      "name": "Qwen3.6 35B A3B",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 262144,
-      "provider": "umans-ai-coding-plan",
-      "addedDate": "2026-04-17",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "umans-deepseek-v4.1-flash-1017",
       "name": "DeepSeek V4.1 Flash 1017",
       "tier": "A",
@@ -10144,20 +8212,6 @@
       "provider": "umans-ai-coding-plan",
       "addedDate": "2026-10-17",
       "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "umans-deepseek-v4-flash-0731",
-      "name": "DeepSeek V4 Flash",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1048576,
-      "provider": "umans-ai-coding-plan",
-      "addedDate": "2026-07-31",
-      "deprecatedAfter": "deprecated",
       "capabilities": {
         "tools": true,
         "reasoning": true
@@ -10206,104 +8260,6 @@
       }
     },
     {
-      "id": "MiniMax-M2.7",
-      "name": "MiniMax-M2.7",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-cn-coding-plan",
-      "addedDate": "2026-03-18",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2.5",
-      "name": "MiniMax-M2.5",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-cn-coding-plan",
-      "addedDate": "2026-02-12",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M3.1-Flash-Preview",
-      "name": "MiniMax-M3.1-Flash-Preview",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 1000000,
-      "provider": "minimax-cn-coding-plan",
-      "addedDate": "2026-09-27",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2.1",
-      "name": "MiniMax-M2.1",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-cn-coding-plan",
-      "addedDate": "2025-12-23",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2.7-highspeed",
-      "name": "MiniMax-M2.7-highspeed",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-cn-coding-plan",
-      "addedDate": "2026-03-18",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2",
-      "name": "MiniMax-M2",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-cn-coding-plan",
-      "addedDate": "2025-10-27",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
-      "id": "MiniMax-M2.5-highspeed",
-      "name": "MiniMax-M2.5-highspeed",
-      "tier": "A",
-      "score": 75,
-      "contextLength": 204800,
-      "provider": "minimax-cn-coding-plan",
-      "addedDate": "2026-02-13",
-      "deprecatedAfter": "deprecated",
-      "capabilities": {
-        "tools": true,
-        "reasoning": true
-      }
-    },
-    {
       "id": "MiniMax-M3.1-Flash",
       "name": "MiniMax-M3.1-Flash",
       "tier": "A",
@@ -10325,27 +8281,19 @@
       "stepfun-ai/step-5-preview",
       "nvidia/nemotron-3-ultra-550b-a55b",
       "poolside/laguna-xs-2.1",
-      "moonshotai/kimi-k2.6",
       "minimaxai/minimax-m3.1-flash",
       "mistralai/mistral-large-4-1t-a52b",
       "meta/muse-glimmer-30b",
-      "nvidia/nemotron-3-super-120b-a12b",
       "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning",
       "nvidia/nemotron-3.5-lightning-30b-a3b",
-      "deepseek-ai/deepseek-v4.1-flash",
       "openai/gpt-oss-20b",
       "google/gemma-4-31b-it",
-      "google/diffusiongemma-26b-a4b-it",
       "nvidia/nemotron-3.5-bolt-e4b",
-      "google/gemma-3-4b-it",
       "google/google-paligemma",
-      "google/gemma-3-12b-it",
-      "moonshotai/kimi-k3",
       "black-forest-labs/flux.1-dev",
       "black-forest-labs/flux_2-klein-4b",
       "black-forest-labs/flux_1-kontext-dev",
       "black-forest-labs/flux_1-schnell",
-      "z-ai/glm-5.3",
       "qwen/qwen-image",
       "qwen/qwen-image-edit",
       "meta/llama-3.2-90b-vision-instruct",
@@ -10353,27 +8301,17 @@
       "meta/llama-guard-4-12b",
       "nvidia/bevformer",
       "nvidia/cosmos-transfer2_5-2b",
-      "nvidia/llama-3.1-nemotron-ultra-253b-v1",
       "nvidia/studiovoice",
       "nvidia/llama-3.1-nemotron-safety-guard-8b-v3",
-      "nvidia/usdcode",
       "nvidia/magpie-tts-zeroshot",
       "nvidia/sparsedrive",
       "nvidia/llama-nemotron-embed-vl-1b-v2",
       "nvidia/nemotron-voicechat",
-      "nvidia/usdvalidate",
-      "nvidia/rerank-qa-mistral-4b",
       "nvidia/active-speaker-detection",
-      "nvidia/cosmos-reason2-8b",
       "nvidia/llama-nemotron-rerank-vl-1b-v2",
-      "nvidia/riva-translate-4b-instruct-v1.1",
-      "nvidia/llama-3.1-nemotron-70b-instruct",
       "nvidia/streampetr",
       "nvidia/nemotron-3.5-content-safety",
       "nvidia/synthetic-video-detector",
-      "mistralai/mistral-7b-instruct-v0.3",
-      "mistralai/magistral-small-2506",
-      "mistralai/mistral-medium-3-instruct",
       "openai/whisper-large-v3"
     ],
     "groq": [
@@ -10403,9 +8341,7 @@
       "ministral-8b-2512",
       "ministral-3b-2512",
       "mistral-code-latest",
-      "mistral-code-fim-latest",
-      "labs-devstral-small-2512",
-      "labs-leanstral-1-5-1"
+      "mistral-code-fim-latest"
     ],
     "cloudflare": [
       "@cf/zai-org/glm-4.7-flash",
@@ -10433,9 +8369,7 @@
       "google/gemma-4-26b-a4b-it:free",
       "liquid/lfm-2.5-2.6b:free",
       "nvidia/nemotron-3.5-lightning:free",
-      "thinkingmachines/inkling:free",
       "openrouter/free",
-      "thinkingmachines/inkling-small:free",
       "dots-studio/dots-3-note-preview:free",
       "google/lyria-3-clip-preview",
       "google/lyria-3-pro-preview",
@@ -10458,7 +8392,6 @@
       "gpt-oss-120b",
       "gpt-oss-20b",
       "Meta-Llama-3_3-70B-Instruct",
-      "Mistral-Small-3.2-24B-Instruct-2506",
       "Qwen3.5-9B",
       "Qwen2.5-VL-72B-Instruct",
       "Qwen3-Embedding-8B",
@@ -10903,9 +8836,7 @@
       "ling-3.2-flash-free",
       "ling-3.0-flash-free",
       "nemotron-3.5-content-safety-free",
-      "xiaomi-mimo-v2.5-free",
       "qwen3.8-max-free",
-      "xiaomi-mimo-v2.5-pro-free",
       "qwen3.8-flash-free",
       "nemotron-3-super-120b-a12b-free"
     ],
@@ -11255,9 +9186,6 @@
       "qwen3.6",
       "gemma4"
     ],
-    "qiniu-ai": [
-      "meituan/longcat-flash-lite"
-    ],
     "google": [
       "gemma-4-26b-a4b-it",
       "lyria-3-clip-preview",
@@ -11273,31 +9201,24 @@
       "duo-chat-gpt-5-4-mini",
       "duo-chat-gpt-6-astra",
       "duo-chat-sonnet-4-6",
-      "duo-chat-gpt-5-mini",
-      "duo-chat-gpt-5-codex",
       "duo-chat-sonnet-5-5",
       "duo-chat-gpt-5-6-terra",
       "duo-chat-opus-4-6",
       "duo-chat-gpt-6-sol",
-      "duo-chat-gpt-5-3-codex",
       "duo-chat-gpt-5-5",
       "duo-chat-opus-5",
-      "duo-chat-gpt-5-4-nano",
       "duo-chat-opus-4-5",
       "duo-chat-opus-5-5",
       "duo-chat-sonnet-5",
       "duo-chat-haiku-4-5",
       "duo-chat-gpt-6-1-sol",
-      "duo-chat-sonnet-4-5",
       "duo-chat-gpt-5-6-luna",
       "duo-chat-haiku-5-5",
       "duo-chat-fable-5-1",
-      "duo-chat-gpt-5-2-codex",
       "duo-chat-gpt-6-luna",
       "duo-chat-gpt-5-6-sol",
       "duo-chat-gpt-5-4",
       "duo-chat-gpt-5-2",
-      "duo-chat-gpt-5-1",
       "duo-chat-fable-5",
       "duo-chat-opus-4-7",
       "duo-chat-opus-4-8"
@@ -11324,26 +9245,15 @@
     ],
     "minimax-coding-plan": [
       "MiniMax-M3",
-      "MiniMax-M2.7",
-      "MiniMax-M2.5",
-      "MiniMax-M3.1-Flash-Preview",
-      "MiniMax-M2.1",
-      "MiniMax-M2.7-highspeed",
-      "MiniMax-M2",
-      "MiniMax-M2.5-highspeed",
       "MiniMax-M3.1-Flash"
     ],
     "merge-gateway": [
       "nvidia/nemotron-3.5-lightning-30b-a3b"
     ],
     "zai-coding-plan": [
-      "glm-4.7",
       "glm-5.3-flash",
-      "glm-5-turbo",
       "glm-5.3",
-      "glm-5.3-highspeed",
-      "glm-5.2",
-      "glm-5.2-highspeed"
+      "glm-5.3-highspeed"
     ],
     "zenmux": [
       "z-ai/glm-4.7-flash-free",
@@ -11359,30 +9269,18 @@
     "commandcode": [
       "poolside/laguna-s-2.1-free",
       "reflection/beam:free",
-      "inclusionai/ling-3.1-flash:free",
       "stealth/glyph-cluster:free"
     ],
     "alibaba-coding-plan-cn": [
-      "glm-4.7",
-      "qwen3-max-2026-01-23",
       "glm-5",
       "qwen3.6-plus",
       "MiniMax-M2.5",
       "kimi-k2.5",
-      "qwen3-coder-plus",
       "qwen3.5-plus",
-      "qwen3-coder-next",
       "qwen3.7-plus"
     ],
     "tencent-coding-plan": [
-      "tc-code-latest",
-      "glm-5",
-      "minimax-m2.5",
-      "hunyuan-2.0-instruct",
-      "hunyuan-turbos",
-      "hunyuan-t1",
-      "kimi-k2.5",
-      "hunyuan-2.0-thinking"
+      "tc-code-latest"
     ],
     "cheapllm": [
       "deepseek-v4.1-flash-1017"
@@ -11402,17 +9300,13 @@
       "kimi-for-coding"
     ],
     "volcengine-coding-plan": [
-      "doubao-seed-2.1-turbo",
-      "minimax-m3",
       "doubao-seed-2.0-mini",
       "deepseek-v4.1-flash-economy",
-      "kimi-k2.7-code",
       "deepseek-v4-pro",
       "kimi-k3",
       "glm-5.3-flash",
       "deepseek-v4-flash",
       "doubao-seed-2.1-pro",
-      "doubao-seed-2.0-lite",
       "deepseek-v4.1-flash",
       "kimi-k3.1-pro",
       "doubao-seed-2.1-lite",
@@ -11432,18 +9326,15 @@
       "deepseek-v4-pro",
       "MiniMax-M2.5",
       "kimi-k2.6",
-      "deepseek-v4-flash",
       "happyhorse-1.1-i2v",
       "deepseek-v4.1-flash",
       "qwen-image-2.0",
       "qwen-image-2.0-pro",
-      "deepseek-v3.2",
       "happyhorse-1.1-r2v",
       "glm-5.3",
       "kimi-k2.5",
       "glm-5.1",
       "happyhorse-1.1-t2v",
-      "qwen3.8-max-preview",
       "qwen3.8-flash",
       "qwen3.7-plus",
       "glm-5.2",
@@ -11453,7 +9344,6 @@
     ],
     "zhipuai-coding-plan": [
       "glm-5.3-flash",
-      "glm-4.6v",
       "glm-5.3",
       "glm-5.3-highspeed"
     ],
@@ -11476,19 +9366,14 @@
       "lynkr-auto"
     ],
     "alibaba-coding-plan": [
-      "glm-4.7",
-      "qwen3-max-2026-01-23",
       "glm-5",
       "qwen3.6-plus",
       "MiniMax-M2.5",
       "kimi-k2.5",
-      "qwen3-coder-plus",
       "qwen3.5-plus",
-      "qwen3-coder-next",
       "qwen3.7-plus"
     ],
     "agnes": [
-      "agnes-2.0-flash",
       "agnes-2.5-flash",
       "agnes-3.0-flash"
     ],
@@ -11504,9 +9389,7 @@
       "mimo-v2.6-flash",
       "mimo-v2.5-tts-voicedesign",
       "mimo-v2.5-tts-voiceclone",
-      "mimo-v2.5-pro",
-      "mimo-v2.5-tts",
-      "mimo-v2.5"
+      "mimo-v2.5-tts"
     ],
     "jad-ai": [
       "jad-ai",
@@ -11514,8 +9397,7 @@
       "jad-go"
     ],
     "alibaba-cn": [
-      "deepseek-r1-distill-qwen-1-5b",
-      "deepseek-r1-distill-llama-8b"
+      "deepseek-r1-distill-qwen-1-5b"
     ],
     "alibaba-token-plan-cn": [
       "qwen3.8-max",
@@ -11529,18 +9411,15 @@
       "deepseek-v4-pro",
       "MiniMax-M2.5",
       "kimi-k2.6",
-      "deepseek-v4-flash",
       "happyhorse-1.1-i2v",
       "deepseek-v4.1-flash",
       "qwen-image-2.0",
       "qwen-image-2.0-pro",
-      "deepseek-v3.2",
       "happyhorse-1.1-r2v",
       "glm-5.3",
       "kimi-k2.5",
       "glm-5.1",
       "happyhorse-1.1-t2v",
-      "qwen3.8-max-preview",
       "qwen3.8-flash",
       "qwen3.7-plus",
       "glm-5.2",
@@ -11549,11 +9428,9 @@
       "deepseek-v4-pro-0813"
     ],
     "xiaomi-token-plan-cn": [
-      "mimo-v2.5",
       "mimo-v2.5-tts",
       "mimo-v2.6-pro",
       "mimo-v2.6-flash",
-      "mimo-v2.5-pro",
       "mimo-v2.5-tts-voiceclone",
       "mimo-v2.5-tts-voicedesign"
     ],
@@ -11579,7 +9456,6 @@
       "DeepSeek-V4-Pro-0813"
     ],
     "empiriolabs": [
-      "gemma-3-27b",
       "glm-4-6v-flash",
       "glm-4-5-flash",
       "glm-4-7-flash"
@@ -11589,59 +9465,17 @@
       "nemotron-3-ultra-550b-a55b:free"
     ],
     "opencode": [
-      "ling-3.0-flash-free",
       "nemotron-3.5-super-vl-free",
-      "mimo-v2-omni-free",
-      "north-mini-code-free",
       "hy4-flash-free",
-      "kimi-k2.5-free",
-      "longcat-2.5-preview-free",
-      "glm-5.3-flash-free",
-      "hy3-free",
-      "minimax-m2.1-free",
-      "ll-alpha-free",
-      "exo-free",
       "iceman-free",
-      "muse-spark-1.2-contributor-free",
-      "pulse-alpha-free",
-      "glm-4.7-free",
-      "inkling-2-small-free",
-      "nemotron-3-ultra-free",
       "nemotron-3.5-lightning-free",
-      "minimax-m3-free",
-      "ling-3.0-tiny-free",
-      "ling-2.6-flash-free",
-      "mimo-v2-flash-free",
       "tidepool-alpha-free",
       "mimo-v2.6-flash-free",
-      "nemotron-3-super-free",
       "longcat-2.5-free",
       "flint-40b-free",
-      "space-bunny-free",
-      "laguna-s-2.1-free",
-      "trinity-large-preview-free",
       "beam-free",
-      "mimo-v2.5-free",
-      "cat-jam-free",
-      "glm-5-free",
-      "hy3-preview-free",
-      "deepseek-v4-flash-free",
-      "minimax-m2.5-free",
-      "fledge-alpha-free",
       "big-pickle",
-      "x-preview-f-free",
-      "mimo-v2-pro-free",
-      "step-5-preview-free",
-      "minimax-m3.1-flash-free",
-      "longcat-2.0-free",
-      "muse-spark-1.3-contributor-free",
-      "ling-3.0-flash-fin-free",
-      "grok-code",
-      "ling-3.1-flash-free",
-      "deepseek-v4.1-flash-free",
-      "qwen3.6-plus-free",
-      "crouton-alpha-free",
-      "ring-2.6-1t-free"
+      "deepseek-v4.1-flash-free"
     ],
     "inferx": [
       "Qwen3-Coder-Next-FP8-no-thinking",
@@ -11662,20 +9496,13 @@
       "mimo-v2.6-flash",
       "mimo-v2.5-tts-voicedesign",
       "mimo-v2.5-tts-voiceclone",
-      "mimo-v2.5-pro",
-      "mimo-v2.5-tts",
-      "mimo-v2.5"
+      "mimo-v2.5-tts"
     ],
     "opencode-go": [
       "hy4-flash-free",
-      "longcat-2.5-preview-free",
       "longcat-2.5-free",
       "beam-free",
-      "cat-jam-free",
-      "iceman-contributor-free",
-      "step-5-preview-free",
-      "minimax-m3.1-flash-free",
-      "crouton-alpha-free"
+      "iceman-contributor-free"
     ],
     "llmgateway": [
       "auto",
@@ -11685,7 +9512,6 @@
     ],
     "poe": [
       "google/gemma-4-31b",
-      "fireworks-ai/kimi-k2.5-fw",
       "openai/gpt-5.3-codex-spark"
     ],
     "vercel": [
@@ -11706,7 +9532,6 @@
       "Qwen3.8-27B",
       "GLM-5.3-Flash",
       "MiniCPM5-2B",
-      "DeepSeek-V4-Flash-Vision-Exp",
       "Qwen3.8-Flash-Next"
     ],
     "llmgateway-providers": [
@@ -11754,7 +9579,6 @@
     "qvac": [
       "qwen3.5-0.8b",
       "qwen3.6-27b",
-      "gpt-oss-120b",
       "gpt-oss-20b",
       "qwen3.5-9b",
       "qwen3.6-35b-a3b",
@@ -11771,39 +9595,21 @@
       "kimi-for-coding"
     ],
     "unorouter": [
-      "qwen3.5-397b-a17b:free",
-      "gpt-5.5:free",
       "gemma-4-31b-it:free",
-      "glm-5.2:free",
-      "deepseek-v4-flash:free",
-      "gpt-5.4:free",
       "minimax-m2.7:free",
-      "step-3.7-flash:free",
       "nemotron-3-ultra-550b-a55b:free",
-      "glm-4.5-flash:free",
-      "deepseek-v4-pro:free"
+      "glm-4.5-flash:free"
     ],
     "umans-ai-coding-plan": [
       "umans-flash",
-      "umans-glm-5.3-flash",
       "umans-coder",
       "umans-deepseek-v4.1-flash",
-      "umans-kimi-k3",
-      "umans-qwen3.6-35b-a3b",
       "umans-deepseek-v4.1-flash-1017",
-      "umans-deepseek-v4-flash-0731",
       "umans-glm-5.3",
       "umans-kimi-k3.1-pro"
     ],
     "minimax-cn-coding-plan": [
       "MiniMax-M3",
-      "MiniMax-M2.7",
-      "MiniMax-M2.5",
-      "MiniMax-M3.1-Flash-Preview",
-      "MiniMax-M2.1",
-      "MiniMax-M2.7-highspeed",
-      "MiniMax-M2",
-      "MiniMax-M2.5-highspeed",
       "MiniMax-M3.1-Flash"
     ]
   },

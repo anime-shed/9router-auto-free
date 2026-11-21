@@ -93,7 +93,11 @@ function saveDeadModels(store) {
 
 function isModelConfirmedDead(fullId, deadStore, suppressionTtlMs = DEFAULT_SUPPRESSION_TTL_MS) {
   if (!deadStore || !deadStore.models) return false;
-  const entry = deadStore.models[fullId];
+  let entry = deadStore.models[fullId];
+  if (!entry) {
+    const bareId = String(fullId || '').replace(/^[a-zA-Z0-9_.-]+\//, '');
+    entry = deadStore.models[bareId];
+  }
   if (!entry || !entry.confirmedDead) return false;
 
   const deadTime = new Date(entry.confirmedDeadAt || entry.lastSeenDead).getTime();
@@ -111,25 +115,31 @@ function recordDeadModel(fullId, reason, status, deadStore, thresholdMs = SEVEN_
   const now = new Date().toISOString();
   const nowMs = Date.now();
   const existing = deadStore.models[fullId];
+  const numStatus = Number(status) || 404;
+  const reasonStr = String(reason || '');
+
+  const isPermanentlyDead = numStatus === 410 ||
+    /retired|archived|does not exist|model_not_found|permanently|no longer available/i.test(reasonStr);
 
   if (!existing) {
     deadStore.models[fullId] = {
       firstSeenDead: now,
       lastSeenDead: now,
-      status: Number(status) || 404,
-      reason: String(reason || '').slice(0, 100),
+      status: numStatus,
+      reason: reasonStr.slice(0, 100),
       failCount: 1,
-      confirmedDead: false
+      confirmedDead: isPermanentlyDead,
+      confirmedDeadAt: isPermanentlyDead ? now : null
     };
   } else {
     existing.lastSeenDead = now;
     existing.failCount = (existing.failCount || 1) + 1;
-    existing.reason = String(reason || existing.reason).slice(0, 100);
-    existing.status = Number(status) || existing.status;
+    existing.reason = (reasonStr || existing.reason).slice(0, 100);
+    existing.status = numStatus || existing.status;
 
     const firstMs = new Date(existing.firstSeenDead || now).getTime();
-    // Confirmed dead if persistently failing across at least 7 days or repeatedly with 404/410
-    if ((nowMs - firstMs >= thresholdMs && existing.failCount >= 2) || (existing.failCount >= 5 && [404, 410].includes(existing.status))) {
+    // Confirmed dead if 410 / retired, or persistently failing across at least 7 days, or >= 3 retries on 400/404/410
+    if (isPermanentlyDead || (nowMs - firstMs >= thresholdMs && existing.failCount >= 2) || (existing.failCount >= 3 && [400, 404, 410].includes(existing.status))) {
       existing.confirmedDead = true;
       if (!existing.confirmedDeadAt) existing.confirmedDeadAt = now;
     }

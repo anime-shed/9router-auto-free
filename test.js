@@ -823,7 +823,8 @@ async function runTests() {
           name: "Cerebras",
           models: [
             ["gpt-oss-120b", "GPT-OSS 120B", "S", 62.4, "8k", "2026-08-10"],
-            ["qwen-3.8-27b", "Qwen 3.8 27B", "A+", 68.0, "32k", "2026-09-01"]
+            ["qwen-3.8-27b", "Qwen 3.8 27B", "A+", 68.0, "32k", "2026-09-01"],
+            ["retired-model", "Retired Model", "B", 40.0, "8k", "2026-01-01", "deprecated"]
           ]
         }
       };
@@ -831,11 +832,25 @@ async function runTests() {
     `;
     const parsedSources = await harvester.parseSourcesContent(sampleSources);
     assert.ok(Array.isArray(parsedSources.models), 'models must be an array');
-    assert.strictEqual(parsedSources.models.length, 2, 'Must parse 2 models');
+    assert.strictEqual(parsedSources.models.length, 2, 'Must parse 2 active models (excluding deprecated)');
+    assert.strictEqual(parsedSources.deprecatedRecords?.length, 1, 'Must record 1 deprecated model');
     assert.strictEqual(parsedSources.models[0].id, 'gpt-oss-120b');
     assert.strictEqual(parsedSources.models[0].score, 62.4);
     assert.strictEqual(parsedSources.models[0].tier, 'S');
     assert.strictEqual(parsedSources.providerCatalog['cerebras']?.length, 2);
+
+    // Test parseModelsDevContent with deprecated models
+    const sampleModelsDev = {
+      groq: {
+        models: {
+          'active-free': { cost: { input: 0, output: 0 }, status: 'available' },
+          'deprecated-free': { cost: { input: 0, output: 0 }, status: 'deprecated' }
+        }
+      }
+    };
+    const parsedDev = harvester.parseModelsDevContent(sampleModelsDev);
+    assert.strictEqual(parsedDev.models.length, 1, 'Deprecated model must NOT be in active models');
+    assert.strictEqual(parsedDev.deprecatedRecords?.length, 1, 'Deprecated model must be in deprecatedRecords');
 
     // Test parseIndexJsonContent with mock sample
     const sampleIndex = {
@@ -903,6 +918,17 @@ async function runTests() {
     assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['devin-cli'], 'devin');
     assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['mimo'], 'mimo');
     assert.strictEqual(providersModule.STANDARD_PROVIDER_PREFIXES['freebuff'], 'fb');
+
+    // Test dead-models handling in tester.js
+    const testerMod = require('./tester.js');
+    const mockDeadStore = { models: {} };
+    testerMod.recordDeadModel('nvidia/retired-unit-test', 'HTTP 410: Gone', 410, mockDeadStore);
+    assert.strictEqual(mockDeadStore.models['nvidia/retired-unit-test'].confirmedDead, true, 'HTTP 410 must be immediately confirmed dead');
+
+    // Test isModelConfirmedDead with both fullId and bareId fallback
+    assert.ok(testerMod.isModelConfirmedDead('nvidia/retired-unit-test', mockDeadStore), 'isModelConfirmedDead must find fullId');
+    mockDeadStore.models['bare-retired'] = { confirmedDead: true, lastSeenDead: new Date().toISOString() };
+    assert.ok(testerMod.isModelConfirmedDead('any-prefix/bare-retired', mockDeadStore), 'isModelConfirmedDead must fallback to bareId');
 
     // 10) 2026 SWE-bench Verified Benchmarks Upgrade Tests
     console.log('[-] Testing 2026 SWE-bench Verified benchmarks & tiers...');
