@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-21T15:00:34.964Z",
+  "lastUpdated": "2026-11-21T17:15:03.585Z",
   "sources": {
     "vava-nessa": {
       "status": "ok",
@@ -5306,20 +5306,6 @@
       }
     },
     {
-      "id": "meta/llama-3.2-11b-vision-instruct",
-      "name": "Llama 3.2 11b Vision Instruct",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 128000,
-      "provider": "nvidia",
-      "addedDate": "2024-09-25",
-      "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
-        "reasoning": false
-      }
-    },
-    {
       "id": "meta/llama-guard-4-12b",
       "name": "Llama Guard 4 12B",
       "tier": "A",
@@ -5428,20 +5414,6 @@
       "deprecatedAfter": null,
       "capabilities": {
         "tools": false,
-        "reasoning": false
-      }
-    },
-    {
-      "id": "nvidia/nemotron-voicechat",
-      "name": "nemotron-voicechat",
-      "tier": "A",
-      "score": 60,
-      "contextLength": 128000,
-      "provider": "nvidia",
-      "addedDate": "2026-03-16",
-      "deprecatedAfter": null,
-      "capabilities": {
-        "tools": true,
         "reasoning": false
       }
     },
@@ -8267,7 +8239,6 @@
       "black-forest-labs/flux_1-schnell",
       "qwen/qwen-image",
       "qwen/qwen-image-edit",
-      "meta/llama-3.2-11b-vision-instruct",
       "meta/llama-guard-4-12b",
       "nvidia/bevformer",
       "nvidia/cosmos-transfer2_5-2b",
@@ -8276,7 +8247,6 @@
       "nvidia/magpie-tts-zeroshot",
       "nvidia/sparsedrive",
       "nvidia/llama-nemotron-embed-vl-1b-v2",
-      "nvidia/nemotron-voicechat",
       "nvidia/active-speaker-detection",
       "nvidia/llama-nemotron-rerank-vl-1b-v2",
       "nvidia/streampetr",
