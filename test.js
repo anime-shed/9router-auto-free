@@ -217,8 +217,8 @@ async function runTests() {
   assert.ok(isModelExcluded('nvidia/parakeet-ctc-1.1b', exclusions), 'parakeet models must be excluded');
   assert.ok(isModelExcluded('groq/playai-tts', exclusions), 'playai models must be excluded');
   assert.ok(isModelExcluded('nvidia/bge-m3', exclusions), 'bge-m3 embeddings must be excluded');
-  assert.strictEqual(isModelExcluded('poolside/poolside/laguna-xs-2.1', exclusions), false, 'laguna-xs models must NOT be excluded');
-  assert.strictEqual(isModelExcluded('cerebras/gpt-oss-120b', exclusions), false, 'gpt-oss models must NOT be excluded');
+  assert.ok(isModelExcluded('poolside/poolside/laguna-xs-2.1', exclusions), 'laguna-xs models must be excluded when xs rule is present');
+  assert.ok(isModelExcluded('cerebras/gpt-oss-120b', exclusions), 'gpt-oss models must be excluded when gpt-oss rule is present');
   assert.ok(isModelExcluded('bazaarlink/auto:free', exclusions), 'bazaarlink/auto:free must be excluded');
   assert.ok(isModelExcluded('openrouter/free', exclusions), 'openrouter/free must be excluded');
   assert.ok(isModelExcluded('kc/dots-studio/dots-3-note-preview:free', exclusions), 'dots-studio must be excluded');
