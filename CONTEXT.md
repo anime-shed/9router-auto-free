@@ -83,3 +83,9 @@ saat istilah baru dinamai atau makna lama berubah.
 - **Zero-Dependency Vanilla i18n Engine**: Engine translasi bilingual (ID/EN) berbasis kamus `TRANSLATIONS` + atribut deklaratif `data-i18n` / `data-i18n-ph` + helper teks dinamis `t(key)` + early boot hook `setLanguage(currentLang)`. Mematuhi aturan Ponytail senior dev: zero-dependency, native DOM, dan state bahasa persisten di `localStorage['9router_lang']`.
 - **100% Mirror Documentation Parity**: Tab panduan interaktif `#view-docs` (`renderDocsTab()`) menyajikan paritas 100% simetris antara Bahasa Indonesia dan English untuk seluruh bab arsitektur: pengenalan sistem, ketetapan otoritas kredensial (ADR-0001), integrasi 4 IDE (Claude Code, Cursor, Cline, Aider), 6 fitur unggulan, dan 6 FAQ mendalam.
 
+## Kubernetes Remote Execution & State Persistence
+- **Remote K8s Orchestration (`sync.ps1`)**: Arsitektur eksekusi single-command PowerShell yang menjembatani workstation lokal (Windows tanpa local Node.js) dengan cluster Kubernetes (namespace `router`).
+- **Bidirectional Tar Stream**: Pengiriman kode sumber dan file konfigurasi (`exclusions.json`, `priorities.json`, dll.) langsung ke persistent storage pod (`/app/data/9router-auto-free`) via `tar` stream, eksekusi remote terhadap live SQLite DB (`/app/data/db/data.sqlite`) dan 9router HTTP proxy (`http://127.0.0.1:20128`), serta penarikan balik file state (`dead-models.json`, `benchmarks.json`, `external-models.json`, `candidates-state.json`) ke workstation lokal.
+- **PVC Residence & Fault Guard**: Penyimpanan kode dan state langsung di persistent volume claim (`router-data` pada `/app/data/9router-auto-free`) sehingga tidak hilang saat container restart, dilengkapi proteksi exit code (SIGKILL 137 / rollout detection) agar file lokal tidak terkorupsi jika pod terputus di tengah jalan.
+
+

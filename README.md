@@ -77,6 +77,21 @@ npm install -g 9router-auto-free
 9router-auto-free --dry-run
 ```
 
+### 3. Remote Kubernetes Execution (Single PowerShell Script)
+
+If your 9router instance runs in a Kubernetes cluster (e.g. namespace `router`), you can maintain code, configurations (`exclusions.json`, `priorities.json`), and historical data (`dead-models.json`, `benchmarks.json`, `external-models.json`, `candidates-state.json`) locally on your Windows machine without needing local Node.js:
+
+```powershell
+# From PowerShell (using sync.ps1):
+.\sync.ps1              # Full sync: streams code & state to pod, runs sync, pulls updated state back
+.\sync.ps1 --fast       # Fast sync: skips catalog re-harvest
+.\sync.ps1 --refresh    # Hourly quota watchdog refresh
+.\sync.ps1 --test       # Runs the complete remote test suite on the pod
+.\sync.ps1 --dry-run    # Simulates remote sync without writing to SQLite DB
+```
+
+> **How it works**: `sync.ps1` automatically discovers the active 9router pod, streams your local workspace directly to persistent storage (`/app/data/9router-auto-free`) via an ultra-fast `tar` pipe, executes the sync against the live cluster database (`/app/data/db/data.sqlite`) and local 9router proxy, and streams updated state JSONs back to your local git repository upon successful completion.
+
 ---
 
 ## ⚙️ How It Works (6-Stage Automated Pipeline)
