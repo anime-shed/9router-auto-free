@@ -143,7 +143,9 @@ function readProviderConnection(providerName) {
   try {
     const Database = getDbClass();
     const db = new Database(DB_PATH, { readonly: true });
-    const row = db.prepare("SELECT * FROM providerConnections WHERE provider = ? AND isActive = 1").get(providerName);
+    const pName = String(providerName || '').trim();
+    const altName = pName.endsWith('-portal') ? pName.replace(/-portal$/, '') : `${pName}-portal`;
+    const row = db.prepare("SELECT * FROM providerConnections WHERE (provider = ? OR provider = ? OR id = ?) AND isActive = 1 LIMIT 1").get(pName, altName, pName);
     db.close();
     if (row && row.data) return JSON.parse(row.data);
   } catch (err) {
@@ -196,7 +198,9 @@ function readActiveProviderConnections() {
     'devin-cli': 'devin',
     windsurf: 'windsurf',
     mimo: 'mimo',
-    'mimo-code': 'mimo'
+    'mimo-code': 'mimo',
+    nous: 'nous',
+    'nous-portal': 'nous'
   };
 
   try {
@@ -424,10 +428,162 @@ function updateProviderEnabledModels(providerOrPrefix, activeModels) {
       }
     }
     db.close();
+
+    // Also ensure active models are un-disabled and registered in customModels
+    enableModelsIn9router(providerOrPrefix, activeModels);
+
     return updatedCount > 0;
   } catch (err) {
     console.warn(`[!] Warning: Could not update enabledModels for ${providerOrPrefix}: ${err.message}`);
     return false;
+  }
+}
+
+/**
+ * Read all disabled models configured in 9router's kv table (scope = 'disabledModels').
+ * Returns a map of providerAlias -> Array of disabled model IDs.
+ */
+function read9routerDisabledModels() {
+  try {
+    const Database = getDbClass();
+    const db = new Database(DB_PATH, { readOnly: true });
+    const rows = db.prepare("SELECT key, value FROM kv WHERE scope = 'disabledModels'").all();
+    db.close();
+    const map = {};
+    for (const r of rows) {
+      try {
+        const parsed = JSON.parse(r.value || '[]');
+        if (Array.isArray(parsed)) map[r.key] = parsed;
+      } catch {}
+    }
+    return map;
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Read all custom models configured in 9router's kv table (scope = 'customModels').
+ * Returns an array of custom model records { providerAlias, id, type, name, ... }.
+ */
+function read9routerCustomModels() {
+  try {
+    const Database = getDbClass();
+    const db = new Database(DB_PATH, { readOnly: true });
+    const rows = db.prepare("SELECT key, value FROM kv WHERE scope = 'customModels'").all();
+    db.close();
+    const list = [];
+    for (const r of rows) {
+      try {
+        const val = JSON.parse(r.value || '{}');
+        if (val && val.id) list.push(val);
+      } catch {}
+    }
+    return list;
+  } catch {
+    return [];
+  }
+}
+
+function getCleanModelId(m, alias) {
+  const raw = typeof m === 'object' && m !== null ? (m.id || m.fullId) : String(m || '');
+  if (!raw) return '';
+  const a = String(alias || '').toLowerCase();
+  if (raw.toLowerCase().startsWith(`${a}/`)) {
+    return raw.slice(a.length + 1);
+  }
+  return raw;
+}
+
+/**
+ * Enable candidate models in 9router:
+ * 1. Removes them from 9router's disabledModels list in kv table so 9router does not block them.
+ * 2. Registers them in 9router's customModels in kv table so 9router recognizes and routes to them.
+ * 3. Adds them to providerConnections enabledModels if applicable.
+ */
+function enableModelsIn9router(providerAlias, modelList) {
+  if (!providerAlias || !Array.isArray(modelList) || modelList.length === 0) return;
+  try {
+    const Database = getDbClass();
+    const db = new Database(DB_PATH);
+    const alias = String(providerAlias).toLowerCase();
+
+    // 1. Remove candidate models from kv:disabledModels
+    const disabledRows = db.prepare("SELECT key, value FROM kv WHERE scope = 'disabledModels'").all();
+    const toRemove = new Set();
+    for (const m of modelList) {
+      const clean = getCleanModelId(m, alias);
+      if (clean) {
+        toRemove.add(clean.toLowerCase());
+        toRemove.add(`${alias}/${clean}`.toLowerCase());
+      }
+    }
+
+    for (const row of disabledRows) {
+      const k = String(row.key || '').toLowerCase();
+      if (k === alias || alias.includes(k) || k.includes(alias)) {
+        try {
+          const disabled = JSON.parse(row.value || '[]');
+          if (Array.isArray(disabled) && disabled.length > 0) {
+            const updated = disabled.filter(id => {
+              const dLower = String(id).toLowerCase();
+              const cleanD = dLower.startsWith(`${alias}/`) ? dLower.slice(alias.length + 1) : dLower;
+              return !toRemove.has(dLower) && !toRemove.has(cleanD);
+            });
+            if (updated.length !== disabled.length) {
+              db.prepare("UPDATE kv SET value = ? WHERE scope = 'disabledModels' AND key = ?").run(JSON.stringify(updated), row.key);
+            }
+          }
+        } catch {}
+      }
+    }
+
+    // 2. Register candidate models in kv:customModels so 9router immediately recognizes them
+    for (const m of modelList) {
+      const cleanId = getCleanModelId(m, alias);
+      if (!cleanId) continue;
+      const customKey = `${alias}|${cleanId}|llm`;
+      const val = JSON.stringify({
+        providerAlias: alias,
+        id: cleanId,
+        type: 'llm',
+        name: typeof m === 'object' && m.name ? m.name : cleanId
+      });
+      db.prepare("INSERT OR REPLACE INTO kv (scope, key, value) VALUES ('customModels', ?, ?)").run(customKey, val);
+    }
+
+    // 3. Ensure providerConnections data.providerSpecificData.enabledModels contains them
+    const conns = db.prepare("SELECT id, provider, data FROM providerConnections").all();
+    const now = new Date().toISOString();
+    for (const c of conns) {
+      const p = String(c.provider || '').toLowerCase();
+      const data = (() => { try { return JSON.parse(c.data || '{}'); } catch { return {}; } })();
+      const prefix = String(data?.providerSpecificData?.prefix || p).toLowerCase();
+      if (p === alias || prefix === alias || c.id === alias) {
+        if (!data.providerSpecificData) data.providerSpecificData = {};
+        if (!Array.isArray(data.providerSpecificData.enabledModels)) {
+          data.providerSpecificData.enabledModels = [];
+        }
+        const currentEnabled = new Set(data.providerSpecificData.enabledModels.map(id => String(id).toLowerCase()));
+        let changed = false;
+        for (const m of modelList) {
+          const cleanId = getCleanModelId(m, prefix || p);
+          if (!cleanId) continue;
+          if (!currentEnabled.has(cleanId.toLowerCase())) {
+            data.providerSpecificData.enabledModels.push(cleanId);
+            currentEnabled.add(cleanId.toLowerCase());
+            changed = true;
+          }
+        }
+        if (changed) {
+          db.prepare("UPDATE providerConnections SET data = ?, updatedAt = ? WHERE id = ?").run(JSON.stringify(data), now, c.id);
+        }
+      }
+    }
+
+    db.close();
+  } catch (err) {
+    console.warn(`[!] Warning: Failed to enable models in 9router for ${providerAlias}: ${err.message}`);
   }
 }
 
@@ -808,7 +964,11 @@ module.exports = {
   writeCustomProvidersFile,
   getDynamicProviders,
   updateProviderEnabledModels,
-  readActiveProviderConnections
+  readActiveProviderConnections,
+  read9routerDisabledModels,
+  read9routerCustomModels,
+  enableModelsIn9router,
+  getCleanModelId
 };
 
 

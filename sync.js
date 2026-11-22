@@ -456,6 +456,11 @@ async function validateCandidateModels(models, prefix) {
     }
   }
 
+  // Generically ensure all non-excluded candidate models are enabled in 9router before pre-testing
+  if (storage.enableModelsIn9router && prefix && nonExcludedModels.length > 0) {
+    storage.enableModelsIn9router(prefix, nonExcludedModels);
+  }
+
   const token = storage.get9routerCliToken();
   if (!token) {
     console.log('[-] 9router CLI auth token not found or server offline, skipping live test.');

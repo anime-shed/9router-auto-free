@@ -340,6 +340,28 @@ async function runTests() {
   assert.strictEqual(getModelFullId({ fullId: 'full/id' }), 'full/id');
   assert.strictEqual(getModelFullId({ id: 'bare' }), 'bare');
 
+  // Generic 9router SQLite Models Harvesting, Org Namespace Preservation, & Auto-Enablement
+  console.log('[-] Testing generic 9router SQLite models harvesting, namespace preservation, & auto-enablement...');
+  assert.strictEqual(typeof storage.read9routerDisabledModels, 'function', 'read9routerDisabledModels must be a function');
+  assert.strictEqual(typeof storage.read9routerCustomModels, 'function', 'read9routerCustomModels must be a function');
+  assert.strictEqual(typeof storage.enableModelsIn9router, 'function', 'enableModelsIn9router must be a function');
+  assert.strictEqual(typeof storage.getCleanModelId, 'function', 'getCleanModelId must be a function');
+
+  // getCleanModelId generic tests
+  assert.strictEqual(storage.getCleanModelId('nous/stepfun/step-3.7-flash:free', 'nous'), 'stepfun/step-3.7-flash:free', 'getCleanModelId must strip only provider prefix');
+  assert.strictEqual(storage.getCleanModelId('stepfun/step-3.7-flash:free', 'nous'), 'stepfun/step-3.7-flash:free', 'getCleanModelId must preserve org namespace');
+  assert.strictEqual(storage.getCleanModelId('openrouter/google/gemma-2:free', 'openrouter'), 'google/gemma-2:free', 'getCleanModelId must strip provider prefix and keep org namespace');
+
+  // isPaidModel generic tests
+  const { isPaidModel } = require('./providers.js');
+  assert.strictEqual(isPaidModel('nous', 'stepfun/step-3.7-flash:free'), false, ':free suffix is free');
+  assert.strictEqual(isPaidModel('nous', 'anthropic/claude-sonnet-5'), true, 'Unsuffixed model on pay-per-token gateway is paid');
+  assert.strictEqual(isPaidModel('openrouter', 'google/gemma-2:free'), false, ':free suffix on openrouter is free');
+  assert.strictEqual(isPaidModel('openrouter', 'google/gemma-2'), true, 'Unsuffixed model on openrouter is paid');
+  assert.strictEqual(isPaidModel('cerebras', 'llama-3.3-70b'), false, 'Non-free-only provider without pricing is free');
+  assert.strictEqual(isPaidModel('generic-prov', 'any-model', { prompt: 0, completion: 0 }), false, 'Zero pricing is free');
+  assert.strictEqual(isPaidModel('generic-prov', 'any-model', { prompt: 0.0001, completion: 0.0002 }), true, 'Positive pricing is paid');
+
   // 17. New provider discovery (Groq / Cerebras / Mistral / Cloudflare) via Deep discoverProvider
   console.log('[-] Testing new provider discovery (Groq / Cerebras / Mistral / Cloudflare)...');
   const groqData = await discoverProvider('groq');

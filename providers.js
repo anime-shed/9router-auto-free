@@ -36,7 +36,11 @@ const CANONICAL_CATALOG_MAP = {
   gcli: ['xai'],
   sambanova: ['sambanova'],
   'xiaomi-mimo': ['xiaomi-token-plan-cn', 'xiaomi-token-plan-ams', 'xiaomi-token-plan-sgp'],
-  mimo: ['xiaomi-token-plan-cn', 'xiaomi-token-plan-ams', 'xiaomi-token-plan-sgp']
+  mimo: ['xiaomi-token-plan-cn', 'xiaomi-token-plan-ams', 'xiaomi-token-plan-sgp'],
+  nous: ['nous-portal', 'nous'],
+  'nous-portal': ['nous-portal', 'nous'],
+  qoder: ['qoder'],
+  qd: ['qoder']
 };
 
 const STANDARD_PROVIDER_PREFIXES = {
@@ -65,7 +69,9 @@ const STANDARD_PROVIDER_PREFIXES = {
   'devin-cli': 'devin',
   windsurf: 'windsurf',
   mimo: 'mimo',
-  'mimo-code': 'mimo'
+  'mimo-code': 'mimo',
+  nous: 'nous',
+  'nous-portal': 'nous'
 };
 
 const PROVIDER_DISPLAY_NAMES = {
@@ -94,7 +100,9 @@ const PROVIDER_DISPLAY_NAMES = {
   openagentic: 'OpenAgentic',
   devin: 'Devin CLI',
   'devin-cli': 'Devin CLI',
-  windsurf: 'Windsurf'
+  windsurf: 'Windsurf',
+  nous: 'Nous Portal',
+  'nous-portal': 'Nous Portal'
 };
 
 function getProviderLabel(providerName, prefix, connectionName) {
@@ -202,6 +210,13 @@ const PROVIDERS = [
     prefixes: ['fb', 'freebuff'], usageName: 'freebuff',
     kind: 'freebuff', connection: 'freebuff', credentialKind: 'default',
     baseUrl: 'https://www.codebuff.com/api/v1'
+  },
+  {
+    key: 'nous', label: 'Nous Portal', combo: 'nous-free',
+    prefixes: ['nous', 'ns'], usageName: 'nous',
+    kind: 'openai-compatible', connection: 'nous', credentialKind: 'default',
+    baseUrl: 'https://inference-api.nousresearch.com/v1',
+    modelsUrl: 'https://inference-api.nousresearch.com/v1/models'
   }
 ];
 
@@ -263,7 +278,7 @@ function getProviderCredentials(recordOrKey) {
 
   const parsed = record.connection ? storage.readProviderConnection(record.connection) : null;
   return {
-    apiKey: parsed?.apiKey || null,
+    apiKey: parsed?.apiKey || parsed?.accessToken || null,
     prefix: parsed?.providerSpecificData?.prefix || record.prefixes[0],
     baseUrl: (record.readBaseUrlFromConnection && parsed?.providerSpecificData?.baseUrl) || record.baseUrl
   };
@@ -674,14 +689,12 @@ async function fetchBazaarlinkFreeModels(apiKey, baseUrl = 'https://bazaarlink.a
   return freeModels;
 }
 
-async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix, skipPatterns = [], freePattern = null, requireApiKey = true }) {
+async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix, skipPatterns = [], freePattern = null, requireApiKey = false }) {
   const freeModels = [];
   if (requireApiKey && !apiKey) {
-    console.log(`[⊘] ${label}: no API key/connection found in 9router, skipping (add the connection to enable).`);
     return freeModels;
   }
   if (!baseUrl) {
-    console.log(`[⊘] ${label}: no Base URL configured, skipping.`);
     return freeModels;
   }
 
@@ -692,7 +705,7 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
 
     const cleanBaseUrl = baseUrl.replace(/\/+$/, '');
     const candidateUrls = [
-      `${cleanBaseUrl}/models`,
+      cleanBaseUrl.endsWith('/models') ? cleanBaseUrl : `${cleanBaseUrl}/models`,
       cleanBaseUrl.endsWith('/v1') ? `${cleanBaseUrl.replace(/\/v1$/, '')}/models` : `${cleanBaseUrl}/v1/models`,
       cleanBaseUrl
     ];
@@ -720,55 +733,8 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
     }
 
     const models = Array.isArray(json) ? json : (json.data || json.models || []);
-
-    const parentMap = new Map();
-    const findRoot = x => {
-      while (parentMap.get(x) !== x) {
-        const next = parentMap.get(parentMap.get(x));
-        if (next == null || next === undefined) break;
-        parentMap.set(x, next);
-        x = next;
-      }
-      return parentMap.get(x) ?? x;
-    };
-    const unionIds = (a, b) => {
-      const ra = findRoot(a);
-      const rb = findRoot(b);
-      if (ra !== rb) parentMap.set(ra, rb);
-    };
-    const ensureId = x => { if (!parentMap.has(x)) parentMap.set(x, x); };
-
-    const modelById = new Map();
-    for (const m of models) {
-      const id = String(m.id || m.name || m.model || '').toLowerCase();
-      if (!id) continue;
-      ensureId(id);
-      modelById.set(id, m);
-      for (const alias of (Array.isArray(m?.aliases) ? m.aliases : [])) {
-        const key = String(alias).toLowerCase();
-        if (!key) continue;
-        ensureId(key);
-        unionIds(id, key);
-      }
-    }
-
-    const representativeOfRoot = new Map();
-    const preferCandidate = (candidate, incumbent) => {
-      if (!incumbent) return true;
-      const candidateLatest = candidate.endsWith('-latest');
-      const incumbentLatest = incumbent.endsWith('-latest');
-      if (candidateLatest !== incumbentLatest) return candidateLatest;
-      return candidate.length < incumbent.length;
-    };
-    for (const id of modelById.keys()) {
-      const root = findRoot(id);
-      if (preferCandidate(id, representativeOfRoot.get(root))) {
-        representativeOfRoot.set(root, id);
-      }
-    }
-    const keepIds = new Set(representativeOfRoot.values());
-
     const seenIds = new Set();
+
     for (const m of models) {
       const id = m.id || m.name || m.model || '';
       if (!id || seenIds.has(id)) continue;
@@ -778,17 +744,27 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
       if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
       if (skipPatterns && skipPatterns.some(pat => lowerId === pat || lowerId.includes(pat))) continue;
 
-      // If freePattern is specified (e.g. ":free" or [":free", "-free"]), enforce it
-      if (freePattern && m.is_free !== true) {
+      const pricing = m.pricing || {};
+      const promptCost = Number(pricing.prompt ?? -1);
+      const completionCost = Number(pricing.completion ?? -1);
+      const isZeroCost = (promptCost === 0 && completionCost === 0);
+      const hasFreeSuffix = lowerId.endsWith(':free') || lowerId.endsWith('-free');
+      const isFreeFlag = m.is_free === true || m.isFree === true;
+
+      let isFree = hasFreeSuffix || isZeroCost || isFreeFlag;
+
+      if (freePattern) {
         const patterns = Array.isArray(freePattern) ? freePattern : [freePattern];
         const matchesAny = patterns.some(pat => {
           const p = String(pat).toLowerCase();
           return p.startsWith('-') || p.startsWith(':') ? lowerId.endsWith(p) || lowerId.includes(p) : lowerId.includes(p);
         });
-        if (!matchesAny) continue;
+        if (matchesAny) isFree = true;
       }
 
-      if (!keepIds.has(lowerId)) continue;
+      // If provider requires free suffix / free pricing (e.g. openrouter, nous, aihubmix), drop paid models
+      if (isPaidModel(prefix, id, pricing) && !isFree) continue;
+
       seenIds.add(id);
 
       freeModels.push({
@@ -802,6 +778,16 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
   } catch (err) {
     console.warn(`[!] ${label} fetch notice: ${err.message}`);
   }
+  return freeModels;
+}
+
+const fetchNousFreeModels = (apiKey, baseUrl, prefix) => fetchOpenAiCompatibleFreeModels({
+  label: 'Nous Portal',
+  apiKey,
+  baseUrl: baseUrl || 'https://inference-api.nousresearch.com/v1',
+  prefix: prefix || 'nous',
+  requireApiKey: false
+});
   return freeModels;
 }
 
@@ -873,18 +859,20 @@ const REQUIRE_FREE_SUFFIX_PROVIDERS = new Set([
   'aihubmix',
   'aihub-mix',
   'inferera',
-  'commandcode'
+  'commandcode',
+  'nous',
+  'nous-portal'
 ]);
 
 function isPaidModel(providerOrPrefix, modelId, pricingObj = null) {
-  const p = String(providerOrPrefix || '').toLowerCase();
-  if (!REQUIRE_FREE_SUFFIX_PROVIDERS.has(p)) return false;
   const lId = String(modelId || '').toLowerCase();
-  if (lId.endsWith(':free')) return false;
-  // aihubmix/inferera names its free tier models with -free (hyphen) suffix
-  if ((p.includes('aihubmix') || p.includes('inferera')) && lId.endsWith('-free')) return false;
+  if (lId.endsWith(':free') || lId.endsWith('-free')) return false;
   if (pricingObj && Number(pricingObj.prompt) === 0 && Number(pricingObj.completion) === 0) return false;
-  return true;
+  if (pricingObj && (Number(pricingObj.prompt) > 0 || Number(pricingObj.completion) > 0)) return true;
+
+  const p = String(providerOrPrefix || '').toLowerCase();
+  if (REQUIRE_FREE_SUFFIX_PROVIDERS.has(p)) return true;
+  return false;
 }
 
 const PROVIDER_DISCOVERY_MAP = {
@@ -1047,6 +1035,44 @@ async function discover9routerActiveProviders(options = {}) {
   }
 
   const seenFullIds = new Set();
+
+  // 1. Generic upstream discovery for ANY active connection with baseUrl and credentials
+  for (const conn of activeConns) {
+    const prov = String(conn.provider || '').toLowerCase();
+    const prefix = conn.prefix || STANDARD_PROVIDER_PREFIXES[prov] || prov;
+    const targetKey = prefix;
+    const data = conn.data || {};
+    const spec = data.providerSpecificData || {};
+    const creds = getProviderCredentials(conn);
+    const baseUrl = spec.baseUrl || spec.inferenceBaseUrl || data.baseUrl || creds.baseUrl || '';
+    const apiKey = creds.apiKey || data.apiKey || data.accessToken || data.token;
+
+    if (baseUrl && (apiKey || creds.requireApiKey === false)) {
+      try {
+        const liveModels = await fetchOpenAiCompatibleFreeModels({
+          label: conn.name || getProviderLabel(prov, prefix, conn.name),
+          apiKey,
+          baseUrl,
+          prefix: targetKey,
+          requireApiKey: false
+        });
+        for (const lm of liveModels) {
+          const fId = (lm.fullId || formatRoutingFullId(targetKey, lm.id)).toLowerCase();
+          if (!seenFullIds.has(fId)) {
+            seenFullIds.add(fId);
+            results[targetKey].models.push({
+              ...lm,
+              fullId: lm.fullId || formatRoutingFullId(targetKey, lm.id),
+              source: `${targetKey}-upstream-live`
+            });
+          }
+        }
+      } catch (err) {
+        // Soft fail if upstream does not respond
+      }
+    }
+  }
+
   for (const m of modelsList) {
     const id = String(m.id || '');
     if (!id || seenFullIds.has(id)) continue;
@@ -1115,6 +1141,69 @@ async function discover9routerActiveProviders(options = {}) {
       toolsUnsupported,
       reasoning
     });
+  }
+
+  // Also harvest candidate models from 9router's disabledModels and customModels lists
+  const disabledMap = storage.read9routerDisabledModels ? storage.read9routerDisabledModels() : {};
+  const customList = storage.read9routerCustomModels ? storage.read9routerCustomModels() : [];
+
+  for (const conn of activeConns) {
+    const prov = String(conn.provider || '').toLowerCase();
+    const prefix = conn.prefix || STANDARD_PROVIDER_PREFIXES[prov] || prov;
+    const targetKey = prefix;
+    if (!results[targetKey]) continue;
+
+    // 1. Harvest disabled models for this provider so they can be candidate tested & re-enabled
+    const disabledForProv = [
+      ...(disabledMap[prov] || []),
+      ...(disabledMap[prefix] || []),
+      ...(disabledMap[targetKey] || [])
+    ];
+    for (const dId of disabledForProv) {
+      if (!dId) continue;
+      let cleanDId = String(dId);
+      if (cleanDId.toLowerCase().startsWith(`${targetKey}/`)) {
+        cleanDId = cleanDId.slice(targetKey.length + 1);
+      }
+      if (isPaidModel(prov, cleanDId) || isPaidModel(targetKey, cleanDId)) continue;
+      if (storage.isModelExcluded && (storage.isModelExcluded(cleanDId) || storage.isModelExcluded(`${targetKey}/${cleanDId}`))) continue;
+      const fullId = formatRoutingFullId(targetKey, cleanDId);
+      if (!seenFullIds.has(fullId.toLowerCase())) {
+        seenFullIds.add(fullId.toLowerCase());
+        results[targetKey].models.push({
+          id: cleanDId,
+          fullId,
+          name: cleanDId,
+          source: `${targetKey}-9router-disabled-harvest`,
+          contextLength: 131072
+        });
+      }
+    }
+
+    // 2. Harvest customModels for this provider
+    for (const cm of customList) {
+      const cAlias = String(cm.providerAlias || '').toLowerCase();
+      if (cAlias === prov || cAlias === prefix || cAlias === targetKey) {
+        let cleanCId = String(cm.id || '');
+        if (cleanCId.toLowerCase().startsWith(`${targetKey}/`)) {
+          cleanCId = cleanCId.slice(targetKey.length + 1);
+        }
+        if (!cleanCId) continue;
+        if (isPaidModel(prov, cleanCId) || isPaidModel(targetKey, cleanCId)) continue;
+        if (storage.isModelExcluded && (storage.isModelExcluded(cleanCId) || storage.isModelExcluded(`${targetKey}/${cleanCId}`))) continue;
+        const fullId = formatRoutingFullId(targetKey, cleanCId);
+        if (!seenFullIds.has(fullId.toLowerCase())) {
+          seenFullIds.add(fullId.toLowerCase());
+          results[targetKey].models.push({
+            id: cleanCId,
+            fullId,
+            name: cm.name || cleanCId,
+            source: `${targetKey}-9router-custom-models`,
+            contextLength: 131072
+          });
+        }
+      }
+    }
   }
 
   // Enrich all active provider records with external free model catalogs if available
@@ -1201,7 +1290,6 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
           continue;
         }
       }
-      const preserveNamespace = prefix === 'nvidia' || prefix === 'fb' || prefix === 'freebuff' || prefix === 'openrouter' || targetKey === 'nvidia' || targetKey === 'fb' || targetKey === 'freebuff';
       const isFreeOnlyProvider = REQUIRE_FREE_SUFFIX_PROVIDERS.has(targetKey.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(prefix.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(String(providerName || '').toLowerCase());
       let cleanId;
       if (isFreeOnlyProvider) {
@@ -1209,8 +1297,12 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
       } else {
         cleanId = extId.replace(/:free$/, '');
       }
-      if (!preserveNamespace) {
-        cleanId = cleanId.replace(/^[a-zA-Z0-9_.-]+\//, '');
+      // Generically preserve org namespace: only strip target provider prefix itself if present at head
+      const pHeads = [prefix, targetKey, providerName].filter(Boolean).map(p => String(p).toLowerCase());
+      for (const ph of pHeads) {
+        if (cleanId.toLowerCase().startsWith(`${ph}/`)) {
+          cleanId = cleanId.slice(ph.length + 1);
+        }
       }
       if (storage.isModelExcluded && (storage.isModelExcluded(cleanId) || storage.isModelExcluded(extId))) {
         continue;
@@ -1247,8 +1339,7 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
 async function discoverProvider(recordOrKey) {
   const record = typeof recordOrKey === 'string' ? PROVIDER_BY_KEY[recordOrKey] : recordOrKey;
   if (!record) throw new Error(`Provider not found: ${recordOrKey}`);
-  const impl = PROVIDER_DISCOVERY_MAP[record.kind];
-  if (!impl) throw new Error(`No discovery implementation for provider kind "${record.kind}"`);
+  const impl = PROVIDER_DISCOVERY_MAP[record.kind] || PROVIDER_DISCOVERY_MAP['openai-compatible'];
   return impl(record);
 }
 
@@ -1454,5 +1545,7 @@ module.exports = {
   enrichProviderCandidatesFromExternalCatalog,
   formatRoutingFullId,
   REQUIRE_FREE_SUFFIX_PROVIDERS,
-  isPaidModel
+  isPaidModel,
+  fetchOpenAiCompatibleFreeModels,
+  fetchNousFreeModels
 };
