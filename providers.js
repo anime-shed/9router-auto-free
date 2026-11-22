@@ -788,8 +788,6 @@ const fetchNousFreeModels = (apiKey, baseUrl, prefix) => fetchOpenAiCompatibleFr
   prefix: prefix || 'nous',
   requireApiKey: false
 });
-  return freeModels;
-}
 
 async function fetchCloudflareFreeModels(creds, prefix = 'cloudflare-ai') {
   const freeModels = [];
