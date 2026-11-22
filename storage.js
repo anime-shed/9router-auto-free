@@ -94,7 +94,7 @@ function getDbClass() {
         }
       };
     }
-  } catch {}
+  } catch { }
 
   const candidates = [
     () => require('better-sqlite3'),
@@ -107,7 +107,7 @@ function getDbClass() {
     try {
       const mod = load();
       if (typeof mod === 'function') return mod;
-    } catch {}
+    } catch { }
   }
 
   throw new Error('No functional SQLite driver found. Node.js >= 22.5 is recommended (includes node:sqlite), or install better-sqlite3.');
@@ -134,7 +134,7 @@ function get9routerApiKey() {
     const row = db.prepare("SELECT key FROM apiKeys WHERE isActive = 1 ORDER BY createdAt ASC LIMIT 1").get();
     db.close();
     if (row && row.key) return row.key;
-  } catch {}
+  } catch { }
   return null;
 }
 
@@ -243,7 +243,7 @@ function readCurrentComboModels(comboName) {
       const parsed = JSON.parse(row.models);
       if (Array.isArray(parsed)) return parsed.map(String);
     }
-  } catch {}
+  } catch { }
   return [];
 }
 
@@ -276,7 +276,7 @@ function readUsageFeedback() {
         entry.err++;
       }
     }
-  } catch {}
+  } catch { }
   return stats;
 }
 
@@ -322,7 +322,7 @@ async function persistCombos(comboMap) {
         }
       }
     }
-  } catch {}
+  } catch { }
 
   // 2. Direct SQLite update
   try {
@@ -454,7 +454,7 @@ function read9routerDisabledModels() {
       try {
         const parsed = JSON.parse(r.value || '[]');
         if (Array.isArray(parsed)) map[r.key] = parsed;
-      } catch {}
+      } catch { }
     }
     return map;
   } catch {
@@ -477,7 +477,7 @@ function read9routerCustomModels() {
       try {
         const val = JSON.parse(r.value || '{}');
         if (val && val.id) list.push(val);
-      } catch {}
+      } catch { }
     }
     return list;
   } catch {
@@ -534,7 +534,7 @@ function enableModelsIn9router(providerAlias, modelList) {
               db.prepare("UPDATE kv SET value = ? WHERE scope = 'disabledModels' AND key = ?").run(JSON.stringify(updated), row.key);
             }
           }
-        } catch {}
+        } catch { }
       }
     }
 
@@ -601,7 +601,7 @@ function readCustomProvidersFile() {
     if (fs.existsSync(CUSTOM_PROVIDERS_PATH)) {
       return JSON.parse(fs.readFileSync(CUSTOM_PROVIDERS_PATH, 'utf8'));
     }
-  } catch {}
+  } catch { }
   return {};
 }
 
@@ -681,13 +681,11 @@ function getDynamicProviders() {
         const lowerUrl = String(baseUrl || '').toLowerCase();
         const lowerProv = String(provName || '').toLowerCase();
         const lowerPrefix = String(rawPrefix || '').toLowerCase();
-        if (lowerUrl.includes('aihubmix') || lowerUrl.includes('inferera') || lowerProv.includes('aihubmix') || lowerProv.includes('inferera') || lowerPrefix.includes('aihubmix') || lowerPrefix.includes('inferera')) {
-          return [':free', '-free'];
-        }
         if (lowerUrl.includes('openrouter') || lowerProv.includes('openrouter') || lowerPrefix.includes('openrouter')) {
           return ':free';
         }
-        return null;
+        // Generic rule: all custom / OpenAI-compatible / proxy gateways default to [':free', '-free', 'grok-4.20-fast']
+        return [':free', '-free'];
       })(),
       modelsEndpoint: config.modelsEndpoint || null,
       skipPatterns: config.skipPatterns || getExclusionConfig().excludedModels
@@ -704,14 +702,14 @@ function getAuthSecret() {
       const s = fs.readFileSync(jwtSecretPath, 'utf8').trim();
       if (s) return s;
     }
-  } catch {}
+  } catch { }
   try {
     const cliSecretPath = path.join(NINE_ROUTER_DIR, 'auth', 'cli-secret');
     if (fs.existsSync(cliSecretPath)) {
       const s = fs.readFileSync(cliSecretPath, 'utf8').trim();
       if (s) return s;
     }
-  } catch {}
+  } catch { }
   return '9router-auto-free-secret-fallback';
 }
 
@@ -749,7 +747,7 @@ function createSessionToken() {
         db.close();
         const settings = row && row.data ? JSON.parse(row.data) : {};
         if (settings.password) pwdHash = settings.password;
-      } catch {}
+      } catch { }
     }
     const payload = {
       exp: Date.now() + 7 * 24 * 60 * 60 * 1000,
@@ -781,7 +779,7 @@ function verifySessionToken(token) {
         db.close();
         const settings = row && row.data ? JSON.parse(row.data) : {};
         if (settings.password) pwdHash = settings.password;
-      } catch {}
+      } catch { }
     }
     const currentPh = crypto.createHash('sha256').update(pwdHash).digest('hex').substring(0, 16);
     return payload.ph === currentPh;
@@ -900,7 +898,7 @@ function readExclusionsFile() {
     if (fs.existsSync(EXCLUSIONS_PATH)) {
       return JSON.parse(fs.readFileSync(EXCLUSIONS_PATH, 'utf8'));
     }
-  } catch {}
+  } catch { }
   return [];
 }
 
@@ -913,7 +911,7 @@ function readPrioritiesFile() {
     if (fs.existsSync(PRIORITIES_PATH)) {
       return JSON.parse(fs.readFileSync(PRIORITIES_PATH, 'utf8'));
     }
-  } catch {}
+  } catch { }
   return [];
 }
 
@@ -926,7 +924,7 @@ function readCandidatesStateFile() {
     if (fs.existsSync(CANDIDATES_STATE_PATH)) {
       return JSON.parse(fs.readFileSync(CANDIDATES_STATE_PATH, 'utf8'));
     }
-  } catch {}
+  } catch { }
   return null;
 }
 

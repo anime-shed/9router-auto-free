@@ -353,7 +353,14 @@ async function runTests() {
   assert.strictEqual(storage.getCleanModelId('openrouter/google/gemma-2:free', 'openrouter'), 'google/gemma-2:free', 'getCleanModelId must strip provider prefix and keep org namespace');
 
   // isPaidModel generic tests
-  const { isPaidModel } = require('./providers.js');
+  const { isPaidModel, isFreeOnlyProvider } = require('./providers.js');
+  assert.strictEqual(isFreeOnlyProvider('openai-compatible-chat-any'), true, 'openai-compatible node is free-only provider');
+  assert.strictEqual(isFreeOnlyProvider('tokenreply'), true, 'tokenreply is free-only provider');
+  assert.strictEqual(isFreeOnlyProvider('aihubmix'), true, 'aihubmix is free-only provider');
+  assert.strictEqual(isFreeOnlyProvider('kc'), true, 'kc is free-only provider');
+  assert.strictEqual(isFreeOnlyProvider('kilo'), true, 'kilo is free-only provider');
+  assert.strictEqual(isFreeOnlyProvider('kilocode'), true, 'kilocode is free-only provider');
+  assert.strictEqual(isFreeOnlyProvider('groq'), false, 'groq is built-in provider, not free-only custom gateway');
   assert.strictEqual(isPaidModel('nous', 'stepfun/step-3.7-flash:free'), false, ':free suffix is free');
   assert.strictEqual(isPaidModel('nous', 'anthropic/claude-sonnet-5'), true, 'Unsuffixed model on pay-per-token gateway is paid');
   assert.strictEqual(isPaidModel('openrouter', 'google/gemma-2:free'), false, ':free suffix on openrouter is free');
@@ -361,6 +368,15 @@ async function runTests() {
   assert.strictEqual(isPaidModel('cerebras', 'llama-3.3-70b'), false, 'Non-free-only provider without pricing is free');
   assert.strictEqual(isPaidModel('generic-prov', 'any-model', { prompt: 0, completion: 0 }), false, 'Zero pricing is free');
   assert.strictEqual(isPaidModel('generic-prov', 'any-model', { prompt: 0.0001, completion: 0.0002 }), true, 'Positive pricing is paid');
+  assert.strictEqual(isPaidModel('tokenreply', 'grok-4.20-fast'), false, 'grok-4.20-fast on tokenreply is free');
+  assert.strictEqual(isPaidModel('tokenreply', 'nemotron-3.5-super-vl-free'), false, '-free suffix on tokenreply is free');
+  assert.strictEqual(isPaidModel('tokenreply', 'kimi-k2.7'), true, 'Unsuffixed model on tokenreply is paid');
+  assert.strictEqual(isPaidModel('kc', 'stealth/glyph-cluster'), true, 'Unsuffixed model on kc is paid');
+  assert.strictEqual(isPaidModel('kc', 'reflection/beam-free'), false, '-free suffix on kc is free');
+  assert.strictEqual(isPaidModel('kc', 'nvidia/nemotron-3.5-lightning:free'), false, ':free suffix on kc is free');
+  assert.strictEqual(isPaidModel('openai-compatible-chat-custom', 'gpt-5.4'), true, 'Unsuffixed model on custom openai-compatible gateway is paid');
+  assert.strictEqual(isPaidModel('openai-compatible-chat-custom', 'particle-1-free'), false, '-free model on custom openai-compatible gateway is free');
+  assert.strictEqual(isPaidModel('openai-compatible-chat-custom', 'stepfun/step-3:free'), false, ':free model on custom openai-compatible gateway is free');
 
   // 17. New provider discovery (Groq / Cerebras / Mistral / Cloudflare) via Deep discoverProvider
   console.log('[-] Testing new provider discovery (Groq / Cerebras / Mistral / Cloudflare)...');

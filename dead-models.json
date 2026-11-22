@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22T06:48:00.388Z",
+  "updatedAt": "2026-11-22T17:04:31.515Z",
   "models": {
     "oc/mimo-v2.5-free": {
       "firstSeenDead": "2026-11-20T07:59:02.517Z",
@@ -266,50 +266,50 @@
     },
     "gemini/gemini-flash-latest": {
       "firstSeenDead": "2026-11-20T08:01:37.414Z",
-      "lastSeenDead": "2026-11-22T06:40:28.154Z",
+      "lastSeenDead": "2026-11-22T16:13:05.896Z",
       "status": 504,
       "reason": "The operation was aborted due to timeout",
-      "failCount": 8,
+      "failCount": 11,
       "confirmedDead": false
     },
     "ollama/muse-spark-open": {
       "firstSeenDead": "2026-11-20T08:02:15.592Z",
-      "lastSeenDead": "2026-11-22T06:40:33.312Z",
+      "lastSeenDead": "2026-11-22T16:47:51.433Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/muse-spark-open] [402]: {\"error\":\"Add usage credits or subscri",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/deepseek-v4-pro:0813": {
       "firstSeenDead": "2026-11-20T08:02:16.046Z",
-      "lastSeenDead": "2026-11-22T06:40:29.876Z",
+      "lastSeenDead": "2026-11-22T16:47:54.295Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/deepseek-v4-pro:0813] [402]: {\"error\":\"Add usage credits or su",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/mistral-large-4": {
       "firstSeenDead": "2026-11-20T08:02:16.470Z",
-      "lastSeenDead": "2026-11-22T06:40:28.776Z",
+      "lastSeenDead": "2026-11-22T16:47:51.950Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/mistral-large-4] [402]: {\"error\":\"Add usage credits or subscri",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/deepseek-v4.1-flash:1017": {
       "firstSeenDead": "2026-11-20T08:02:16.832Z",
-      "lastSeenDead": "2026-11-22T06:40:34.965Z",
+      "lastSeenDead": "2026-11-22T16:47:53.619Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/deepseek-v4.1-flash:1017] [402]: {\"error\":\"Add usage credits o",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/mimo-v2.6-flash": {
       "firstSeenDead": "2026-11-20T08:02:16.945Z",
-      "lastSeenDead": "2026-11-22T06:40:33.692Z",
+      "lastSeenDead": "2026-11-22T16:47:50.138Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/mimo-v2.6-flash] [402]: {\"error\":\"Add usage credits or subscri",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/gpt-oss:120b": {
@@ -322,34 +322,34 @@
     },
     "ollama/mimo-v2.6-pro": {
       "firstSeenDead": "2026-11-20T08:02:17.938Z",
-      "lastSeenDead": "2026-11-22T06:40:30.496Z",
+      "lastSeenDead": "2026-11-22T16:47:54.978Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/mimo-v2.6-pro] [402]: {\"error\":\"Add usage credits or subscribe",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/kimi-k3": {
       "firstSeenDead": "2026-11-20T08:02:18.163Z",
-      "lastSeenDead": "2026-11-22T06:40:34.391Z",
+      "lastSeenDead": "2026-11-22T16:47:52.184Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/kimi-k3] [402]: {\"error\":\"Add usage credits or subscribe and s",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/deepseek-v4.1-flash": {
       "firstSeenDead": "2026-11-20T08:02:18.348Z",
-      "lastSeenDead": "2026-11-22T06:40:30.759Z",
+      "lastSeenDead": "2026-11-22T16:47:52.488Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/deepseek-v4.1-flash] [402]: {\"error\":\"Add usage credits or sub",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/nemotron-3-super": {
       "firstSeenDead": "2026-11-20T08:02:18.638Z",
-      "lastSeenDead": "2026-11-22T06:40:35.285Z",
+      "lastSeenDead": "2026-11-22T16:47:49.845Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/nemotron-3-super] [402]: {\"error\":\"Add usage credits or subscr",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/clef:27b": {
@@ -363,66 +363,66 @@
     },
     "ollama/minimax-m3": {
       "firstSeenDead": "2026-11-20T08:02:19.240Z",
-      "lastSeenDead": "2026-11-22T06:40:31.061Z",
+      "lastSeenDead": "2026-11-22T16:47:53.091Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/minimax-m3] [402]: {\"error\":\"Add usage credits or subscribe an",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/minimax-m3.1-flash": {
       "firstSeenDead": "2026-11-20T08:02:19.556Z",
-      "lastSeenDead": "2026-11-22T06:40:34.072Z",
+      "lastSeenDead": "2026-11-22T16:47:54.361Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/minimax-m3.1-flash] [402]: {\"error\":\"Add usage credits or subs",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/glm-5.3": {
       "firstSeenDead": "2026-11-20T08:02:19.848Z",
-      "lastSeenDead": "2026-11-22T06:40:35.569Z",
+      "lastSeenDead": "2026-11-22T16:47:48.421Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/glm-5.3] [402]: {\"error\":\"Add usage credits or subscribe and s",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/nemotron-3-ultra": {
       "firstSeenDead": "2026-11-20T08:02:20.148Z",
-      "lastSeenDead": "2026-11-22T06:40:30.163Z",
+      "lastSeenDead": "2026-11-22T16:47:48.044Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/nemotron-3-ultra] [402]: {\"error\":\"Add usage credits or subscr",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/gemma4:31b": {
       "firstSeenDead": "2026-11-20T08:02:20.744Z",
-      "lastSeenDead": "2026-11-22T06:40:29.334Z",
+      "lastSeenDead": "2026-11-22T16:47:48.179Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/gemma4:31b] [402]: {\"error\":\"Add usage credits or subscribe an",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/kimi-k2.7-code": {
       "firstSeenDead": "2026-11-20T08:02:21.148Z",
-      "lastSeenDead": "2026-11-22T06:40:34.662Z",
+      "lastSeenDead": "2026-11-22T16:47:50.822Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/kimi-k2.7-code] [402]: {\"error\":\"Add usage credits or subscrib",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/inkling-2-small": {
       "firstSeenDead": "2026-11-20T08:02:21.293Z",
-      "lastSeenDead": "2026-11-22T06:40:31.963Z",
+      "lastSeenDead": "2026-11-22T16:47:54.670Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/inkling-2-small] [402]: {\"error\":\"Add usage credits or subscri",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/kimi-k3.1-pro": {
       "firstSeenDead": "2026-11-20T08:02:21.550Z",
-      "lastSeenDead": "2026-11-22T06:40:32.479Z",
+      "lastSeenDead": "2026-11-22T16:47:50.223Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/kimi-k3.1-pro] [402]: {\"error\":\"Add usage credits or subscribe",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/gpt-oss:20b": {
@@ -435,34 +435,34 @@
     },
     "ollama/glm-5.2": {
       "firstSeenDead": "2026-11-20T08:02:22.186Z",
-      "lastSeenDead": "2026-11-22T06:40:29.782Z",
+      "lastSeenDead": "2026-11-22T16:47:47.665Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/glm-5.2] [402]: {\"error\":\"Add usage credits or subscribe and s",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/kimi-k2.6": {
       "firstSeenDead": "2026-11-20T08:02:22.446Z",
-      "lastSeenDead": "2026-11-22T06:40:32.710Z",
+      "lastSeenDead": "2026-11-22T16:47:53.991Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/kimi-k2.6] [402]: {\"error\":\"Add usage credits or subscribe and",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/beam": {
       "firstSeenDead": "2026-11-20T08:02:22.746Z",
-      "lastSeenDead": "2026-11-22T06:40:31.400Z",
+      "lastSeenDead": "2026-11-22T16:47:50.542Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/beam] [402]: {\"error\":\"Add usage credits or subscribe and save",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/glm-5.3-flash": {
       "firstSeenDead": "2026-11-20T08:02:23.050Z",
-      "lastSeenDead": "2026-11-22T06:40:32.341Z",
+      "lastSeenDead": "2026-11-22T16:47:51.813Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/glm-5.3-flash] [402]: {\"error\":\"Add usage credits or subscribe",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/kimi-k2.5": {
@@ -503,10 +503,10 @@
     },
     "ollama/deepseek-v4.1-flash:cloud": {
       "firstSeenDead": "2026-11-20T08:02:24.550Z",
-      "lastSeenDead": "2026-11-22T06:40:35.867Z",
+      "lastSeenDead": "2026-11-22T16:47:55.268Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 9,
+      "reason": "HTTP 503: [ollama/deepseek-v4.1-flash:cloud] [402]: {\"error\":\"Add usage credits ",
+      "failCount": 13,
       "confirmedDead": false
     },
     "ollama/clef-flash": {
@@ -582,10 +582,10 @@
     },
     "cerebras/qwen-3.8-27b": {
       "firstSeenDead": "2026-11-20T08:02:32.525Z",
-      "lastSeenDead": "2026-11-22T06:40:39.705Z",
+      "lastSeenDead": "2026-11-22T16:47:56.821Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"message\":\"Payment required to access this resource. Visit you",
-      "failCount": 9,
+      "reason": "HTTP 503: [cerebras/qwen-3.8-27b] [402]: {\"message\":\"Payment required to access ",
+      "failCount": 13,
       "confirmedDead": false
     },
     "cerebras/gpt-oss-120b": {
@@ -652,18 +652,18 @@
     },
     "nvidia/fastino/gliner2-pii": {
       "firstSeenDead": "2026-11-20T08:02:37.678Z",
-      "lastSeenDead": "2026-11-22T06:40:42.389Z",
+      "lastSeenDead": "2026-11-22T16:47:58.762Z",
       "status": 422,
       "reason": "HTTP 422: [422]: {\"error\":{\"message\":\"invalid extraction request; check model, m",
-      "failCount": 9,
+      "failCount": 13,
       "confirmedDead": false
     },
     "nvidia/google/gemma-4-31b-it": {
       "firstSeenDead": "2026-11-20T08:03:37.106Z",
-      "lastSeenDead": "2026-11-22T06:41:55.966Z",
+      "lastSeenDead": "2026-11-22T16:48:57.390Z",
       "status": 504,
       "reason": "The operation was aborted due to timeout",
-      "failCount": 9,
+      "failCount": 13,
       "confirmedDead": false
     },
     "nvidia/nvidia/cosmos-reason2-8b": {
@@ -686,10 +686,10 @@
     },
     "nvidia/z-ai/glm-5.3-flash": {
       "firstSeenDead": "2026-11-20T08:05:09.915Z",
-      "lastSeenDead": "2026-11-22T06:44:01.280Z",
+      "lastSeenDead": "2026-11-22T16:50:50.051Z",
       "status": 504,
       "reason": "The operation was aborted due to timeout",
-      "failCount": 9,
+      "failCount": 13,
       "confirmedDead": false
     },
     "nvidia/z-ai/glm-5.3": {
@@ -755,18 +755,18 @@
     },
     "kc/recursive/flint-v1.0": {
       "firstSeenDead": "2026-11-20T08:05:51.768Z",
-      "lastSeenDead": "2026-11-22T06:44:45.491Z",
+      "lastSeenDead": "2026-11-22T16:16:34.434Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 8,
+      "reason": "HTTP 503: [kilocode/recursive/flint-v1.0] [402]: {\"error\":{\"title\":\"Paid Model -",
+      "failCount": 10,
       "confirmedDead": false
     },
     "kc/humansand/ampersand-v0.1": {
       "firstSeenDead": "2026-11-20T08:05:52.432Z",
-      "lastSeenDead": "2026-11-22T06:44:46.331Z",
+      "lastSeenDead": "2026-11-22T16:16:35.360Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 8,
+      "reason": "HTTP 503: [kilocode/humansand/ampersand-v0.1] [402]: {\"error\":{\"title\":\"Paid Mod",
+      "failCount": 10,
       "confirmedDead": false
     },
     "kc/beam-free": {
@@ -930,10 +930,10 @@
     },
     "xai/grok-4.7": {
       "firstSeenDead": "2026-11-20T08:08:27.605Z",
-      "lastSeenDead": "2026-11-22T06:47:56.846Z",
+      "lastSeenDead": "2026-11-22T17:04:09.133Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"code\":\"personal-team-blocked:spending-limit\",\"error\":\"You hav",
-      "failCount": 8,
+      "reason": "HTTP 503: [xai/grok-4.7] [402]: {\"code\":\"personal-team-blocked:spending-limit\",\"",
+      "failCount": 11,
       "confirmedDead": false
     },
     "nous/stealth/crouton-alpha": {
@@ -956,18 +956,18 @@
     },
     "mimo/mimo-v2.6-flash": {
       "firstSeenDead": "2026-11-20T08:08:33.469Z",
-      "lastSeenDead": "2026-11-22T06:48:00.388Z",
-      "status": 401,
-      "reason": "HTTP 401: [401]: { \"error\": { \"message\": \"Invalid API Key\", \"param\": \"Please pro",
-      "failCount": 8,
+      "lastSeenDead": "2026-11-22T17:04:10.196Z",
+      "status": 402,
+      "reason": "HTTP 503: [xiaomi-mimo/mimo-v2.6-flash] [402]: { \"error\": { \"code\": \"402\", \"mess",
+      "failCount": 11,
       "confirmedDead": false
     },
     "mimo/mimo-v2.6-pro": {
       "firstSeenDead": "2026-11-20T08:08:33.471Z",
-      "lastSeenDead": "2026-11-22T06:48:00.295Z",
-      "status": 401,
-      "reason": "HTTP 401: [401]: { \"error\": { \"message\": \"Invalid API Key\", \"param\": \"Please pro",
-      "failCount": 8,
+      "lastSeenDead": "2026-11-22T17:04:09.744Z",
+      "status": 402,
+      "reason": "HTTP 503: [xiaomi-mimo/mimo-v2.6-pro] [402]: { \"error\": { \"code\": \"402\", \"messag",
+      "failCount": 11,
       "confirmedDead": false
     },
     "mimo/mimo-v2.6-pro-ultraspeed": {
@@ -981,19 +981,21 @@
     },
     "mimo/mimo-v2.5-pro": {
       "firstSeenDead": "2026-11-20T08:08:37.371Z",
-      "lastSeenDead": "2026-11-22T05:27:44.130Z",
-      "status": 401,
-      "reason": "HTTP 503: [xiaomi-mimo/mimo-v2.5-pro] [401]: { \"error\": { \"message\": \"Invalid AP",
-      "failCount": 7,
-      "confirmedDead": false
+      "lastSeenDead": "2026-11-22T15:49:40.052Z",
+      "status": 400,
+      "reason": "HTTP 400: [400]: { \"error\": { \"code\": \"400\", \"message\": \"Unsupported model mimo-",
+      "failCount": 8,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:49:40.052Z"
     },
     "mimo/mimo-v2.5": {
       "firstSeenDead": "2026-11-20T08:08:37.490Z",
-      "lastSeenDead": "2026-11-22T05:27:44.402Z",
-      "status": 401,
-      "reason": "HTTP 503: [xiaomi-mimo/mimo-v2.5] [401]: { \"error\": { \"message\": \"Invalid API Ke",
-      "failCount": 7,
-      "confirmedDead": false
+      "lastSeenDead": "2026-11-22T15:49:40.460Z",
+      "status": 400,
+      "reason": "HTTP 400: [400]: { \"error\": { \"code\": \"400\", \"message\": \"Unsupported model mimo-",
+      "failCount": 8,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:49:40.460Z"
     },
     "1723755422@xiaomi/mimo-v2.5": {
       "firstSeenDead": "2026-11-20T08:08:37.710Z",
@@ -1165,11 +1167,12 @@
     },
     "openrouter/xingchen-agi/xing4.0-29b-a4b:free": {
       "firstSeenDead": "2026-11-21T13:51:33.855Z",
-      "lastSeenDead": "2026-11-22T06:38:49.610Z",
-      "status": 401,
-      "reason": "HTTP 401: [401]: {\"error\":{\"message\":\"User not found.\",\"code\":401}}",
-      "failCount": 4,
-      "confirmedDead": false
+      "lastSeenDead": "2026-11-22T15:55:41.293Z",
+      "status": 404,
+      "reason": "HTTP 503: [openrouter/xingchen-agi/xing4.0-29b-a4b:free] [404]: {\"error\":{\"messa",
+      "failCount": 5,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:55:41.293Z"
     },
     "oc/glm-5-free": {
       "firstSeenDead": "2026-11-21T14:20:46.367Z",
@@ -1198,10 +1201,10 @@
     },
     "nvidia/moonshotai/kimi-k3.1-pro": {
       "firstSeenDead": "2026-11-21T14:26:04.895Z",
-      "lastSeenDead": "2026-11-22T06:43:12.416Z",
+      "lastSeenDead": "2026-11-22T16:49:50.042Z",
       "status": 504,
       "reason": "The operation was aborted due to timeout",
-      "failCount": 6,
+      "failCount": 9,
       "confirmedDead": false
     },
     "nvidia/moonshotai/kimi-k3": {
@@ -8423,21 +8426,12 @@
     },
     "openrouter/thinkingmachines/inkling-2-small:free": {
       "firstSeenDead": "2026-11-21T14:48:09.206Z",
-      "lastSeenDead": "2026-11-21T14:48:09.206Z",
+      "lastSeenDead": "2026-11-22T16:45:06.383Z",
       "status": 404,
       "reason": "HTTP 503: [openrouter/thinkingmachines/inkling-2-small:free] [404]: {\"error\":{\"m",
-      "failCount": 1,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
-    },
-    "nvidia/meta/muse-glimmer-30b": {
-      "firstSeenDead": "2026-11-21T14:51:15.275Z",
-      "lastSeenDead": "2026-11-22T06:41:57.403Z",
-      "status": 504,
-      "reason": "The operation was aborted due to timeout",
-      "failCount": 5,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T16:45:06.383Z"
     },
     "nvidia/meta/llama-3.2-90b-vision-instruct": {
       "firstSeenDead": "2026-11-21T14:53:29.172Z",
@@ -8603,10 +8597,10 @@
     },
     "ollama/hy4": {
       "firstSeenDead": "2026-11-22T05:13:02.594Z",
-      "lastSeenDead": "2026-11-22T06:40:33.827Z",
+      "lastSeenDead": "2026-11-22T16:47:48.719Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":\"Add usage credits or subscribe and save up to 66%: ht",
-      "failCount": 2,
+      "reason": "HTTP 503: [ollama/hy4] [402]: {\"error\":\"Add usage credits or subscribe and save ",
+      "failCount": 6,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
@@ -8630,12 +8624,12 @@
     },
     "groq/meta-llama/llama-4-maverick-17b-128e-instruct": {
       "firstSeenDead": "2026-11-22T05:13:07.194Z",
-      "lastSeenDead": "2026-11-22T06:40:37.947Z",
+      "lastSeenDead": "2026-11-22T15:33:04.110Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: {\"error\":{\"message\":\"The model `meta-llama/llama-4-maverick-17b",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [groq/meta-llama/llama-4-maverick-17b-128e-instruct] [404]: {\"error\":{",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:33:04.110Z"
     },
     "cerebras/llama-3.3-70b": {
       "firstSeenDead": "2026-11-22T05:13:08.305Z",
@@ -8702,57 +8696,57 @@
     },
     "nvidia/streampetr": {
       "firstSeenDead": "2026-11-22T05:15:17.901Z",
-      "lastSeenDead": "2026-11-22T06:43:12.844Z",
+      "lastSeenDead": "2026-11-22T15:35:17.232Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: 404 page not found",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [nvidia/streampetr] [404]: 404 page not found (reset after 1m 58s)",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:35:17.232Z"
     },
     "nvidia/active-speaker-detection": {
       "firstSeenDead": "2026-11-22T05:15:18.303Z",
-      "lastSeenDead": "2026-11-22T06:43:13.242Z",
+      "lastSeenDead": "2026-11-22T15:35:17.859Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: 404 page not found",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [nvidia/active-speaker-detection] [404]: 404 page not found (reset aft",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:35:17.859Z"
     },
     "nous/meituan/longcat-2.5-preview:free": {
       "firstSeenDead": "2026-11-22T05:16:19.138Z",
-      "lastSeenDead": "2026-11-22T06:44:10.314Z",
+      "lastSeenDead": "2026-11-22T15:36:23.780Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: {\"status\":404,\"message\":\"This model is no longer free. To conti",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [nous/meituan/longcat-2.5-preview:free] [404]: {\"status\":404,\"message\"",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:36:23.780Z"
     },
     "nous/meituan/longcat-2.0:free": {
       "firstSeenDead": "2026-11-22T05:16:19.457Z",
-      "lastSeenDead": "2026-11-22T06:44:10.714Z",
+      "lastSeenDead": "2026-11-22T15:36:21.702Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: {\"status\":404,\"message\":\"This model is no longer free. To conti",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [nous/meituan/longcat-2.0:free] [404]: {\"status\":404,\"message\":\"This m",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:36:21.702Z"
     },
     "nous/stepfun/step-5-preview:free": {
       "firstSeenDead": "2026-11-22T05:16:19.836Z",
-      "lastSeenDead": "2026-11-22T06:44:11.080Z",
+      "lastSeenDead": "2026-11-22T15:36:26.684Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: {\"status\":404,\"message\":\"This model's free period has ended. To",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [nous/stepfun/step-5-preview:free] [404]: {\"status\":404,\"message\":\"Thi",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:36:26.684Z"
     },
     "nous/poolside/laguna-s-2.1:free": {
       "firstSeenDead": "2026-11-22T05:16:20.235Z",
-      "lastSeenDead": "2026-11-22T06:44:11.488Z",
+      "lastSeenDead": "2026-11-22T15:36:27.349Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: {\"status\":404,\"message\":\"Model 'poolside/laguna-s-2.1:free' not",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [nous/poolside/laguna-s-2.1:free] [404]: {\"status\":404,\"message\":\"Mode",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:36:27.349Z"
     },
     "gc/gemini-2.5-flash": {
       "firstSeenDead": "2026-11-22T05:16:24.219Z",
@@ -8765,387 +8759,1161 @@
     },
     "kc/anthropic/claude-sonnet-4-20250514": {
       "firstSeenDead": "2026-11-22T05:17:22.414Z",
-      "lastSeenDead": "2026-11-22T06:44:52.153Z",
+      "lastSeenDead": "2026-11-22T15:37:01.017Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/anthropic/claude-sonnet-4-20250514] [402]: {\"error\":{\"title\"",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/anthropic/claude-opus-4-20250514": {
       "firstSeenDead": "2026-11-22T05:17:23.297Z",
-      "lastSeenDead": "2026-11-22T06:44:53.004Z",
+      "lastSeenDead": "2026-11-22T15:37:01.926Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/anthropic/claude-opus-4-20250514] [402]: {\"error\":{\"title\":\"",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/google/gemini-2.5-pro": {
       "firstSeenDead": "2026-11-22T05:17:23.879Z",
-      "lastSeenDead": "2026-11-22T06:44:53.723Z",
+      "lastSeenDead": "2026-11-22T15:37:02.646Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/google/gemini-2.5-pro] [402]: {\"error\":{\"title\":\"Paid Model ",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/google/gemini-2.5-flash": {
       "firstSeenDead": "2026-11-22T05:17:24.670Z",
-      "lastSeenDead": "2026-11-22T06:44:54.523Z",
+      "lastSeenDead": "2026-11-22T15:37:03.589Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/google/gemini-2.5-flash] [402]: {\"error\":{\"title\":\"Paid Mode",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/openai/gpt-4.1": {
       "firstSeenDead": "2026-11-22T05:17:25.468Z",
-      "lastSeenDead": "2026-11-22T06:44:55.315Z",
+      "lastSeenDead": "2026-11-22T15:37:04.175Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/openai/gpt-4.1] [402]: {\"error\":{\"title\":\"Paid Model - Credi",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/openai/o3": {
       "firstSeenDead": "2026-11-22T05:17:26.431Z",
-      "lastSeenDead": "2026-11-22T06:44:56.164Z",
+      "lastSeenDead": "2026-11-22T15:37:05.060Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/openai/o3] [402]: {\"error\":{\"title\":\"Paid Model - Credits Re",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/deepseek/deepseek-chat": {
       "firstSeenDead": "2026-11-22T05:17:27.056Z",
-      "lastSeenDead": "2026-11-22T06:44:56.886Z",
+      "lastSeenDead": "2026-11-22T15:37:05.816Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/deepseek/deepseek-chat] [402]: {\"error\":{\"title\":\"Paid Model",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/deepseek/deepseek-reasoner": {
       "firstSeenDead": "2026-11-22T05:17:28.065Z",
-      "lastSeenDead": "2026-11-22T06:44:57.790Z",
+      "lastSeenDead": "2026-11-22T15:37:06.749Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/deepseek/deepseek-reasoner] [402]: {\"error\":{\"title\":\"Paid M",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/thinkingmachines/inkling-2-small:free": {
       "firstSeenDead": "2026-11-22T05:17:28.659Z",
-      "lastSeenDead": "2026-11-22T06:44:58.642Z",
+      "lastSeenDead": "2026-11-22T15:37:07.596Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: {\"error\":\"The requested model is currently unavailable. Please ",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [kilocode/thinkingmachines/inkling-2-small:free] [404]: {\"error\":\"The ",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:37:07.596Z"
     },
     "kc/nvidia/nemotron-3-ultra-550b-a55b": {
       "firstSeenDead": "2026-11-22T05:17:29.594Z",
-      "lastSeenDead": "2026-11-22T06:44:59.392Z",
+      "lastSeenDead": "2026-11-22T15:37:08.413Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/nvidia/nemotron-3-ultra-550b-a55b] [402]: {\"error\":{\"title\":",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/nvidia/nemotron-3.5-super-vl": {
       "firstSeenDead": "2026-11-22T05:17:30.489Z",
-      "lastSeenDead": "2026-11-22T06:45:00.072Z",
+      "lastSeenDead": "2026-11-22T15:37:09.125Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/nvidia/nemotron-3.5-super-vl] [402]: {\"error\":{\"title\":\"Paid",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/baidu/ernie-5.5-flash-preview": {
       "firstSeenDead": "2026-11-22T05:17:31.163Z",
-      "lastSeenDead": "2026-11-22T06:45:00.878Z",
+      "lastSeenDead": "2026-11-22T15:37:09.956Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/baidu/ernie-5.5-flash-preview] [402]: {\"error\":{\"title\":\"Pai",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/thinkingmachines/inkling-small": {
       "firstSeenDead": "2026-11-22T05:17:31.890Z",
-      "lastSeenDead": "2026-11-22T06:45:01.839Z",
+      "lastSeenDead": "2026-11-22T15:37:10.678Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/thinkingmachines/inkling-small] [402]: {\"error\":{\"title\":\"Pa",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/google/gemma-4-31b-it": {
       "firstSeenDead": "2026-11-22T05:17:32.836Z",
-      "lastSeenDead": "2026-11-22T06:45:02.494Z",
+      "lastSeenDead": "2026-11-22T15:37:11.572Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/google/gemma-4-31b-it] [402]: {\"error\":{\"title\":\"Paid Model ",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/xingchen-agi/xing4.0-29b-a4b": {
       "firstSeenDead": "2026-11-22T05:17:33.460Z",
-      "lastSeenDead": "2026-11-22T06:45:03.311Z",
+      "lastSeenDead": "2026-11-22T15:37:12.345Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/xingchen-agi/xing4.0-29b-a4b] [402]: {\"error\":{\"title\":\"Paid",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/nvidia/nemotron-3.5-lightning": {
       "firstSeenDead": "2026-11-22T05:17:34.346Z",
-      "lastSeenDead": "2026-11-22T06:45:04.082Z",
+      "lastSeenDead": "2026-11-22T15:37:13.196Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/nvidia/nemotron-3.5-lightning] [402]: {\"error\":{\"title\":\"Pai",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/inclusionai/ling-3.2-flash": {
       "firstSeenDead": "2026-11-22T05:17:35.193Z",
-      "lastSeenDead": "2026-11-22T06:45:04.893Z",
+      "lastSeenDead": "2026-11-22T15:37:13.784Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/inclusionai/ling-3.2-flash] [402]: {\"error\":{\"title\":\"Paid M",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/particle-ai/particle-1": {
       "firstSeenDead": "2026-11-22T05:17:35.880Z",
-      "lastSeenDead": "2026-11-22T06:45:05.809Z",
+      "lastSeenDead": "2026-11-22T15:37:14.679Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/particle-ai/particle-1] [402]: {\"error\":{\"title\":\"Paid Model",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/openrouter/auto": {
       "firstSeenDead": "2026-11-22T05:17:36.955Z",
-      "lastSeenDead": "2026-11-22T06:45:06.659Z",
+      "lastSeenDead": "2026-11-22T15:37:15.386Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/openrouter/auto] [402]: {\"error\":{\"title\":\"Paid Model - Cred",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/openrouter/pareto-code": {
       "firstSeenDead": "2026-11-22T05:17:37.818Z",
-      "lastSeenDead": "2026-11-22T06:45:07.268Z",
+      "lastSeenDead": "2026-11-22T15:37:16.199Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/openrouter/pareto-code] [402]: {\"error\":{\"title\":\"Paid Model",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/openrouter/bodybuilder": {
       "firstSeenDead": "2026-11-22T05:17:38.388Z",
-      "lastSeenDead": "2026-11-22T06:45:08.074Z",
+      "lastSeenDead": "2026-11-22T15:37:17.021Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/openrouter/bodybuilder] [402]: {\"error\":{\"title\":\"Paid Model",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "kc/thinkingmachines/inkling": {
       "firstSeenDead": "2026-11-22T05:17:39.203Z",
-      "lastSeenDead": "2026-11-22T06:45:08.999Z",
+      "lastSeenDead": "2026-11-22T15:37:17.821Z",
       "status": 402,
-      "reason": "HTTP 402: [402]: {\"error\":{\"title\":\"Paid Model - Credits Required\",\"message\":\"Ad",
-      "failCount": 2,
+      "reason": "HTTP 503: [kilocode/thinkingmachines/inkling] [402]: {\"error\":{\"title\":\"Paid Mod",
+      "failCount": 3,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/ultimate": {
       "firstSeenDead": "2026-11-22T05:18:39.331Z",
-      "lastSeenDead": "2026-11-22T06:45:15.208Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/ultimate] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"messa",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:53:55.887Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/auto": {
       "firstSeenDead": "2026-11-22T05:18:39.730Z",
-      "lastSeenDead": "2026-11-22T06:45:14.967Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/auto] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"message\\\"",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:53:55.487Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/performance": {
       "firstSeenDead": "2026-11-22T05:18:40.277Z",
-      "lastSeenDead": "2026-11-22T06:45:15.872Z",
+      "lastSeenDead": "2026-11-22T15:39:19.314Z",
       "status": 400,
       "reason": "HTTP 400: [400]: {\"error\":{\"message\":\"qoder: model_config for \\\"performance\\\" no",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:39:19.314Z"
     },
     "qd/efficient": {
       "firstSeenDead": "2026-11-22T05:19:39.742Z",
-      "lastSeenDead": "2026-11-22T06:45:19.979Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/efficient] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"mess",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:54:55.496Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/qmodel_38max": {
       "firstSeenDead": "2026-11-22T05:19:40.287Z",
-      "lastSeenDead": "2026-11-22T06:45:20.290Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/qmodel_38max] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"m",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:55:55.504Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/qmodel": {
       "firstSeenDead": "2026-11-22T05:19:40.857Z",
-      "lastSeenDead": "2026-11-22T06:45:20.937Z",
+      "lastSeenDead": "2026-11-22T15:40:19.024Z",
       "status": 400,
       "reason": "HTTP 400: [400]: {\"error\":{\"message\":\"qoder: model_config for \\\"qmodel\\\" not yet",
-      "failCount": 2,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:40:19.024Z"
     },
     "qd/qmodel_latest": {
       "firstSeenDead": "2026-11-22T05:20:39.755Z",
-      "lastSeenDead": "2026-11-22T06:45:24.393Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/qmodel_latest] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:54:55.894Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/kmodel_latest": {
       "firstSeenDead": "2026-11-22T05:20:40.874Z",
-      "lastSeenDead": "2026-11-22T06:45:25.350Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/kmodel_latest] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:56:55.513Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/kmodel": {
       "firstSeenDead": "2026-11-22T05:21:39.768Z",
-      "lastSeenDead": "2026-11-22T06:45:28.814Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/kmodel] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"message",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:56:55.914Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/gmodel": {
       "firstSeenDead": "2026-11-22T05:21:40.888Z",
-      "lastSeenDead": "2026-11-22T06:45:29.751Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/gmodel] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"message",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:57:55.524Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/gfmodel": {
       "firstSeenDead": "2026-11-22T05:22:39.778Z",
-      "lastSeenDead": "2026-11-22T06:45:33.228Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/gfmodel] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"messag",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:57:55.921Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/dmodel": {
       "firstSeenDead": "2026-11-22T05:22:40.897Z",
-      "lastSeenDead": "2026-11-22T06:45:34.179Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/dmodel] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"message",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:58:55.534Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/dfmodel": {
       "firstSeenDead": "2026-11-22T05:23:39.798Z",
-      "lastSeenDead": "2026-11-22T06:45:37.644Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/dfmodel] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"messag",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:58:55.933Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/mmodel": {
       "firstSeenDead": "2026-11-22T05:23:40.911Z",
-      "lastSeenDead": "2026-11-22T06:45:38.593Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/mmodel] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"message",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:59:55.541Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/qfmodel": {
       "firstSeenDead": "2026-11-22T05:24:39.806Z",
-      "lastSeenDead": "2026-11-22T06:45:42.125Z",
-      "status": 403,
-      "reason": "HTTP 403: [qoder/qfmodel] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"403\\\",\\\"messag",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:55:55.904Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/smodel": {
       "firstSeenDead": "2026-11-22T05:24:40.923Z",
-      "lastSeenDead": "2026-11-22T06:45:38.926Z",
-      "status": 400,
-      "reason": "HTTP 400: [400]: {\"error\":{\"message\":\"qoder: model_config for \\\"smodel\\\" not yet",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:52:55.479Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "qd/cmodel": {
       "firstSeenDead": "2026-11-22T05:25:39.818Z",
-      "lastSeenDead": "2026-11-22T06:45:39.321Z",
-      "status": 400,
-      "reason": "HTTP 400: [400]: {\"error\":{\"message\":\"qoder: model_config for \\\"cmodel\\\" not yet",
-      "failCount": 2,
+      "lastSeenDead": "2026-11-22T16:52:55.878Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 5,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
     "nvidia/cosmos-reason2-8b": {
       "firstSeenDead": "2026-11-22T06:43:12.465Z",
-      "lastSeenDead": "2026-11-22T06:43:12.465Z",
+      "lastSeenDead": "2026-11-22T16:00:03.076Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: 404 page not found",
-      "failCount": 1,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [nvidia/cosmos-reason2-8b] [404]: 404 page not found (reset after 2m)",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T16:00:03.076Z"
     },
     "nvidia/bevformer": {
       "firstSeenDead": "2026-11-22T06:43:13.639Z",
-      "lastSeenDead": "2026-11-22T06:43:13.639Z",
+      "lastSeenDead": "2026-11-22T16:00:03.446Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: 404 page not found",
-      "failCount": 1,
-      "confirmedDead": false,
-      "confirmedDeadAt": null
+      "reason": "HTTP 503: [nvidia/bevformer] [404]: 404 page not found (reset after 2m)",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T16:00:03.446Z"
     },
     "nvidia/cosmos-transfer2_5-2b": {
       "firstSeenDead": "2026-11-22T06:43:14.042Z",
-      "lastSeenDead": "2026-11-22T06:43:14.042Z",
+      "lastSeenDead": "2026-11-22T16:00:03.846Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: 404 page not found",
+      "reason": "HTTP 503: [nvidia/cosmos-transfer2_5-2b] [404]: 404 page not found (reset after ",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T16:00:03.846Z"
+    },
+    "nvidia/studiovoice": {
+      "firstSeenDead": "2026-11-22T06:43:14.443Z",
+      "lastSeenDead": "2026-11-22T16:00:04.246Z",
+      "status": 404,
+      "reason": "HTTP 503: [nvidia/studiovoice] [404]: 404 page not found (reset after 1m 59s)",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T16:00:04.246Z"
+    },
+    "qd/qmodel_preview": {
+      "firstSeenDead": "2026-11-22T15:40:18.780Z",
+      "lastSeenDead": "2026-11-22T16:58:56.514Z",
+      "status": 400,
+      "reason": "HTTP 400: [400]: {\"error\":{\"message\":\"qoder: model_config for \\\"qmodel_preview\\\"",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T16:58:56.514Z"
+    },
+    "qd/gm51model": {
+      "firstSeenDead": "2026-11-22T15:41:19.925Z",
+      "lastSeenDead": "2026-11-22T16:58:56.768Z",
+      "status": 400,
+      "reason": "HTTP 400: [400]: {\"error\":{\"message\":\"qoder: model_config for \\\"gm51model\\\" not ",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T16:58:56.768Z"
+    },
+    "ocz/claude-fable-5": {
+      "firstSeenDead": "2026-11-22T15:45:24.798Z",
+      "lastSeenDead": "2026-11-22T17:00:00.499Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-fable-5] [403]: {\"error\":{\"type\":\"permission_erro",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/claude-opus-5": {
+      "firstSeenDead": "2026-11-22T15:45:29.301Z",
+      "lastSeenDead": "2026-11-22T17:00:05.007Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-opus-5] [403]: {\"error\":{\"type\":\"permission_error",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/claude-opus-4-8": {
+      "firstSeenDead": "2026-11-22T15:45:33.804Z",
+      "lastSeenDead": "2026-11-22T17:00:09.494Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-opus-4-8] [403]: {\"error\":{\"type\":\"permission_err",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/claude-opus-4-7": {
+      "firstSeenDead": "2026-11-22T15:45:38.304Z",
+      "lastSeenDead": "2026-11-22T17:00:13.986Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-opus-4-7] [403]: {\"error\":{\"type\":\"permission_err",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/claude-opus-4-6": {
+      "firstSeenDead": "2026-11-22T15:45:42.777Z",
+      "lastSeenDead": "2026-11-22T17:00:18.510Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-opus-4-6] [403]: {\"error\":{\"type\":\"permission_err",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/claude-opus-4-5": {
+      "firstSeenDead": "2026-11-22T15:45:47.267Z",
+      "lastSeenDead": "2026-11-22T17:00:23.004Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-opus-4-5] [403]: {\"error\":{\"type\":\"permission_err",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/claude-sonnet-5": {
+      "firstSeenDead": "2026-11-22T15:45:51.773Z",
+      "lastSeenDead": "2026-11-22T17:00:27.504Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-sonnet-5] [403]: {\"error\":{\"type\":\"permission_err",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/claude-sonnet-4-6": {
+      "firstSeenDead": "2026-11-22T15:45:56.257Z",
+      "lastSeenDead": "2026-11-22T17:00:32.012Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-sonnet-4-6] [403]: {\"error\":{\"type\":\"permission_e",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/claude-sonnet-4-5": {
+      "firstSeenDead": "2026-11-22T15:46:00.750Z",
+      "lastSeenDead": "2026-11-22T17:00:36.512Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-sonnet-4-5] [403]: {\"error\":{\"type\":\"permission_e",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/claude-sonnet-4": {
+      "firstSeenDead": "2026-11-22T15:46:00.998Z",
+      "lastSeenDead": "2026-11-22T17:00:36.769Z",
+      "status": 400,
+      "reason": "HTTP 400: [400]: {\"error\":{\"type\":\"server_error\",\"message\":\"Upstream request fai",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T17:00:36.769Z"
+    },
+    "ocz/claude-haiku-4-5": {
+      "firstSeenDead": "2026-11-22T15:46:06.224Z",
+      "lastSeenDead": "2026-11-22T17:00:41.979Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/claude-haiku-4-5] [403]: {\"error\":{\"type\":\"permission_er",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gemini-3.6-flash": {
+      "firstSeenDead": "2026-11-22T15:46:10.761Z",
+      "lastSeenDead": "2026-11-22T17:00:46.483Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gemini-3.6-flash] [403]: {\"error\":{\"type\":\"permission_er",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gemini-3.8-flash": {
+      "firstSeenDead": "2026-11-22T15:46:15.312Z",
+      "lastSeenDead": "2026-11-22T17:00:50.975Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gemini-3.8-flash] [403]: {\"error\":{\"type\":\"permission_er",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gemini-3.7-flash": {
+      "firstSeenDead": "2026-11-22T15:46:19.805Z",
+      "lastSeenDead": "2026-11-22T17:00:55.466Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gemini-3.7-flash] [403]: {\"error\":{\"type\":\"permission_er",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gemini-3.5-flash": {
+      "firstSeenDead": "2026-11-22T15:46:24.300Z",
+      "lastSeenDead": "2026-11-22T17:00:59.969Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gemini-3.5-flash] [403]: {\"error\":{\"type\":\"permission_er",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gemini-3.1-pro": {
+      "firstSeenDead": "2026-11-22T15:46:24.581Z",
+      "lastSeenDead": "2026-11-22T15:46:24.581Z",
+      "status": 410,
+      "reason": "HTTP 410: [410]: {\"type\":\"error\",\"error\":{\"type\":\"ModelDeprecated\",\"message\":\"Mo",
+      "failCount": 1,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:46:24.581Z"
+    },
+    "ocz/gemini-3-flash": {
+      "firstSeenDead": "2026-11-22T15:46:25.537Z",
+      "lastSeenDead": "2026-11-22T15:46:25.537Z",
+      "status": 410,
+      "reason": "HTTP 410: [410]: {\"type\":\"error\",\"error\":{\"type\":\"ModelDeprecated\",\"message\":\"Mo",
+      "failCount": 1,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:46:25.537Z"
+    },
+    "ocz/gpt-6-astra": {
+      "firstSeenDead": "2026-11-22T15:46:30.797Z",
+      "lastSeenDead": "2026-11-22T17:01:04.456Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-6-astra] [403]: {\"error\":{\"type\":\"permission_error\",",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.6-sol": {
+      "firstSeenDead": "2026-11-22T15:46:35.314Z",
+      "lastSeenDead": "2026-11-22T17:01:08.959Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.6-sol] [403]: {\"error\":{\"type\":\"permission_error\",",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.6-terra": {
+      "firstSeenDead": "2026-11-22T15:46:39.806Z",
+      "lastSeenDead": "2026-11-22T17:01:13.462Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.6-terra] [403]: {\"error\":{\"type\":\"permission_error",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.6-luna": {
+      "firstSeenDead": "2026-11-22T15:46:44.290Z",
+      "lastSeenDead": "2026-11-22T17:01:17.968Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.6-luna] [403]: {\"error\":{\"type\":\"permission_error\"",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.5": {
+      "firstSeenDead": "2026-11-22T15:46:48.779Z",
+      "lastSeenDead": "2026-11-22T17:01:22.482Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.5] [403]: {\"error\":{\"type\":\"permission_error\",\"mes",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.5-pro": {
+      "firstSeenDead": "2026-11-22T15:46:53.281Z",
+      "lastSeenDead": "2026-11-22T17:01:26.992Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.5-pro] [403]: {\"error\":{\"type\":\"permission_error\",",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.4": {
+      "firstSeenDead": "2026-11-22T15:46:57.785Z",
+      "lastSeenDead": "2026-11-22T17:01:31.709Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.4] [403]: {\"error\":{\"type\":\"permission_error\",\"mes",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.4-pro": {
+      "firstSeenDead": "2026-11-22T15:47:02.306Z",
+      "lastSeenDead": "2026-11-22T17:01:36.222Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.4-pro] [403]: {\"error\":{\"type\":\"permission_error\",",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.4-mini": {
+      "firstSeenDead": "2026-11-22T15:47:06.798Z",
+      "lastSeenDead": "2026-11-22T17:01:40.734Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.4-mini] [403]: {\"error\":{\"type\":\"permission_error\"",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.3-codex-spark": {
+      "firstSeenDead": "2026-11-22T15:47:11.291Z",
+      "lastSeenDead": "2026-11-22T17:01:45.232Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.3-codex-spark] [403]: {\"error\":{\"type\":\"permission",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.3-codex": {
+      "firstSeenDead": "2026-11-22T15:47:15.797Z",
+      "lastSeenDead": "2026-11-22T17:01:49.727Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.3-codex] [403]: {\"error\":{\"type\":\"permission_error",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.2": {
+      "firstSeenDead": "2026-11-22T15:47:20.273Z",
+      "lastSeenDead": "2026-11-22T17:01:54.216Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.2] [403]: {\"error\":{\"type\":\"permission_error\",\"mes",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.2-codex": {
+      "firstSeenDead": "2026-11-22T15:47:24.783Z",
+      "lastSeenDead": "2026-11-22T17:01:58.725Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.2-codex] [403]: {\"error\":{\"type\":\"permission_error",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.1": {
+      "firstSeenDead": "2026-11-22T15:47:29.274Z",
+      "lastSeenDead": "2026-11-22T17:02:03.472Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.1] [403]: {\"error\":{\"type\":\"permission_error\",\"mes",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.1-codex-max": {
+      "firstSeenDead": "2026-11-22T15:47:33.782Z",
+      "lastSeenDead": "2026-11-22T17:02:07.962Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.1-codex-max] [403]: {\"error\":{\"type\":\"permission_e",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.1-codex": {
+      "firstSeenDead": "2026-11-22T15:47:38.266Z",
+      "lastSeenDead": "2026-11-22T17:02:12.451Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.1-codex] [403]: {\"error\":{\"type\":\"permission_error",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5.1-codex-mini": {
+      "firstSeenDead": "2026-11-22T15:47:42.766Z",
+      "lastSeenDead": "2026-11-22T17:02:17.118Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5.1-codex-mini] [403]: {\"error\":{\"type\":\"permission_",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5": {
+      "firstSeenDead": "2026-11-22T15:47:47.276Z",
+      "lastSeenDead": "2026-11-22T17:02:21.622Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5] [403]: {\"error\":{\"type\":\"permission_error\",\"messa",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/gpt-5-codex": {
+      "firstSeenDead": "2026-11-22T15:47:51.755Z",
+      "lastSeenDead": "2026-11-22T17:02:26.099Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/gpt-5-codex] [403]: {\"error\":{\"type\":\"permission_error\",",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/grok-build-0.1": {
+      "firstSeenDead": "2026-11-22T15:47:56.245Z",
+      "lastSeenDead": "2026-11-22T17:02:30.624Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/grok-build-0.1] [403]: {\"error\":{\"type\":\"permission_erro",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/grok-4.6": {
+      "firstSeenDead": "2026-11-22T15:48:00.868Z",
+      "lastSeenDead": "2026-11-22T17:02:35.131Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/grok-4.6] [403]: {\"error\":{\"type\":\"permission_error\",\"me",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/grok-4.5": {
+      "firstSeenDead": "2026-11-22T15:48:05.374Z",
+      "lastSeenDead": "2026-11-22T17:02:39.610Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/grok-4.5] [403]: {\"error\":{\"type\":\"permission_error\",\"me",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/muse-spark-1.3": {
+      "firstSeenDead": "2026-11-22T15:48:09.883Z",
+      "lastSeenDead": "2026-11-22T17:02:44.107Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/muse-spark-1.3] [403]: {\"error\":{\"type\":\"permission_erro",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/muse-spark-1.2": {
+      "firstSeenDead": "2026-11-22T15:48:14.384Z",
+      "lastSeenDead": "2026-11-22T17:02:49.178Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/muse-spark-1.2] [403]: {\"error\":{\"type\":\"permission_erro",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/qwen3.6-plus": {
+      "firstSeenDead": "2026-11-22T15:48:18.887Z",
+      "lastSeenDead": "2026-11-22T17:02:53.697Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/qwen3.6-plus] [403]: {\"error\":{\"type\":\"permission_error\"",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/qwen3.5-plus": {
+      "firstSeenDead": "2026-11-22T15:48:23.393Z",
+      "lastSeenDead": "2026-11-22T17:02:58.199Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/qwen3.5-plus] [403]: {\"error\":{\"type\":\"permission_error\"",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/deepseek-v4-pro": {
+      "firstSeenDead": "2026-11-22T15:48:27.926Z",
+      "lastSeenDead": "2026-11-22T17:03:02.676Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/deepseek-v4-pro] [403]: {\"error\":{\"type\":\"permission_err",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/deepseek-v4-flash": {
+      "firstSeenDead": "2026-11-22T15:48:28.273Z",
+      "lastSeenDead": "2026-11-22T17:03:02.929Z",
+      "status": 400,
+      "reason": "HTTP 400: [400]: {\"error\":{\"type\":\"server_error\",\"message\":\"Upstream request fai",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T17:03:02.929Z"
+    },
+    "ocz/deepseek-v4-flash-vision-exp": {
+      "firstSeenDead": "2026-11-22T15:48:29.186Z",
+      "lastSeenDead": "2026-11-22T17:03:03.901Z",
+      "status": 400,
+      "reason": "HTTP 400: [400]: {\"error\":{\"type\":\"server_error\",\"message\":\"Upstream request fai",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T17:03:03.901Z"
+    },
+    "ocz/deepseek-v4.1-flash": {
+      "firstSeenDead": "2026-11-22T15:48:34.390Z",
+      "lastSeenDead": "2026-11-22T17:03:09.145Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/deepseek-v4.1-flash] [403]: {\"error\":{\"type\":\"permission",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/glm-5.3-flash": {
+      "firstSeenDead": "2026-11-22T15:48:38.898Z",
+      "lastSeenDead": "2026-11-22T17:03:13.643Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/glm-5.3-flash] [403]: {\"error\":{\"type\":\"permission_error",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/glm-5.3": {
+      "firstSeenDead": "2026-11-22T15:48:43.412Z",
+      "lastSeenDead": "2026-11-22T17:03:18.146Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/glm-5.3] [403]: {\"error\":{\"type\":\"permission_error\",\"mes",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/glm-5.2": {
+      "firstSeenDead": "2026-11-22T15:48:43.663Z",
+      "lastSeenDead": "2026-11-22T15:48:43.663Z",
+      "status": 410,
+      "reason": "HTTP 410: [410]: {\"type\":\"error\",\"error\":{\"type\":\"ModelDeprecated\",\"message\":\"Mo",
+      "failCount": 1,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:48:43.663Z"
+    },
+    "ocz/glm-5.1": {
+      "firstSeenDead": "2026-11-22T15:48:44.672Z",
+      "lastSeenDead": "2026-11-22T15:48:44.672Z",
+      "status": 410,
+      "reason": "HTTP 410: [410]: {\"type\":\"error\",\"error\":{\"type\":\"ModelDeprecated\",\"message\":\"Mo",
+      "failCount": 1,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:48:44.672Z"
+    },
+    "ocz/glm-5": {
+      "firstSeenDead": "2026-11-22T15:48:45.640Z",
+      "lastSeenDead": "2026-11-22T15:48:45.640Z",
+      "status": 410,
+      "reason": "HTTP 410: [410]: {\"type\":\"error\",\"error\":{\"type\":\"ModelDeprecated\",\"message\":\"Mo",
+      "failCount": 1,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:48:45.640Z"
+    },
+    "ocz/minimax-m3": {
+      "firstSeenDead": "2026-11-22T15:48:50.871Z",
+      "lastSeenDead": "2026-11-22T17:03:22.653Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/minimax-m3] [403]: {\"error\":{\"type\":\"permission_error\",\"",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/minimax-m2.7": {
+      "firstSeenDead": "2026-11-22T15:48:55.369Z",
+      "lastSeenDead": "2026-11-22T17:03:27.170Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/minimax-m2.7] [403]: {\"error\":{\"type\":\"permission_error\"",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/minimax-m2.5": {
+      "firstSeenDead": "2026-11-22T15:48:59.855Z",
+      "lastSeenDead": "2026-11-22T17:03:31.648Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/minimax-m2.5] [403]: {\"error\":{\"type\":\"permission_error\"",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/kimi-k3": {
+      "firstSeenDead": "2026-11-22T15:49:04.354Z",
+      "lastSeenDead": "2026-11-22T17:03:36.146Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/kimi-k3] [403]: {\"error\":{\"type\":\"permission_error\",\"mes",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/kimi-k2.7-code": {
+      "firstSeenDead": "2026-11-22T15:49:08.853Z",
+      "lastSeenDead": "2026-11-22T17:03:40.640Z",
+      "status": 403,
+      "reason": "HTTP 503: [opencode-zen/kimi-k2.7-code] [403]: {\"error\":{\"type\":\"permission_erro",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "ocz/kimi-k2.6": {
+      "firstSeenDead": "2026-11-22T15:49:09.122Z",
+      "lastSeenDead": "2026-11-22T15:49:09.122Z",
+      "status": 410,
+      "reason": "HTTP 410: [410]: {\"type\":\"error\",\"error\":{\"type\":\"ModelDeprecated\",\"message\":\"Mo",
+      "failCount": 1,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:49:09.122Z"
+    },
+    "ocz/kimi-k2.5": {
+      "firstSeenDead": "2026-11-22T15:49:10.103Z",
+      "lastSeenDead": "2026-11-22T15:49:10.103Z",
+      "status": 410,
+      "reason": "HTTP 410: [410]: {\"type\":\"error\",\"error\":{\"type\":\"ModelDeprecated\",\"message\":\"Mo",
+      "failCount": 1,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:49:10.103Z"
+    },
+    "kimi/kimi-k3": {
+      "firstSeenDead": "2026-11-22T15:49:21.023Z",
+      "lastSeenDead": "2026-11-22T17:03:50.768Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/kimi-k3] [403]: {\"error\":{\"message\":\"Your current subscription d",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kimi/k3": {
+      "firstSeenDead": "2026-11-22T15:49:21.059Z",
+      "lastSeenDead": "2026-11-22T17:03:50.929Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/k3] [403]: {\"error\":{\"message\":\"Your current subscription does n",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kimi/kimi-for-coding": {
+      "firstSeenDead": "2026-11-22T15:49:23.808Z",
+      "lastSeenDead": "2026-11-22T17:03:53.641Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/kimi-for-coding] [403]: {\"error\":{\"message\":\"Your current subscr",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kimi/kimi-for-coding-highspeed": {
+      "firstSeenDead": "2026-11-22T15:49:24.126Z",
+      "lastSeenDead": "2026-11-22T17:03:54.106Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/kimi-for-coding-highspeed] [403]: {\"error\":{\"message\":\"Your curr",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kimi/kimi-k2.7-code": {
+      "firstSeenDead": "2026-11-22T15:49:26.766Z",
+      "lastSeenDead": "2026-11-22T17:03:56.456Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/kimi-k2.7-code] [403]: {\"error\":{\"message\":\"Your current subscri",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kimi/kimi-k2.7-code-highspeed": {
+      "firstSeenDead": "2026-11-22T15:49:27.036Z",
+      "lastSeenDead": "2026-11-22T17:03:57.155Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/kimi-k2.7-code-highspeed] [403]: {\"error\":{\"message\":\"Your curre",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kimi/kimi-k2.6": {
+      "firstSeenDead": "2026-11-22T15:49:29.655Z",
+      "lastSeenDead": "2026-11-22T17:03:59.524Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/kimi-k2.6] [403]: {\"error\":{\"message\":\"Your current subscription",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kimi/kimi-k2.5": {
+      "firstSeenDead": "2026-11-22T15:49:30.102Z",
+      "lastSeenDead": "2026-11-22T17:04:00.072Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/kimi-k2.5] [403]: {\"error\":{\"message\":\"Your current subscription",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kimi/kimi-k2.5-thinking": {
+      "firstSeenDead": "2026-11-22T15:49:32.478Z",
+      "lastSeenDead": "2026-11-22T17:04:02.570Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/kimi-k2.5-thinking] [403]: {\"error\":{\"message\":\"Your current sub",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kimi/kimi-latest": {
+      "firstSeenDead": "2026-11-22T15:49:32.980Z",
+      "lastSeenDead": "2026-11-22T17:04:03.049Z",
+      "status": 403,
+      "reason": "HTTP 503: [kimi/kimi-latest] [403]: {\"error\":{\"message\":\"Your current subscripti",
+      "failCount": 3,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "mimo/mimo-v2-omni": {
+      "firstSeenDead": "2026-11-22T15:49:40.838Z",
+      "lastSeenDead": "2026-11-22T17:04:10.101Z",
+      "status": 400,
+      "reason": "HTTP 400: [400]: { \"error\": { \"code\": \"400\", \"message\": \"Unsupported model mimo-",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T17:04:10.101Z"
+    },
+    "mimo/mimo-v2-flash": {
+      "firstSeenDead": "2026-11-22T15:49:41.238Z",
+      "lastSeenDead": "2026-11-22T17:04:10.497Z",
+      "status": 400,
+      "reason": "HTTP 400: [400]: { \"error\": { \"code\": \"400\", \"message\": \"Unsupported model mimo-",
+      "failCount": 3,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T17:04:10.497Z"
+    },
+    "tokenreply/gpt-5.4": {
+      "firstSeenDead": "2026-11-22T15:49:49.408Z",
+      "lastSeenDead": "2026-11-22T15:49:49.408Z",
+      "status": 403,
+      "reason": "HTTP 503: [openai-compatible-chat-tokenreply/gpt-5.4] [403]: {\"error\":{\"code\":\"p",
       "failCount": 1,
       "confirmedDead": false,
       "confirmedDeadAt": null
     },
-    "nvidia/studiovoice": {
-      "firstSeenDead": "2026-11-22T06:43:14.443Z",
-      "lastSeenDead": "2026-11-22T06:43:14.443Z",
+    "tokenreply/gpt-6-sol": {
+      "firstSeenDead": "2026-11-22T15:49:54.071Z",
+      "lastSeenDead": "2026-11-22T15:49:54.071Z",
+      "status": 403,
+      "reason": "HTTP 503: [openai-compatible-chat-tokenreply/gpt-6-sol] [403]: {\"error\":{\"code\":",
+      "failCount": 1,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "oc/longcat-2.5-free": {
+      "firstSeenDead": "2026-11-22T15:54:51.217Z",
+      "lastSeenDead": "2026-11-22T15:54:51.217Z",
+      "status": 410,
+      "reason": "HTTP 410: [410]: {\"type\":\"error\",\"error\":{\"type\":\"ModelDeprecated\",\"message\":\"Mo",
+      "failCount": 1,
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-22T15:54:51.217Z"
+    },
+    "openrouter/inclusionai/ling-3.2-flash:free": {
+      "firstSeenDead": "2026-11-22T16:11:45.530Z",
+      "lastSeenDead": "2026-11-22T16:11:45.530Z",
+      "status": 401,
+      "reason": "HTTP 503: [openrouter/inclusionai/ling-3.2-flash:free] [401]: {\"error\":{\"message",
+      "failCount": 1,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kc/thinkingmachines/inkling-small:free": {
+      "firstSeenDead": "2026-11-22T16:16:44.447Z",
+      "lastSeenDead": "2026-11-22T16:51:53.112Z",
       "status": 404,
-      "reason": "HTTP 404: [404]: 404 page not found",
+      "reason": "HTTP 503: [kilocode/thinkingmachines/inkling-small:free] [404]: {\"error\":\"The re",
+      "failCount": 2,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kc/google/gemma-4-31b-it:free": {
+      "firstSeenDead": "2026-11-22T16:16:45.025Z",
+      "lastSeenDead": "2026-11-22T16:51:53.822Z",
+      "status": 404,
+      "reason": "HTTP 503: [kilocode/google/gemma-4-31b-it:free] [404]: {\"error\":\"The requested m",
+      "failCount": 2,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kc/xingchen-agi/xing4.0-29b-a4b:free": {
+      "firstSeenDead": "2026-11-22T16:16:45.873Z",
+      "lastSeenDead": "2026-11-22T16:51:54.673Z",
+      "status": 404,
+      "reason": "HTTP 503: [kilocode/xingchen-agi/xing4.0-29b-a4b:free] [404]: {\"error\":\"The requ",
+      "failCount": 2,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "kc/thinkingmachines/inkling:free": {
+      "firstSeenDead": "2026-11-22T16:16:46.713Z",
+      "lastSeenDead": "2026-11-22T16:51:55.342Z",
+      "status": 404,
+      "reason": "HTTP 503: [kilocode/thinkingmachines/inkling:free] [404]: {\"error\":\"The requeste",
+      "failCount": 2,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "tokenreply/deepseek-v4.1-flash-free": {
+      "firstSeenDead": "2026-11-22T16:29:06.751Z",
+      "lastSeenDead": "2026-11-22T17:04:16.267Z",
+      "status": 403,
+      "reason": "HTTP 503: [openai-compatible-chat-tokenreply/deepseek-v4.1-flash-free] [403]: {\"",
+      "failCount": 2,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "tokenreply/glm-5.3-flash-free": {
+      "firstSeenDead": "2026-11-22T16:29:14.658Z",
+      "lastSeenDead": "2026-11-22T16:29:14.658Z",
+      "status": 403,
+      "reason": "HTTP 503: [openai-compatible-chat-tokenreply/glm-5.3-flash-free] [403]: {\"error\"",
+      "failCount": 1,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "tokenreply/iceman-contributor-free": {
+      "firstSeenDead": "2026-11-22T16:29:19.813Z",
+      "lastSeenDead": "2026-11-22T16:29:19.813Z",
+      "status": 403,
+      "reason": "HTTP 503: [openai-compatible-chat-tokenreply/iceman-contributor-free] [403]: {\"e",
+      "failCount": 1,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "gemini/gemini-3.5-flash": {
+      "firstSeenDead": "2026-11-22T16:47:46.773Z",
+      "lastSeenDead": "2026-11-22T16:47:46.773Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
+      "failCount": 1,
+      "confirmedDead": false,
+      "confirmedDeadAt": null
+    },
+    "nvidia/stepfun-ai/step-5-preview": {
+      "firstSeenDead": "2026-11-22T16:50:08.302Z",
+      "lastSeenDead": "2026-11-22T16:50:08.302Z",
+      "status": 504,
+      "reason": "The operation was aborted due to timeout",
       "failCount": 1,
       "confirmedDead": false,
       "confirmedDeadAt": null

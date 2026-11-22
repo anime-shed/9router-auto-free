@@ -464,9 +464,9 @@ async function fetchKiloFreeModels(accessToken, gatewayUrl) {
       const id = m.id || '';
       if (!id) continue;
       if (storage.isModelExcluded ? storage.isModelExcluded(id) : false) continue;
-      const pricing = m.pricing || {};
-      const promptCost = Number(pricing.prompt ?? -1);
-      const isFree = id.endsWith(':free') || (promptCost === 0) || m.is_free === true || m.isFree === true;
+      const lowerId = id.toLowerCase();
+      // Kilo free models strictly require :free or -free suffix
+      const isFree = lowerId.endsWith(':free') || lowerId.endsWith('-free');
       if (isFree) {
         freeModels.push({
           id,
@@ -739,7 +739,7 @@ async function fetchOpenAiCompatibleFreeModels({ label, apiKey, baseUrl, prefix,
           successfulUrl = targetUrl;
           break;
         }
-      } catch {}
+      } catch { }
     }
 
     if (!json) {
@@ -874,17 +874,30 @@ const REQUIRE_FREE_SUFFIX_PROVIDERS = new Set([
   'inferera',
   'commandcode',
   'nous',
-  'nous-portal'
+  'nous-portal',
+  'tokenreply',
+  'kilo',
+  'kc',
+  'kilocode'
 ]);
+
+function isFreeOnlyProvider(providerOrPrefix) {
+  if (!providerOrPrefix) return false;
+  const p = String(providerOrPrefix).toLowerCase();
+  if (REQUIRE_FREE_SUFFIX_PROVIDERS.has(p)) return true;
+  if (p.startsWith('openai-compatible') || p.startsWith('custom-')) return true;
+  if (p === 'kc' || p === 'kilo' || p === 'kilocode') return true;
+  return false;
+}
 
 function isPaidModel(providerOrPrefix, modelId, pricingObj = null) {
   const lId = String(modelId || '').toLowerCase();
   if (lId.endsWith(':free') || lId.endsWith('-free')) return false;
+  if (lId === 'grok-4.20-fast') return false;
   if (pricingObj && Number(pricingObj.prompt) === 0 && Number(pricingObj.completion) === 0) return false;
   if (pricingObj && (Number(pricingObj.prompt) > 0 || Number(pricingObj.completion) > 0)) return true;
 
-  const p = String(providerOrPrefix || '').toLowerCase();
-  if (REQUIRE_FREE_SUFFIX_PROVIDERS.has(p)) return true;
+  if (isFreeOnlyProvider(providerOrPrefix)) return true;
   return false;
 }
 
@@ -992,6 +1005,12 @@ async function discover9routerActiveProviders(options = {}) {
     const prefix = String(conn.prefix || STANDARD_PROVIDER_PREFIXES[prov] || prov).toLowerCase();
     activeByPrefix.set(prefix, conn);
     activeByProvider.set(prov, conn);
+
+    // Automatically mark all custom / openai-compatible gateways as free-only providers
+    if (prov.startsWith('openai-compatible') || prov.includes('custom') || (conn.authType === 'apikey' && (conn.data?.providerSpecificData?.baseUrl || conn.providerSpecificData?.baseUrl))) {
+      REQUIRE_FREE_SUFFIX_PROVIDERS.add(prov);
+      REQUIRE_FREE_SUFFIX_PROVIDERS.add(prefix);
+    }
   }
 
   let modelsList = [];
@@ -1015,7 +1034,7 @@ async function discover9routerActiveProviders(options = {}) {
           capabilities: meta
         }));
       }
-    } catch {}
+    } catch { }
   }
   // Support built-in OpenCode (oc) models if present in 9router models list
   if (modelsList.some(m => String(m.id || '').startsWith('oc/')) && !activeByPrefix.has('oc')) {
@@ -1067,6 +1086,7 @@ async function discover9routerActiveProviders(options = {}) {
           apiKey,
           baseUrl,
           prefix: targetKey,
+          freePattern: [':free', '-free'],
           requireApiKey: false
         });
         for (const lm of liveModels) {
@@ -1244,7 +1264,7 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
     if (fs.existsSync(deadModelsPath)) {
       try {
         deadStore = JSON.parse(fs.readFileSync(deadModelsPath, 'utf8'));
-      } catch {}
+      } catch { }
     }
 
     const provLower = String(providerName || '').toLowerCase();
@@ -1295,18 +1315,19 @@ function enrichProviderCandidatesFromExternalCatalog(targetKey, providerName, ex
       const tKey = targetKey.toLowerCase();
       const prefKey = prefix.toLowerCase();
       const provKey = String(providerName || '').toLowerCase();
-      if (REQUIRE_FREE_SUFFIX_PROVIDERS.has(tKey) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(prefKey) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(provKey)) {
-        const isAihub = tKey.includes('aihub') || prefKey.includes('aihub') || provKey.includes('aihub') || tKey.includes('inferera') || prefKey.includes('inferera') || provKey.includes('inferera');
+      const isFreeOnly = isFreeOnlyProvider(tKey) || isFreeOnlyProvider(prefKey) || isFreeOnlyProvider(provKey);
+      if (isFreeOnly) {
         const extLower = extId.toLowerCase();
-        const isValidFree = extLower.endsWith(':free') || (isAihub && extLower.endsWith('-free'));
+        const isOpenRouter = tKey.includes('openrouter') || prefKey.includes('openrouter') || provKey.includes('openrouter');
+        const isValidFree = isOpenRouter ? extLower.endsWith(':free') : (extLower.endsWith(':free') || extLower.endsWith('-free') || extLower === 'grok-4.20-fast');
         if (!isValidFree) {
           continue;
         }
       }
-      const isFreeOnlyProvider = REQUIRE_FREE_SUFFIX_PROVIDERS.has(targetKey.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(prefix.toLowerCase()) || REQUIRE_FREE_SUFFIX_PROVIDERS.has(String(providerName || '').toLowerCase());
+      const isFreeOnlyProviderFlag = isFreeOnly;
       let cleanId;
-      if (isFreeOnlyProvider) {
-        cleanId = (extId.endsWith(':free') || extId.endsWith('-free')) ? extId : (extId + ':free');
+      if (isFreeOnlyProviderFlag) {
+        cleanId = (extId.endsWith(':free') || extId.endsWith('-free') || extId === 'grok-4.20-fast') ? extId : (extId + ':free');
       } else {
         cleanId = extId.replace(/:free$/, '');
       }
@@ -1558,6 +1579,7 @@ module.exports = {
   enrichProviderCandidatesFromExternalCatalog,
   formatRoutingFullId,
   REQUIRE_FREE_SUFFIX_PROVIDERS,
+  isFreeOnlyProvider,
   isPaidModel,
   fetchOpenAiCompatibleFreeModels,
   fetchNousFreeModels
