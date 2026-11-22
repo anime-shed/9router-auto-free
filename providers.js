@@ -268,19 +268,34 @@ function formatRoutingFullId(prefix, modelId) {
 // ----------------------------------------------------------------------------
 
 function getProviderCredentials(recordOrKey) {
-  const record = typeof recordOrKey === 'string' ? PROVIDER_BY_KEY[recordOrKey] : recordOrKey;
-  if (!record) return { apiKey: null, baseUrl: '', prefix: '' };
+  if (!recordOrKey) return { apiKey: null, baseUrl: '', prefix: '' };
+  let record = typeof recordOrKey === 'string' ? PROVIDER_BY_KEY[recordOrKey] : recordOrKey;
+  if (!record) {
+    record = { prefixes: [String(recordOrKey)], connection: String(recordOrKey) };
+  }
+
+  // If passed an active connection object directly from storage
+  if (record.data || record.provider) {
+    const data = record.data || {};
+    const prov = String(record.provider || '').toLowerCase();
+    const prefix = record.prefix || data.providerSpecificData?.prefix || STANDARD_PROVIDER_PREFIXES[prov] || prov.split('-')[0];
+    const baseUrl = data.providerSpecificData?.baseUrl || data.providerSpecificData?.inferenceBaseUrl || data.baseUrl || '';
+    const apiKey = data.apiKey || data.accessToken || data.token || null;
+    return { apiKey, prefix, baseUrl };
+  }
 
   if (record.credentialKind === 'scan') return scanConnectionCredentials(record);
   if (record.credentialKind === 'kilo') return kiloConnectionCredentials(record);
   if (record.credentialKind === 'bai') return baiConnectionCredentials(record);
   if (record.credentialKind === 'cloudflare') return cloudflareConnectionCredentials();
 
-  const parsed = record.connection ? storage.readProviderConnection(record.connection) : null;
+  const connKey = record.connection || record.key || (Array.isArray(record.prefixes) ? record.prefixes[0] : null);
+  const parsed = connKey ? storage.readProviderConnection(connKey) : null;
+  const defPrefix = (Array.isArray(record.prefixes) && record.prefixes[0]) || record.prefix || record.key || '';
   return {
-    apiKey: parsed?.apiKey || parsed?.accessToken || null,
-    prefix: parsed?.providerSpecificData?.prefix || record.prefixes[0],
-    baseUrl: (record.readBaseUrlFromConnection && parsed?.providerSpecificData?.baseUrl) || record.baseUrl
+    apiKey: parsed?.apiKey || parsed?.accessToken || parsed?.token || null,
+    prefix: parsed?.providerSpecificData?.prefix || defPrefix,
+    baseUrl: (record.readBaseUrlFromConnection && parsed?.providerSpecificData?.baseUrl) || parsed?.providerSpecificData?.inferenceBaseUrl || parsed?.providerSpecificData?.baseUrl || parsed?.baseUrl || record.baseUrl || ''
   };
 }
 
