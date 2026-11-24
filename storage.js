@@ -171,38 +171,10 @@ function readAllProviderConnections() {
   }
 }
 
-// Read all active provider connections from SQLite with resolved prefixes
+// Read all active provider connections from SQLite with resolved prefixes.
+// Prefix is read directly from the connection's stored data (providerSpecificData.prefix),
+// which 9router writes when you configure a provider. No hardcoded map needed.
 function readActiveProviderConnections() {
-  const STANDARD_PREFIXES = {
-    github: 'gh',
-    antigravity: 'ag',
-    xai: 'xai',
-    'xiaomi-mimo': 'mimo',
-    freebuff: 'fb',
-    qoder: 'qd',
-    'opencode-zen': 'ocz',
-    'opencode-go': 'ocg',
-    'gemini-cli': 'gc',
-    'grok-cli': 'gcli',
-    gemini: 'gemini',
-    groq: 'groq',
-    cerebras: 'cerebras',
-    ollama: 'ollama',
-    kilocode: 'kc',
-    openrouter: 'openrouter',
-    nvidia: 'nvidia',
-    mistral: 'mistral',
-    poolside: 'poolside',
-    'cloudflare-ai': 'cloudflare-ai',
-    devin: 'devin',
-    'devin-cli': 'devin',
-    windsurf: 'windsurf',
-    mimo: 'mimo',
-    'mimo-code': 'mimo',
-    nous: 'nous',
-    'nous-portal': 'nous'
-  };
-
   try {
     const Database = getDbClass();
     const db = new Database(DB_PATH, { readonly: true });
@@ -211,7 +183,8 @@ function readActiveProviderConnections() {
     return rows.map(r => {
       const data = (() => { try { return JSON.parse(r.data || '{}'); } catch { return {}; } })();
       const prov = String(r.provider || '').toLowerCase();
-      const prefix = data?.providerSpecificData?.prefix || STANDARD_PREFIXES[prov] || prov.split('-')[0];
+      // Priority: (1) explicit prefix stored by 9router, (2) first segment of provider name
+      const prefix = data?.providerSpecificData?.prefix || prov.split('-')[0];
       return {
         id: r.id,
         provider: r.provider,
@@ -614,19 +587,29 @@ function getDynamicProviders() {
   const rawConnections = readAllConnectionsRaw();
   const activeConnections = rawConnections.filter(c => c.isActive);
 
-  // Built-in provider keys & prefixes to avoid duplicate processing
-  const builtInKeys = new Set([
-    'oa', 'kilo', 'oc', 'openrouter', 'poolside', 'gemini', 'ollama', 'airforce', 'bazaarlink', 'bai',
-    'groq', 'cerebras', 'mistral', 'cloudflare', 'nvidia', 'freebuff', 'fb',
-    'xai', 'grok-cli', 'gcli', 'gemini-cli', 'gc', 'qoder', 'qd', 'opencode-zen', 'ocz',
-    'opencode-go', 'ocg', 'xiaomi-mimo', 'mimo', 'aihubmix', 'inferera', 'glm', 'trae', 'nous'
-  ]);
-  const builtInPrefixes = new Set([
-    'openagentic', 'oa', 'kc', 'kilocode', 'oc', 'opencode', 'openrouter', 'poolside', 'gemini',
-    'ollama', 'api-airforce', 'airforce', 'bazaarlink', 'bzl', 'b-ai', 'b.ai', 'bai', 'groq',
-    'cerebras', 'mistral', 'cloudflare-ai', 'cloudflare', 'cf', 'nvidia', 'freebuff', 'fb',
-    'xai', 'gcli', 'gc', 'qd', 'ocz', 'ocg', 'mimo', 'aihubmix', 'inferera', 'glm', 'trae', 'nous'
-  ]);
+  // Bespoke-adapter keys from provider-registry.json.
+  // These providers are handled by special adapters — skip them from dynamic processing.
+  // Everything else active in SQLite is processed generically.
+  let builtInKeys = new Set();
+  let builtInPrefixes = new Set();
+  try {
+    const reg = JSON.parse(fs.readFileSync(
+      path.join(__dirname, 'provider-registry.json'), 'utf8'
+    ));
+    for (const r of (reg.bespoke || [])) {
+      builtInKeys.add(r.key);
+      if (r.connection) builtInKeys.add(r.connection);
+      builtInPrefixes.add(r.key);
+      if (r.connection) builtInPrefixes.add(r.connection);
+    }
+    // Misc provider names that have no connection in SQLite and shouldn't become dynamic
+    for (const extra of ['glm', 'trae', 'opencode', 'opencode-zen', 'opencode-go']) {
+      builtInKeys.add(extra);
+      builtInPrefixes.add(extra);
+    }
+  } catch {
+    // registry missing or malformed — allow all dynamic providers through
+  }
 
   const dynamicProviders = [];
 

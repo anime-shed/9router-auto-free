@@ -1,0 +1,110 @@
+{
+  "_doc": [
+    "This file is ONLY for providers that need bespoke free-model discovery logic.",
+    "Every provider NOT listed here is handled generically at runtime:",
+    "  - credentials & baseUrl are read from the 9router SQLite providerConnections table",
+    "  - free models are discovered by calling GET /v1/models with the stored API key",
+    "",
+    "Add an entry here ONLY when a provider needs one of:",
+    "  - A non-standard API format (e.g. Gemini, Cloudflare)",
+    "  - Filtering to find which models are free (e.g. OpenRouter :free suffix)",
+    "  - Special credential resolution (e.g. Kilo access-token, Cloudflare account-id+token)",
+    "  - Web scraping or a static model list (e.g. OpenAgentic, OpenCode)",
+    "  - Custom base URL that is NOT stored in SQLite (e.g. OpenCode's hardcoded list)",
+    "",
+    "Fields:",
+    "  key            Unique key; must match the adapter name in PROVIDER_DISCOVERY_MAP in providers.js",
+    "  connection     SQLite providerConnections provider name to look up credentials (optional)",
+    "  credentialKind scan | kilo | bai | cloudflare | default (default = read apiKey from connection data)",
+    "  baseUrl        Override base URL when not stored in SQLite (optional)",
+    "  modelsUrl      Override URL for fetching the models list (optional)",
+    "  matchHosts     For credentialKind=scan: hostname substrings to match against stored baseUrls",
+    "  solo           If true, do not run this provider concurrently with others (rate-limit sensitive)",
+    "  throttleMs     Min ms between requests (optional)",
+    "  freeOnly       Paid-model guard: if true, only :free / -free models accepted from this provider.",
+    "                 Used by isPaidModel(). Does NOT affect discovery — only the paid-model filter.",
+    "                 Set this for providers whose catalog mixes paid+free and needs filtering."
+  ],
+  "bespoke": [
+    {
+      "key": "openagentic",
+      "credentialKind": "scan",
+      "baseUrl": "https://openagentic.id/api/v1",
+      "matchHosts": [
+        "openagentic.id"
+      ]
+    },
+    {
+      "key": "kilo",
+      "connection": "kilocode",
+      "credentialKind": "kilo",
+      "baseUrl": "https://ai-gateway.kilo.ai/api/v1",
+      "freeOnly": true
+    },
+    {
+      "key": "opencode"
+    },
+    {
+      "key": "openrouter",
+      "connection": "openrouter",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "freeOnly": true
+    },
+    {
+      "key": "poolside",
+      "connection": "poolside"
+    },
+    {
+      "key": "gemini",
+      "connection": "gemini",
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta"
+    },
+    {
+      "key": "ollama",
+      "connection": "ollama",
+      "solo": true
+    },
+    {
+      "key": "airforce",
+      "connection": "api-airforce",
+      "solo": true,
+      "throttleMs": 1200
+    },
+    {
+      "key": "bazaarlink",
+      "connection": "bazaarlink"
+    },
+    {
+      "key": "bai",
+      "connection": "b.ai",
+      "credentialKind": "bai",
+      "baseUrl": "https://api.b.ai/v1"
+    },
+    {
+      "key": "cloudflare",
+      "connection": "cloudflare-ai",
+      "credentialKind": "cloudflare"
+    },
+    {
+      "key": "nous",
+      "connection": "nous",
+      "baseUrl": "https://inference-api.nousresearch.com/v1",
+      "modelsUrl": "https://inference-api.nousresearch.com/v1/models",
+      "freeOnly": true
+    }
+  ],
+  "freeOnly": [
+    "openrouter",
+    "openrouter-free",
+    "aihubmix",
+    "aihub-mix",
+    "inferera",
+    "kilo",
+    "kc",
+    "kilocode",
+    "nous",
+    "nous-portal",
+    "commandcode",
+    "tokenreply"
+  ]
+}

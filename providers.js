@@ -1,226 +1,172 @@
 /**
- * Provider registry and discovery adapters - the single source of truth
- * for every free-model source.
+ * Provider registry and discovery adapters.
  *
- * Adding a provider = adding ONE record here (and its discovery adapter if bespoke).
- * Exposes a deep discovery interface: discoverProvider(key) and discoverAllProviders().
+ * provider-registry.json contains ONLY providers with bespoke free-model discovery
+ * logic (custom APIs, non-standard auth, web-scraping, :free suffix filtering, etc.).
+ *
+ * Every other provider that is active in the 9router SQLite providerConnections table
+ * is handled generically at runtime: credentials + baseUrl come from SQLite,
+ * free models are found by calling GET /v1/models with the stored API key.
+ *
+ * To add a new provider that only needs standard /v1/models discovery: nothing to do —
+ * just add it in the 9router UI.  To add one with special logic: add ONE entry to
+ * provider-registry.json and implement its adapter in PROVIDER_DISCOVERY_MAP below.
  */
 
 const fs = require('node:fs');
 const path = require('node:path');
 const storage = require('./storage.js');
 
-const CANONICAL_CATALOG_MAP = {
-  openrouter: ['openrouter', 'openrouter-free'],
-  nvidia: ['nvidia', 'nvidia-nim'],
-  ollama: ['ollama-cloud'],
-  groq: ['groq', 'groq-free'],
-  cerebras: ['cerebras', 'cerebras-free'],
-  gemini: ['googleai', 'google'],
-  'gemini-cli': ['googleai', 'google'],
-  gc: ['googleai', 'google'],
-  mistral: ['mistral', 'mistral-free'],
-  'cloudflare-ai': ['cloudflare'],
-  aihubmix: ['aihubmix'],
-  inferera: ['aihubmix'],
-  kilocode: ['kilo'],
-  kc: ['kilo'],
-  'opencode-zen': ['opencode-zen'],
-  ocz: ['opencode-zen'],
-  'opencode-go': ['opencode-go'],
-  ocg: ['opencode-go'],
-  oc: ['opencode'],
-  opencode: ['opencode'],
-  xai: ['xai'],
-  'grok-cli': ['xai'],
-  gcli: ['xai'],
-  sambanova: ['sambanova'],
-  'xiaomi-mimo': ['xiaomi-token-plan-cn', 'xiaomi-token-plan-ams', 'xiaomi-token-plan-sgp'],
-  mimo: ['xiaomi-token-plan-cn', 'xiaomi-token-plan-ams', 'xiaomi-token-plan-sgp'],
-  nous: ['nous-portal', 'nous'],
-  'nous-portal': ['nous-portal', 'nous'],
-  qoder: ['qoder'],
-  qd: ['qoder']
-};
+// ---------------------------------------------------------------------------
+// Load bespoke-adapter registry + freeOnly guard list from JSON
+// ---------------------------------------------------------------------------
 
-const STANDARD_PROVIDER_PREFIXES = {
-  github: 'gh',
-  antigravity: 'ag',
-  xai: 'xai',
-  'xiaomi-mimo': 'mimo',
-  freebuff: 'fb',
-  qoder: 'qd',
-  'opencode-zen': 'ocz',
-  'opencode-go': 'ocg',
-  'gemini-cli': 'gc',
-  'grok-cli': 'gcli',
-  gemini: 'gemini',
-  groq: 'groq',
-  cerebras: 'cerebras',
-  ollama: 'ollama',
-  kilocode: 'kc',
-  openrouter: 'openrouter',
-  nvidia: 'nvidia',
-  mistral: 'mistral',
-  poolside: 'poolside',
-  'cloudflare-ai': 'cloudflare-ai',
-  openagentic: 'oa',
-  devin: 'devin',
-  'devin-cli': 'devin',
-  windsurf: 'windsurf',
-  mimo: 'mimo',
-  'mimo-code': 'mimo',
-  nous: 'nous',
-  'nous-portal': 'nous'
-};
+const REGISTRY_PATH = path.join(__dirname, 'provider-registry.json');
 
-const PROVIDER_DISPLAY_NAMES = {
-  github: 'GitHub Copilot',
-  antigravity: 'Antigravity',
-  xai: 'xAI Grok',
-  'xiaomi-mimo': 'Xiaomi Mimo',
-  mimo: 'Xiaomi MiMo Code',
-  'mimo-code': 'Xiaomi MiMo Code',
-  freebuff: 'Freebuff',
-  qoder: 'Qoder',
-  'opencode-zen': 'OpenCode Zen',
-  'opencode-go': 'OpenCode Go',
-  'gemini-cli': 'Gemini CLI',
-  'grok-cli': 'Grok CLI',
-  gemini: 'Google Gemini',
-  groq: 'Groq',
-  cerebras: 'Cerebras',
-  ollama: 'Ollama Cloud',
-  kilocode: 'Kilo.ai',
-  openrouter: 'OpenRouter',
-  nvidia: 'NVIDIA NIM',
-  mistral: 'Mistral',
-  poolside: 'Poolside',
-  'cloudflare-ai': 'Cloudflare Workers AI',
-  openagentic: 'OpenAgentic',
-  devin: 'Devin CLI',
-  'devin-cli': 'Devin CLI',
-  windsurf: 'Windsurf',
-  nous: 'Nous Portal',
-  'nous-portal': 'Nous Portal'
-};
+function loadRegistry() {
+  try {
+    return JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+  } catch (err) {
+    console.error(`[!] Failed to load provider-registry.json: ${err.message}`);
+    return { bespoke: [], freeOnly: [] };
+  }
+}
+
+const _reg = loadRegistry();
+
+/**
+ * BESPOKE_PROVIDERS — configs for providers that need special free-model discovery.
+ * Shape: { key, connection?, credentialKind?, baseUrl?, modelsUrl?,
+ *           matchHosts?, solo?, throttleMs?, freeOnly? }
+ * Everything not listed here is auto-discovered from the 9router SQLite at runtime.
+ */
+const BESPOKE_PROVIDERS = _reg.bespoke || [];
+const BESPOKE_BY_KEY = Object.fromEntries(BESPOKE_PROVIDERS.map(p => [p.key, p]));
+
+/**
+ * PROVIDERS — back-compat shim for callers that still iterate this.
+ * Built entirely from active 9router connections at require-time, augmented with
+ * bespoke overrides from the JSON. No hardcoded provider list.
+ *
+ * Shape per entry: { key, label, combo, prefixes, usageName, kind, ... }
+ */
+function buildProvidersFromRuntime() {
+  const conns = (storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : []);
+  const seen = new Set();
+  const list = [];
+
+  // 1. Bespoke entries — always included (they may not have a SQLite connection)
+  for (const b of BESPOKE_PROVIDERS) {
+    seen.add(b.key);
+    list.push({
+      key:             b.key,
+      label:           b.key,       // label resolved at discovery time from connection name
+      combo:           `${b.key}-free`,
+      prefixes:        [b.key],
+      usageName:       b.connection || b.key,
+      kind:            b.key,       // kind === key → PROVIDER_DISCOVERY_MAP lookup
+      ...(b.connection    && { connection: b.connection }),
+      ...(b.credentialKind && { credentialKind: b.credentialKind }),
+      ...(b.baseUrl       && { baseUrl: b.baseUrl }),
+      ...(b.modelsUrl     && { modelsUrl: b.modelsUrl }),
+      ...(b.matchHosts    && { matchHosts: b.matchHosts }),
+      ...(b.solo          && { solo: true }),
+      ...(b.throttleMs    && { throttleMs: b.throttleMs }),
+      ...(b.freeOnly      && { freeOnly: true }),
+    });
+  }
+
+  // 2. Everything active in SQLite — generic runtime providers
+  for (const conn of conns) {
+    const prov = String(conn.provider || '').toLowerCase();
+    const prefix = conn.prefix || prov.split('-')[0];
+    const key = prefix;
+    if (seen.has(key) || seen.has(prov)) continue;
+    seen.add(key);
+    list.push({
+      key,
+      label:    conn.name || prov,
+      combo:    `${key}-free`,
+      prefixes: [key, prov].filter((v, i, a) => v && a.indexOf(v) === i),
+      usageName: prov,
+      kind:     'openai-compatible',
+    });
+  }
+  return list;
+}
+
+// Lazily built once — callers that need live data should use discover9routerActiveProviders()
+const PROVIDERS = buildProvidersFromRuntime();
+const PROVIDER_BY_KEY = Object.fromEntries(PROVIDERS.map(p => [p.key, p]));
+
+// ---------------------------------------------------------------------------
+// CANONICAL_CATALOG_MAP  — built from external-models.json at runtime.
+// Maps provider key/prefix → catalog key list for external enrichment.
+// No hardcoded map here — if a new provider appears in the external catalog
+// it is picked up automatically via the catalog's own provider field.
+// ---------------------------------------------------------------------------
+const CANONICAL_CATALOG_MAP = {};
+try {
+  const extPath = path.join(__dirname, 'external-models.json');
+  if (fs.existsSync(extPath)) {
+    const extData = JSON.parse(fs.readFileSync(extPath, 'utf8'));
+    const catalog = extData.providerCatalog || {};
+    for (const cKey of Object.keys(catalog)) {
+      // cKey is already the catalog key (e.g. 'openrouter-free', 'nvidia-nim')
+      // Map it back to both the raw provider name and common prefix aliases
+      const short = cKey.replace(/-free$/, '').replace(/-nim$/, '').replace(/-cloud$/, '');
+      for (const alias of [cKey, short]) {
+        if (!CANONICAL_CATALOG_MAP[alias]) CANONICAL_CATALOG_MAP[alias] = [];
+        if (!CANONICAL_CATALOG_MAP[alias].includes(cKey)) CANONICAL_CATALOG_MAP[alias].push(cKey);
+      }
+    }
+  }
+} catch { /* catalog enrichment is optional */ }
+
+// ---------------------------------------------------------------------------
+// STANDARD_PROVIDER_PREFIXES — built from active SQLite connections at runtime.
+// Maps every known provider name/alias → its routing prefix.
+// Falls back to splitting on '-' for unknown providers.
+// ---------------------------------------------------------------------------
+const STANDARD_PROVIDER_PREFIXES = {};
+{
+  const conns = (storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : []);
+  for (const conn of conns) {
+    const prov = String(conn.provider || '').toLowerCase();
+    const prefix = conn.prefix || prov.split('-')[0];
+    STANDARD_PROVIDER_PREFIXES[prov] = prefix;
+    if (conn.prefix) STANDARD_PROVIDER_PREFIXES[conn.prefix] = prefix;
+  }
+  // Bespoke overrides from registry (e.g. kilo → kc, openrouter → openrouter)
+  for (const b of BESPOKE_PROVIDERS) {
+    if (b.connection) STANDARD_PROVIDER_PREFIXES[b.connection] = b.key;
+    STANDARD_PROVIDER_PREFIXES[b.key] = b.key;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// PROVIDER_DISPLAY_NAMES — built from active SQLite connections at runtime.
+// Falls back to titlecasing the provider name.
+// ---------------------------------------------------------------------------
+const PROVIDER_DISPLAY_NAMES = {};
+{
+  const conns = (storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : []);
+  for (const conn of conns) {
+    const prov = String(conn.provider || '').toLowerCase();
+    const label = conn.name && !conn.name.includes('@') ? conn.name : prov.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    PROVIDER_DISPLAY_NAMES[prov] = label;
+    if (conn.prefix) PROVIDER_DISPLAY_NAMES[conn.prefix] = label;
+  }
+}
 
 function getProviderLabel(providerName, prefix, connectionName) {
   const p = String(providerName || '').toLowerCase();
   if (PROVIDER_DISPLAY_NAMES[p]) return PROVIDER_DISPLAY_NAMES[p];
   if (connectionName && connectionName.trim() && !connectionName.includes('@')) return connectionName.trim();
+  if (prefix && PROVIDER_DISPLAY_NAMES[String(prefix).toLowerCase()]) return PROVIDER_DISPLAY_NAMES[String(prefix).toLowerCase()];
   const raw = p.replace(/-/g, ' ');
   return raw.charAt(0).toUpperCase() + raw.slice(1);
 }
-
-const PROVIDERS = [
-  {
-    key: 'oa', label: 'OpenAgentic', combo: 'openagentic-free',
-    prefixes: ['openagentic', 'oa'], usageName: 'openagentic',
-    kind: 'openagentic', credentialKind: 'scan',
-    baseUrl: 'https://openagentic.id/api/v1',
-    matchHosts: ['openagentic.id']
-  },
-  {
-    key: 'kilo', label: 'Kilo.ai', combo: 'kilo-free',
-    prefixes: ['kc', 'kilocode'], usageName: 'kilocode',
-    kind: 'kilo', connection: 'kilocode', credentialKind: 'kilo',
-    baseUrl: 'https://ai-gateway.kilo.ai/api/v1'
-  },
-  {
-    key: 'oc', label: 'OpenCode', combo: 'opencode-free',
-    prefixes: ['oc', 'opencode'], usageName: 'opencode',
-    kind: 'opencode'
-  },
-  {
-    key: 'openrouter', label: 'OpenRouter', combo: 'openrouter-free',
-    prefixes: ['openrouter'], usageName: 'openrouter',
-    kind: 'openrouter', connection: 'openrouter', credentialKind: 'default',
-    baseUrl: 'https://openrouter.ai/api/v1', requireApiKey: false
-  },
-  {
-    key: 'poolside', label: 'Poolside', combo: 'poolside-free',
-    prefixes: ['poolside'], usageName: 'poolside',
-    kind: 'poolside', connection: 'poolside', credentialKind: 'default',
-    baseUrl: 'https://inference.poolside.ai/v1', readBaseUrlFromConnection: true
-  },
-  {
-    key: 'gemini', label: 'Gemini', combo: 'gemini-free',
-    prefixes: ['gemini'], usageName: 'gemini',
-    kind: 'gemini', connection: 'gemini', credentialKind: 'default',
-    baseUrl: 'https://generativelanguage.googleapis.com/v1beta'
-  },
-  {
-    key: 'ollama', label: 'Ollama Cloud', combo: 'ollama-free',
-    prefixes: ['ollama'], usageName: 'ollama',
-    kind: 'ollama', connection: 'ollama', credentialKind: 'default',
-    baseUrl: 'https://api.ollama.com/v1', readBaseUrlFromConnection: true,
-    solo: true
-  },
-  {
-    key: 'airforce', label: 'API.airforce', combo: 'airforce-free',
-    prefixes: ['api-airforce', 'airforce'], usageName: 'api-airforce',
-    kind: 'airforce', connection: 'api-airforce', credentialKind: 'default',
-    baseUrl: 'https://api.airforce/v1', readBaseUrlFromConnection: true,
-    solo: true, throttleMs: 1200
-  },
-  {
-    key: 'bazaarlink', label: 'Bazaarlink', combo: 'bazaarlink-free',
-    prefixes: ['bazaarlink', 'bzl'], usageName: 'bazaarlink',
-    kind: 'bazaarlink', connection: 'bazaarlink', credentialKind: 'default',
-    baseUrl: 'https://bazaarlink.ai/api/v1', readBaseUrlFromConnection: true
-  },
-  {
-    key: 'bai', label: 'B.ai', combo: 'b.ai-free',
-    prefixes: ['b-ai', 'b.ai', 'bai'], usageName: 'b.ai',
-    kind: 'bai', connection: 'b.ai', credentialKind: 'bai',
-    baseUrl: 'https://api.b.ai/v1'
-  },
-  {
-    key: 'groq', label: 'Groq', combo: 'groq-free',
-    prefixes: ['groq'], usageName: 'groq',
-    kind: 'openai-compatible', connection: 'groq', credentialKind: 'default',
-    baseUrl: 'https://api.groq.com/openai/v1'
-  },
-  {
-    key: 'cerebras', label: 'Cerebras', combo: 'cerebras-free',
-    prefixes: ['cerebras'], usageName: 'cerebras',
-    kind: 'openai-compatible', connection: 'cerebras', credentialKind: 'default',
-    baseUrl: 'https://api.cerebras.ai/v1'
-  },
-  {
-    key: 'mistral', label: 'Mistral', combo: 'mistral-free',
-    prefixes: ['mistral'], usageName: 'mistral',
-    kind: 'openai-compatible', connection: 'mistral', credentialKind: 'default',
-    baseUrl: 'https://api.mistral.ai/v1'
-  },
-  {
-    key: 'cloudflare', label: 'Cloudflare Workers AI', combo: 'cloudflare-free',
-    prefixes: ['cloudflare-ai', 'cloudflare', 'cf'], usageName: 'cloudflare',
-    kind: 'cloudflare', connection: 'cloudflare-ai', credentialKind: 'cloudflare'
-  },
-  {
-    key: 'nvidia', label: 'NVIDIA NIM', combo: 'nvidia-free',
-    prefixes: ['nvidia', 'nim'], usageName: 'nvidia',
-    kind: 'openai-compatible', connection: 'nvidia', credentialKind: 'default',
-    baseUrl: 'https://integrate.api.nvidia.com/v1'
-  },
-  {
-    key: 'fb', label: 'Freebuff', combo: 'fb-free',
-    prefixes: ['fb', 'freebuff'], usageName: 'freebuff',
-    kind: 'freebuff', connection: 'freebuff', credentialKind: 'default',
-    baseUrl: 'https://www.codebuff.com/api/v1'
-  },
-  {
-    key: 'nous', label: 'Nous Portal', combo: 'nous-free',
-    prefixes: ['nous', 'ns'], usageName: 'nous',
-    kind: 'openai-compatible', connection: 'nous', credentialKind: 'default',
-    baseUrl: 'https://inference-api.nousresearch.com/v1',
-    modelsUrl: 'https://inference-api.nousresearch.com/v1/models'
-  }
-];
-
-const PROVIDER_BY_KEY = Object.fromEntries(PROVIDERS.map(p => [p.key, p]));
 
 function providerByPrefix(prefix) {
   const head = String(prefix || '').toLowerCase();
@@ -867,26 +813,15 @@ async function fetchCloudflareFreeModels(creds, prefix = 'cloudflare-ai') {
 // Free-Only Provider Guard
 // ----------------------------------------------------------------------------
 
-const REQUIRE_FREE_SUFFIX_PROVIDERS = new Set([
-  'openrouter',
-  'aihubmix',
-  'aihub-mix',
-  'inferera',
-  'commandcode',
-  'nous',
-  'nous-portal',
-  'tokenreply',
-  'kilo',
-  'kc',
-  'kilocode'
-]);
+// Loaded from provider-registry.json freeOnly array.
+// To add more: edit the "freeOnly" array in provider-registry.json.
+const REQUIRE_FREE_SUFFIX_PROVIDERS = new Set(_reg.freeOnly || []);
 
 function isFreeOnlyProvider(providerOrPrefix) {
   if (!providerOrPrefix) return false;
   const p = String(providerOrPrefix).toLowerCase();
   if (REQUIRE_FREE_SUFFIX_PROVIDERS.has(p)) return true;
   if (p.startsWith('openai-compatible') || p.startsWith('custom-')) return true;
-  if (p === 'kc' || p === 'kilo' || p === 'kilocode') return true;
   return false;
 }
 
