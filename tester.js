@@ -91,55 +91,28 @@ function saveDeadModels(store) {
   }
 }
 
-function isModelConfirmedDead(fullId, deadStore, suppressionTtlMs = DEFAULT_SUPPRESSION_TTL_MS) {
+function isModelConfirmedDead(fullId, deadStore) {
   if (!deadStore || !deadStore.models) return false;
   const entry = deadStore.models[fullId];
-  if (!entry || !entry.confirmedDead) return false;
-
-  const deadTime = new Date(entry.confirmedDeadAt || entry.lastSeenDead).getTime();
-  const elapsed = Date.now() - deadTime;
-  if (elapsed < suppressionTtlMs) {
-    return entry;
-  }
-  // After suppression TTL, allow re-testing
-  entry.confirmedDead = false;
-  return false;
+  if (!entry || entry.confirmedDead === false) return false;
+  return entry;
 }
 
-function recordDeadModel(fullId, reason, status, deadStore, thresholdMs = SEVEN_DAYS_MS) {
+function recordDeadModel(fullId, reason, status, deadStore) {
   if (!deadStore) return;
   const now = new Date().toISOString();
-  const nowMs = Date.now();
   const existing = deadStore.models[fullId];
   const numStatus = Number(status) || 404;
   const reasonStr = String(reason || '');
 
-  const isPermanentlyDead = numStatus === 410 ||
-    /retired|archived|does not exist|model_not_found|permanently|no longer available/i.test(reasonStr);
-
-  if (!existing) {
-    deadStore.models[fullId] = {
-      firstSeenDead: now,
-      lastSeenDead: now,
-      status: numStatus,
-      reason: reasonStr.slice(0, 100),
-      failCount: 1,
-      confirmedDead: isPermanentlyDead,
-      confirmedDeadAt: isPermanentlyDead ? now : null
-    };
-  } else {
-    existing.lastSeenDead = now;
-    existing.failCount = (existing.failCount || 1) + 1;
-    existing.reason = (reasonStr || existing.reason).slice(0, 100);
-    existing.status = numStatus || existing.status;
-
-    const firstMs = new Date(existing.firstSeenDead || now).getTime();
-    // Confirmed dead if 410 / retired, or persistently failing across at least 7 days, or >= 3 retries on 400/404/410
-    if (isPermanentlyDead || (nowMs - firstMs >= thresholdMs && existing.failCount >= 2) || (existing.failCount >= 3 && [400, 404, 410].includes(existing.status))) {
-      existing.confirmedDead = true;
-      if (!existing.confirmedDeadAt) existing.confirmedDeadAt = now;
-    }
-  }
+  deadStore.models[fullId] = {
+    firstSeenDead: existing?.firstSeenDead || now,
+    lastSeenDead: now,
+    status: numStatus,
+    reason: (reasonStr || existing?.reason || '').slice(0, 100),
+    confirmedDead: true,
+    confirmedDeadAt: existing?.confirmedDeadAt || now
+  };
 }
 
 function clearDeadModel(fullId, deadStore) {
@@ -160,25 +133,38 @@ function parseUpstreamFailure(resStatus, rawError) {
   let upstreamStatus = bracketMatch ? parseInt(bracketMatch[1], 10)
     : (httpPrefixMatch ? parseInt(httpPrefixMatch[1], 10) : Number(resStatus || 500));
 
-  // Model-level paid / tier / channel errors (specific to this model, NOT fatal to the provider account)
-  const isModelTierOrChannelError =
-    /not included in your plan|payment required to access|not included in you|no_available_channel|model不支持|未开通会员|model_not_found/i.test(text);
+  // Connection/credential-level missing auth (not a dead model)
+  const isMissingCredentials = /no active credentials for provider/i.test(text);
 
-  // Account-level fatal billing or authentication failure (kills entire connection)
+  // Model-level paid / tier / channel / harness errors (specific to this model, NOT fatal to the provider account)
+  const isModelTierOrChannelError =
+    /paid model|credits required|not included in your (free )?(usage|plan)|not included in you|no_available_channel|model不支持|未开通会员|model_not_found|only available on agentic harnesses|not yet available to you|does not support this protocol/i.test(text);
+
+  // Account-level fatal billing or authentication failure (kills entire connection, NOT individual models)
   const isFatalBillingOrAuth = !isModelTierOrChannelError && (
     upstreamStatus === 401 ||
-    /spending.?limit|account.?suspended|invalid.?api.?key|unauthorized/i.test(text)
+    isMissingCredentials ||
+    /spending.?limit|run out of credits|need a .* subscription|payment required to access|insufficient balance|no resource package|account.?suspended|invalid.?api.?key|unauthorized|oauth2 access token|bad-credentials|valid license/i.test(text)
   );
 
+  // Transient rate limit / high demand -> park in quota, NOT dead
   const isRateLimit = upstreamStatus === 429 ||
-    /quota|rate.?limit|resource.?exhaust|concurrency|too many requests|429/i.test(text);
+    /quota|rate.?limit|resource.?exhaust|concurrency|too many requests|high demand|spikes in demand|429/i.test(text);
 
-  const isDead = [400, 404, 410].includes(upstreamStatus) ||
+  // Timeout / network abort -> transient, NOT dead
+  const isTimeout = /timed?\s*out|abort/i.test(text);
+
+  // Confirmed model-level dead/unavailable/paid
+  const isDead = !isFatalBillingOrAuth && !isRateLimit && !isTimeout && (
+    [400, 404, 410].includes(upstreamStatus) ||
     upstreamStatus === 402 ||
     isModelTierOrChannelError ||
-    /archived|retired|not.?found|does not exist|not included in your plan|model is not included/i.test(text);
+    /archived|retired|not.?found|does not exist|no endpoints found|no longer available|unsupported model|model is unavailable|unavailable for free|not included in your plan|model is not included/i.test(text)
+  );
 
-  const isTimeout = /timed?\s*out|abort/i.test(text);
+  const isTransient = !isFatalBillingOrAuth && !isRateLimit && !isDead && (
+    isTimeout || [408, 425, 500, 502, 503, 504, 529].includes(upstreamStatus)
+  );
 
   return {
     upstreamStatus,
@@ -186,6 +172,7 @@ function parseUpstreamFailure(resStatus, rawError) {
     isRateLimit,
     isDead,
     isTimeout,
+    isTransient,
     reason: text.slice(0, 80)
   };
 }
@@ -325,13 +312,37 @@ async function testModelWithChatCompletions(fullModelId, options = {}) {
       };
     }
 
+    if (failure.isFatalBillingOrAuth) {
+      return {
+        valid: false,
+        ok: false,
+        latencyMs,
+        status: failure.upstreamStatus,
+        reason: failure.reason,
+        verdict: 'auth_error',
+        isFatal: true
+      };
+    }
+
+    if (failure.isTransient) {
+      return {
+        valid: false,
+        ok: false,
+        latencyMs,
+        status: failure.upstreamStatus,
+        reason: failure.reason,
+        verdict: 'transient',
+        timedOut: failure.isTimeout
+      };
+    }
+
     return {
       valid: false,
       ok: false,
       latencyMs,
       status: failure.upstreamStatus,
       reason: failure.reason,
-      verdict: 'dead',
+      verdict: failure.isDead ? 'dead' : 'transient',
       isFatal: failure.isFatalBillingOrAuth,
       isDead: failure.isDead,
       timedOut: failure.isTimeout
@@ -345,7 +356,7 @@ async function testModelWithChatCompletions(fullModelId, options = {}) {
       latencyMs,
       status: failure.upstreamStatus,
       reason: failure.reason,
-      verdict: 'dead',
+      verdict: 'transient',
       timedOut: true
     };
   }
@@ -394,8 +405,23 @@ async function testModelWith9router(fullModelId, token, options = {}) {
       return chatRes;
     }
 
-    // If fatal or dead, NEVER retry
-    if ((failure.isFatalBillingOrAuth || failure.isDead) && attempt >= 1) {
+    // If fatal auth/billing, NEVER retry and NEVER mark individual model dead
+    if (failure.isFatalBillingOrAuth && attempt >= 1) {
+      return {
+        valid: false,
+        ok: false,
+        latencyMs,
+        status: failure.upstreamStatus,
+        reason: failure.reason,
+        verdict: 'auth_error',
+        isFatal: true,
+        isDead: false,
+        isRateLimit: false
+      };
+    }
+
+    // If model is dead, NEVER retry
+    if (failure.isDead && attempt >= 1) {
       return {
         valid: false,
         ok: false,
@@ -403,9 +429,9 @@ async function testModelWith9router(fullModelId, token, options = {}) {
         status: failure.upstreamStatus,
         reason: failure.reason,
         verdict: 'dead',
-        isFatal: failure.isFatalBillingOrAuth,
-        isDead: failure.isDead,
-        isRateLimit: failure.isRateLimit
+        isFatal: false,
+        isDead: true,
+        isRateLimit: false
       };
     }
 
@@ -439,7 +465,7 @@ async function testModelWith9router(fullModelId, token, options = {}) {
       latencyMs,
       status: failure.upstreamStatus,
       reason: failure.reason,
-      verdict: 'dead',
+      verdict: failure.isDead ? 'dead' : 'transient',
       timedOut: failure.isTimeout
     };
   } catch (err) {
@@ -468,7 +494,7 @@ async function testModelWith9router(fullModelId, token, options = {}) {
       latencyMs,
       status: failure.upstreamStatus,
       reason: failure.reason,
-      verdict: 'dead',
+      verdict: 'transient',
       timedOut: true
     };
   }
@@ -518,7 +544,7 @@ async function testModels(models, options = {}) {
       // Check negative cache
       const deadCacheEntry = isModelConfirmedDead(fullId, deadStore);
       if (deadCacheEntry) {
-        console.log(`    [⊘ Dead Cached] ${fullId} -> Unavailable >7d (${deadCacheEntry.reason})`);
+        console.log(`    [⊘ Dead Cached] ${fullId} -> Dead (${deadCacheEntry.reason})`);
         dead.push({ ...modelObj, verdict: 'dead', reason: deadCacheEntry.reason, cachedDead: true });
         continue;
       }
@@ -551,8 +577,22 @@ async function testModels(models, options = {}) {
         }
         quota.push({ ...modelObj, latencyMs: 999998, quotaExhausted: true, verdict: 'quota', reason: result.reason });
         console.log(`    [⏳ Quota] ${fullId} -> Kept at bottom (${result.reason})`);
+      } else if (result.verdict === 'auth_error') {
+        const breakRes = breaker.recordFailure(prefix, {
+          isFatalBillingOrAuth: true,
+          reason: result.reason
+        });
+        console.log(`    [🔐 Auth/Billing] ${fullId} -> ${result.reason} (NOT marking model dead)`);
+        if (breakRes.tripped) {
+          circuitTripped = true;
+          tripReason = breaker.getTripReason(prefix);
+          console.log(`    [⚡ Circuit Breaker] Provider [${prefix}] tripped! ${tripReason}. Skipping ${queue.length} remaining candidates.`);
+          break;
+        }
+      } else if (result.verdict === 'transient') {
+        console.log(`    [⚠ Transient] ${fullId} -> ${result.reason}${result.retried ? ' (after retry)' : ''} (NOT marking model dead)`);
       } else {
-        // Dead result
+        // Confirmed dead result
         recordDeadModel(fullId, result.reason, result.status, deadStore);
         const breakRes = breaker.recordFailure(prefix, {
           isFatalBillingOrAuth: result.isFatal,

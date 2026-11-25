@@ -403,12 +403,92 @@ function updateProviderEnabledModels(providerOrPrefix, activeModels) {
     db.close();
 
     // Also ensure active models are un-disabled and registered in customModels
-    enableModelsIn9router(providerOrPrefix, activeModels);
+    if (activeModels.length > 0) {
+      enableModelsIn9router(providerOrPrefix, activeModels);
+    }
 
     return updatedCount > 0;
   } catch (err) {
     console.warn(`[!] Warning: Could not update enabledModels for ${providerOrPrefix}: ${err.message}`);
     return false;
+  }
+}
+
+/**
+ * Clear and replace enabledModels in providerConnections for all active providers
+ * using the output from 9router's /v1/models endpoint at sync start (excluding dead models).
+ * @param {Array<object>} modelsList - raw items from GET /v1/models
+ * @param {object|null} deadStore - parsed dead-models.json store
+ */
+function syncProviderEnabledModelsFromModelsList(modelsList, deadStore = null) {
+  if (!Array.isArray(modelsList)) return 0;
+  try {
+    const byPrefix = new Map();
+    const deadModels = (deadStore && deadStore.models) || {};
+
+    for (const m of modelsList) {
+      const id = String(m?.id || '');
+      if (!id) continue;
+      if (m.owned_by === 'combo' || id === 'free' || id.startsWith('my9model-') || (!id.includes('/') && id.endsWith('-free'))) {
+        continue;
+      }
+
+      const slashIdx = id.indexOf('/');
+      const colonIdx = id.indexOf(':');
+      let prefix = '';
+      let modelId = '';
+      if (slashIdx !== -1) {
+        prefix = id.slice(0, slashIdx).toLowerCase();
+        modelId = id.slice(slashIdx + 1);
+      } else if (colonIdx !== -1) {
+        prefix = id.slice(0, colonIdx).toLowerCase();
+        modelId = id.slice(colonIdx + 1);
+      } else if (m.owned_by) {
+        prefix = String(m.owned_by).toLowerCase();
+        modelId = id;
+      }
+      if (!prefix || !modelId) continue;
+
+      const fullId = `${prefix}/${modelId}`;
+      const deadEntry = deadModels[fullId] || deadModels[id];
+      if (deadEntry && deadEntry.confirmedDead !== false) continue;
+
+      if (!byPrefix.has(prefix)) byPrefix.set(prefix, []);
+      const list = byPrefix.get(prefix);
+      if (!list.some(x => x.toLowerCase() === modelId.toLowerCase())) {
+        list.push(modelId);
+      }
+    }
+
+    const Database = getDbClass();
+    const db = new Database(DB_PATH);
+    const rows = db.prepare("SELECT id, provider, data FROM providerConnections WHERE isActive = 1").all();
+    const now = new Date().toISOString();
+    let updatedCount = 0;
+
+    for (const r of rows) {
+      const prov = String(r.provider || '').toLowerCase();
+      const data = (() => { try { return JSON.parse(r.data || '{}'); } catch { return {}; } })();
+      const prefix = String(data?.providerSpecificData?.prefix || prov.split('-')[0]).toLowerCase();
+      const cleanIds = byPrefix.get(prefix) || byPrefix.get(prov) || [];
+
+      data.providerSpecificData = data.providerSpecificData || {};
+      data.providerSpecificData.enabledModels = cleanIds;
+      db.prepare("UPDATE providerConnections SET data = ?, updatedAt = ? WHERE id = ?").run(
+        JSON.stringify(data),
+        now,
+        r.id
+      );
+      updatedCount++;
+    }
+    db.close();
+    if (updatedCount > 0) {
+      console.log(`[✓] Synced enabledModels for ${updatedCount} active provider(s) from /v1/models`);
+    }
+    return updatedCount;
+  } catch (err) {
+    console.warn(`[!] Warning: Could not sync enabledModels from /v1/models: ${err.message}`);
+    return 0;
   }
 }
 
@@ -945,6 +1025,7 @@ module.exports = {
   writeCustomProvidersFile,
   getDynamicProviders,
   updateProviderEnabledModels,
+  syncProviderEnabledModelsFromModelsList,
   readActiveProviderConnections,
   read9routerDisabledModels,
   read9routerCustomModels,

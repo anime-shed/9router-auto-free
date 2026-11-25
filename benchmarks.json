@@ -83,7 +83,8 @@
     "score": 82,
     "swe_bench": 76.8,
     "tier": "S+",
-    "contextLength": 1048576
+    "contextLength": 1048576,
+    "deprecated": true
   },
   "gh/gpt-4.1": {
     "name": "GitHub GPT-4.1",
@@ -164,8 +165,7 @@
     "score": 77.5,
     "swe_bench": 71.9,
     "tier": "S+",
-    "contextLength": 1048576,
-    "deprecated": true
+    "contextLength": 1048576
   },
   "nemotron-3-ultra": {
     "name": "NVIDIA Nemotron 3 Ultra",
@@ -372,10 +372,10 @@
   },
   "hy3": {
     "name": "Tencent HY3",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 256000,
+    "score": 50,
+    "swe_bench": 50,
+    "tier": "A+",
+    "contextLength": 131072,
     "deprecated": true
   },
   "opencoder-8b-instruct": {
@@ -2819,8 +2819,7 @@
     "swe_bench": 50,
     "tier": "A+",
     "contextLength": 1048576,
-    "source": "external-catalog:nvidia",
-    "deprecated": true
+    "source": "external-catalog:nvidia"
   },
   "step-5-preview": {
     "name": "Step 5 Preview",
@@ -2828,8 +2827,7 @@
     "swe_bench": 50,
     "tier": "A+",
     "contextLength": 1048576,
-    "source": "external-catalog:nvidia",
-    "deprecated": true
+    "source": "external-catalog:nvidia"
   },
   "nvidia-nemotron-3-ultra-550b-a55b": {
     "name": "Nemotron 3 Ultra",
@@ -2837,8 +2835,7 @@
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1000000,
-    "source": "external-catalog:nvidia",
-    "deprecated": true
+    "source": "external-catalog:nvidia"
   },
   "nemotron-3-ultra-550b-a55b": {
     "name": "Nemotron 3 Ultra",
@@ -2846,8 +2843,7 @@
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1000000,
-    "source": "external-catalog:nvidia",
-    "deprecated": true
+    "source": "external-catalog:nvidia"
   },
   "poolside-laguna-xs-2.1": {
     "name": "Laguna XS 2.1",
@@ -2927,8 +2923,7 @@
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 131072,
-    "source": "external-catalog:nvidia",
-    "deprecated": true
+    "source": "external-catalog:nvidia"
   },
   "nemotron-3-nano-omni-30b-a3b-reasoning": {
     "name": "Nemotron 3 Omni",
@@ -2936,8 +2931,7 @@
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 131072,
-    "source": "external-catalog:nvidia",
-    "deprecated": true
+    "source": "external-catalog:nvidia"
   },
   "nvidia-nemotron-3.5-lightning-30b-a3b": {
     "name": "Nemotron 3.5 Lightning 30B",
@@ -3435,7 +3429,8 @@
     "swe_bench": 76.4,
     "tier": "S+",
     "contextLength": 268288,
-    "source": "external-catalog:ovhcloud"
+    "source": "external-catalog:ovhcloud",
+    "deprecated": true
   },
   "qwen3.6-27b": {
     "name": "Qwen3.6 27B",
@@ -3596,10 +3591,10 @@
   },
   "qwen4-max": {
     "name": "Qwen4 Max",
-    "score": 50,
-    "swe_bench": 50,
-    "tier": "A+",
-    "contextLength": 1048576,
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
     "source": "external-catalog:qwen"
   },
   "qwen3.8-2.4t-a95b": {
@@ -4242,8 +4237,7 @@
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 131000,
-    "source": "external-catalog:siliconflow",
-    "deprecated": true
+    "source": "external-catalog:siliconflow"
   },
   "qwen3-8b": {
     "name": "Qwen3 8B",
@@ -4251,8 +4245,7 @@
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 131000,
-    "source": "external-catalog:siliconflow",
-    "deprecated": true
+    "source": "external-catalog:siliconflow"
   },
   "deepseek-ai-deepseek-r1-0528-qwen3-8b": {
     "name": "DeepSeek R1 0528 Qwen3 8B",
@@ -4340,8 +4333,7 @@
     "swe_bench": 38.8,
     "tier": "A-",
     "contextLength": 262144,
-    "source": "external-catalog:requesty",
-    "deprecated": true
+    "source": "external-catalog:requesty"
   },
   "nemotron-3-nano-30b-a3b": {
     "name": "Nemotron Nano 30B",
@@ -4349,8 +4341,7 @@
     "swe_bench": 38.8,
     "tier": "A-",
     "contextLength": 262144,
-    "source": "external-catalog:requesty",
-    "deprecated": true
+    "source": "external-catalog:requesty"
   },
   "mistral-leanstral-1-5": {
     "name": "Leanstral 1.5",
@@ -4526,8 +4517,7 @@
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 262144,
-    "source": "external-catalog:ollama-cloud",
-    "deprecated": true
+    "source": "external-catalog:ollama-cloud"
   },
   "gemma4-31b": {
     "name": "Gemma 4 31B",
@@ -4609,46 +4599,204 @@
     "contextLength": 1048576,
     "source": "external-catalog:runcrate"
   },
-  "poolside-laguna-m.1": {
-    "name": "Laguna M.1",
+  "mini-lm-l12-v2": {
+    "name": "All-MiniLM-L12-v2",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128,
+    "source": "external-catalog:infomaniak"
+  },
+  "qwen3.6-plus": {
+    "name": "Qwen3.6 Plus",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:alibaba-token-plan"
+  },
+  "happyhorse-1.1-r2v": {
+    "name": "HappyHorse 1.1 Reference-to-Video",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:alibaba-token-plan"
+  },
+  "qwen-image-2.0-pro": {
+    "name": "Qwen Image 2.0 Pro",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 8192,
+    "source": "external-catalog:alibaba-token-plan"
+  },
+  "glm-5.1": {
+    "name": "GLM-5.1",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 202752,
+    "source": "external-catalog:alibaba-token-plan",
+    "deprecated": true
+  },
+  "deepseek-v4-pro": {
+    "name": "DeepSeek V4 Pro",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:alibaba-token-plan",
+    "deprecated": true
+  },
+  "happyhorse-1.1-t2v": {
+    "name": "HappyHorse 1.1 Text-to-Video",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:alibaba-token-plan"
+  },
+  "kimi-k2.5": {
+    "name": "Kimi K2.5",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 262144,
-    "source": "external-catalog:poolside"
+    "source": "external-catalog:alibaba-token-plan",
+    "deprecated": true
   },
-  "laguna-m.1": {
-    "name": "Laguna M.1",
+  "glm-5": {
+    "name": "GLM-5",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:poolside"
+    "contextLength": 202752,
+    "source": "external-catalog:alibaba-token-plan",
+    "deprecated": true
   },
-  "poolside-laguna-s-2.1": {
-    "name": "Laguna S 2.1",
+  "qwen-image-2.0": {
+    "name": "Qwen Image 2.0",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 8192,
+    "source": "external-catalog:alibaba-token-plan"
+  },
+  "wan2.7-image": {
+    "name": "Wan2.7 Image",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 8192,
+    "source": "external-catalog:alibaba-token-plan"
+  },
+  "wan2.7-image-pro": {
+    "name": "Wan2.7 Image Pro",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 8192,
+    "source": "external-catalog:alibaba-token-plan"
+  },
+  "happyhorse-1.1-i2v": {
+    "name": "HappyHorse 1.1 Image-to-Video",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:alibaba-token-plan"
+  },
+  "minimax-m2.5": {
+    "name": "MiniMax-M2.5",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 196608,
+    "source": "external-catalog:alibaba-token-plan",
+    "deprecated": true
+  },
+  "glm-4.7": {
+    "name": "GLM-4.7",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 204800,
+    "source": "external-catalog:kuae-cloud-coding-plan",
+    "deprecated": true
+  },
+  "google-lyria-3-pro-preview": {
+    "name": "Lyria 3 Pro Preview",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "lyria-3-pro-preview": {
+    "name": "Lyria 3 Pro Preview",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "google-lyria-3-clip-preview": {
+    "name": "Lyria 3 Clip Preview",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "lyria-3-clip-preview": {
+    "name": "Lyria 3 Clip Preview",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 1048576,
+    "source": "external-catalog:openrouter"
+  },
+  "deepseek-v4-flash": {
+    "name": "DeepSeek V4 Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:sensenova",
+    "deprecated": true
+  },
+  "deepseek-flash": {
+    "name": "DeepSeek V4.1 Flash",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1048576,
-    "source": "external-catalog:poolside",
-    "deprecated": true
+    "source": "external-catalog:sensenova"
   },
-  "laguna-s-2.1": {
-    "name": "Laguna S 2.1",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:poolside",
-    "deprecated": true
-  },
-  "qwen3.8-flash-next": {
-    "name": "Qwen3.8 Flash Next",
+  "sensenova-6.8-flash-lite": {
+    "name": "SenseNova 6.8 Flash Lite",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 262144,
+    "source": "external-catalog:sensenova"
+  },
+  "minimax-m2.7": {
+    "name": "MiniMax-M2.7",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 204800,
+    "source": "external-catalog:scnet-token-plan",
+    "deprecated": true
+  },
+  "minicpm5-2b": {
+    "name": "MiniCPM5-2B",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 131072,
     "source": "external-catalog:amd"
   },
   "minicpm-v-4.7-35b-a3b": {
@@ -4667,379 +4815,45 @@
     "contextLength": 262144,
     "source": "external-catalog:amd"
   },
-  "deepseek-v4-flash": {
-    "name": "DeepSeek V4 Flash 0731",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:amd",
-    "deprecated": true
-  },
-  "minicpm5-2b": {
-    "name": "MiniCPM5-2B",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 131072,
-    "source": "external-catalog:amd"
-  },
-  "gpt-transcribe": {
-    "name": "GPT-Transcribe",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:llmgateway"
-  },
-  "gpt-live-transcribe": {
-    "name": "GPT-Live-Transcribe",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:llmgateway"
-  },
-  "custom": {
-    "name": "Custom Model",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:llmgateway"
-  },
-  "auto": {
-    "name": "Auto Route",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 2000000,
-    "source": "external-catalog:llmgateway"
-  },
-  "kimi-k2.5": {
-    "name": "Kimi K2.5",
+  "qwen3.8-flash-next": {
+    "name": "Qwen3.8 Flash Next",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 262144,
-    "source": "external-catalog:alibaba-coding-plan",
-    "deprecated": true
+    "source": "external-catalog:amd"
   },
-  "glm-5": {
-    "name": "GLM-5",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 202752,
-    "source": "external-catalog:alibaba-coding-plan",
-    "deprecated": true
-  },
-  "qwen3.6-plus": {
-    "name": "Qwen3.6 Plus",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:alibaba-coding-plan"
-  },
-  "qwen3.5-plus": {
-    "name": "Qwen3.5 Plus",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:alibaba-coding-plan"
-  },
-  "minimax-m2.5": {
-    "name": "MiniMax-M2.5",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 196608,
-    "source": "external-catalog:alibaba-coding-plan",
-    "deprecated": true
-  },
-  "north-mini-code-1-0": {
-    "name": "North Mini Code",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 256000,
-    "source": "external-catalog:cohere"
-  },
-  "north-small-translate-09-2026": {
-    "name": "North Small Translate",
+  "tc-code-latest": {
+    "name": "Auto",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
-    "contextLength": 32768,
-    "source": "external-catalog:cohere"
+    "contextLength": 131072,
+    "source": "external-catalog:tencent-coding-plan"
   },
-  "z-ai-glm-5.3-free": {
-    "name": "GLM-5.3 (free)",
+  "glm-5.3-highspeed": {
+    "name": "GLM-5.3 Highspeed",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1000000,
-    "source": "external-catalog:tokenrouter"
+    "source": "external-catalog:zai-coding-plan"
   },
-  "glm-5.3-free": {
-    "name": "GLM-5.3 (free)",
+  "glm-5.4": {
+    "name": "GLM-5.4",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1000000,
-    "source": "external-catalog:tokenrouter"
+    "source": "external-catalog:zai-coding-plan"
   },
-  "duo-chat-gpt-5-4-mini": {
-    "name": "Agentic Chat (GPT-5.4 Mini)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 400000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-opus-5-5": {
-    "name": "Agentic Chat (Claude Opus 5.5)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-sonnet-5": {
-    "name": "Agentic Chat (Claude Sonnet 5)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-sonnet-5-5": {
-    "name": "Agentic Chat (Claude Sonnet 5.5)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-6-1-sol": {
-    "name": "Agentic Chat (GPT-6.1 Sol)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1050000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-5-2": {
-    "name": "Agentic Chat (GPT-5.2)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 400000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-5-4": {
-    "name": "Agentic Chat (GPT-5.4)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1050000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-opus-4-8": {
-    "name": "Agentic Chat (Claude Opus 4.8)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-opus-4-6": {
-    "name": "Agentic Chat (Claude Opus 4.6)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-fable-5-1": {
-    "name": "Agentic Chat (Claude Fable 5.1)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-5-6-terra": {
-    "name": "Agentic Chat (GPT-5.6 Terra)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1050000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-opus-4-7": {
-    "name": "Agentic Chat (Claude Opus 4.7)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-6-sol": {
-    "name": "Agentic Chat (GPT-6 Sol)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1050000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-fable-5": {
-    "name": "Agentic Chat (Claude Fable 5)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-6-luna": {
-    "name": "Agentic Chat (GPT-6 Luna)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1050000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-opus-4-5": {
-    "name": "Agentic Chat (Claude Opus 4.5)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 200000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-5-5": {
-    "name": "Agentic Chat (GPT-5.5)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1050000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-5-6-sol": {
-    "name": "Agentic Chat (GPT-5.6 Sol)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1050000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-sonnet-4-6": {
-    "name": "Agentic Chat (Claude Sonnet 4.6)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-haiku-4-5": {
-    "name": "Agentic Chat (Claude Haiku 4.5)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 200000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-5-6-luna": {
-    "name": "Agentic Chat (GPT-5.6 Luna)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1050000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-haiku-5-5": {
-    "name": "Agentic Chat (Claude Haiku 5.5)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-gpt-6-astra": {
-    "name": "Agentic Chat (GPT-6 Astra)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1050000,
-    "source": "external-catalog:gitlab"
-  },
-  "duo-chat-opus-5": {
-    "name": "Agentic Chat (Claude Opus 5)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:gitlab"
-  },
-  "brick-v1-beta": {
-    "name": "Brick v1 Beta",
+  "allam-2-7b": {
+    "name": "ALLaM-2-7b",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
-    "contextLength": 100000,
-    "source": "external-catalog:regolo-ai"
-  },
-  "deepseek-ocr-2": {
-    "name": "DeepSeek OCR 2",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 4000,
-    "source": "external-catalog:regolo-ai"
-  },
-  "faster-whisper-large-v3": {
-    "name": "Faster Whisper Large v3",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 448,
-    "source": "external-catalog:regolo-ai"
-  },
-  "poolside-laguna-s-2.1-free": {
-    "name": "Laguna S 2.1",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 256000,
-    "source": "external-catalog:commandcode",
-    "deprecated": true
-  },
-  "laguna-s-2.1-free": {
-    "name": "Laguna S 2.1",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 256000,
-    "source": "external-catalog:commandcode",
-    "deprecated": true
-  },
-  "stealth-glyph-cluster-free": {
-    "name": "Glyph Cluster",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 256000,
-    "source": "external-catalog:commandcode"
-  },
-  "glyph-cluster-free": {
-    "name": "Glyph Cluster",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 256000,
-    "source": "external-catalog:commandcode"
+    "contextLength": 4096,
+    "source": "external-catalog:groq"
   },
   "jad-code": {
     "name": "Jad Code",
@@ -5065,389 +4879,223 @@
     "contextLength": 256000,
     "source": "external-catalog:jad-ai"
   },
-  "qwen-qwen-image-edit": {
-    "name": "Qwen Image Edit",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "qwen-image-edit": {
-    "name": "Qwen Image Edit",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "qwen-qwen-image": {
-    "name": "Qwen Image",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "qwen-image": {
-    "name": "Qwen Image",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "nvidia-sparsedrive": {
-    "name": "sparsedrive",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:nvidia"
-  },
-  "sparsedrive": {
-    "name": "sparsedrive",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:nvidia"
-  },
-  "nvidia-synthetic-video-detector": {
-    "name": "synthetic-video-detector",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "synthetic-video-detector": {
-    "name": "synthetic-video-detector",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "nvidia-magpie-tts-zeroshot": {
-    "name": "magpie-tts-zeroshot",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "magpie-tts-zeroshot": {
-    "name": "magpie-tts-zeroshot",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "nvidia-llama-nemotron-rerank-vl-1b-v2": {
-    "name": "llama-nemotron-rerank-vl-1b-v2",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 10240,
-    "source": "external-catalog:nvidia"
-  },
-  "llama-nemotron-rerank-vl-1b-v2": {
-    "name": "llama-nemotron-rerank-vl-1b-v2",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 10240,
-    "source": "external-catalog:nvidia"
-  },
-  "nvidia-streampetr": {
-    "name": "streampetr",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:nvidia"
-  },
-  "streampetr": {
-    "name": "streampetr",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:nvidia"
-  },
-  "nvidia-active-speaker-detection": {
-    "name": "Active Speaker Detection",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "active-speaker-detection": {
-    "name": "Active Speaker Detection",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "nvidia-nemotron-3.5-content-safety": {
-    "name": "Nemotron 3.5 Content Safety",
+  "poolside-laguna-s-2.1": {
+    "name": "Laguna S 2.1",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 128000,
-    "source": "external-catalog:nvidia"
+    "contextLength": 1048576,
+    "source": "external-catalog:poolside",
+    "deprecated": true
   },
-  "nemotron-3.5-content-safety": {
-    "name": "Nemotron 3.5 Content Safety",
+  "laguna-s-2.1": {
+    "name": "Laguna S 2.1",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 128000,
-    "source": "external-catalog:nvidia"
+    "contextLength": 1048576,
+    "source": "external-catalog:poolside",
+    "deprecated": true
   },
-  "nvidia-llama-nemotron-embed-vl-1b-v2": {
-    "name": "llama-nemotron-embed-vl-1b-v2",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 8192,
-    "source": "external-catalog:nvidia"
+  "poolside-laguna-m.1": {
+    "name": "Laguna M.1",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:poolside"
   },
-  "llama-nemotron-embed-vl-1b-v2": {
-    "name": "llama-nemotron-embed-vl-1b-v2",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 8192,
-    "source": "external-catalog:nvidia"
+  "laguna-m.1": {
+    "name": "Laguna M.1",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:poolside"
   },
-  "nvidia-llama-3.1-nemotron-safety-guard-8b-v3": {
-    "name": "llama-3.1-nemotron-safety-guard-8b-v3",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:nvidia"
-  },
-  "llama-3.1-nemotron-safety-guard-8b-v3": {
-    "name": "llama-3.1-nemotron-safety-guard-8b-v3",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:nvidia"
-  },
-  "meta-llama-guard-4-12b": {
-    "name": "Llama Guard 4 12B",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 163840,
-    "source": "external-catalog:nvidia"
-  },
-  "llama-guard-4-12b": {
-    "name": "Llama Guard 4 12B",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 163840,
-    "source": "external-catalog:nvidia"
-  },
-  "black-forest-labs-flux-1-kontext-dev": {
-    "name": "FLUX.1-Kontext-dev",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "flux-1-kontext-dev": {
-    "name": "FLUX.1-Kontext-dev",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "black-forest-labs-flux-1-schnell": {
-    "name": "FLUX.1-schnell",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "flux-1-schnell": {
-    "name": "FLUX.1-schnell",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "black-forest-labs-flux.1-dev": {
-    "name": "FLUX.1-dev",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "flux.1-dev": {
-    "name": "FLUX.1-dev",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "black-forest-labs-flux-2-klein-4b": {
-    "name": "FLUX.2 Klein 4B",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "flux-2-klein-4b": {
-    "name": "FLUX.2 Klein 4B",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:nvidia"
-  },
-  "openai-whisper-large-v3": {
-    "name": "Whisper Large v3",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 448,
-    "source": "external-catalog:nvidia"
-  },
-  "whisper-large-v3": {
-    "name": "Whisper Large v3",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 448,
-    "source": "external-catalog:nvidia"
-  },
-  "qwen3.5-0.8b": {
-    "name": "Qwen3.5 0.8B",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 32768,
-    "source": "external-catalog:qvac"
-  },
-  "qwen3.5-2b": {
-    "name": "Qwen3.5 2B",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 32768,
-    "source": "external-catalog:qvac"
-  },
-  "hungerg-free": {
-    "name": "HungerG Free",
+  "zdev": {
+    "name": "ZDev",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1000000,
-    "source": "external-catalog:opencode-go"
+    "source": "external-catalog:zeldoc"
   },
-  "iceman-contributor-free": {
-    "name": "Iceman Contributor Free",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:opencode-go"
+  "lynkr-auto": {
+    "name": "Lynkr Auto (complexity routing)",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:lynkr"
   },
-  "glm-4.5-flash-free": {
-    "name": "GLM-4.5-Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
+  "nano-gpt-help": {
+    "name": "NanoGPT Help",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 6000,
+    "source": "external-catalog:nano-gpt"
+  },
+  "auto-model": {
+    "name": "Auto model",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 1000000,
+    "source": "external-catalog:nano-gpt"
+  },
+  "azure-gpt-live-transcribe": {
+    "name": "GPT Live Transcribe (Azure)",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
     "contextLength": 131072,
-    "source": "external-catalog:unorouter"
+    "source": "external-catalog:llmgateway-providers"
   },
-  "minimax-m2.7-free": {
-    "name": "MiniMax-M2.7",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 204800,
-    "source": "external-catalog:unorouter"
-  },
-  "mimo-v2.5-tts": {
-    "name": "MiMo-V2.5-TTS",
+  "gpt-live-transcribe": {
+    "name": "GPT Live Transcribe (Azure)",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
-    "contextLength": 8192,
-    "source": "external-catalog:xiaomi-token-plan-ams"
+    "contextLength": 131072,
+    "source": "external-catalog:llmgateway-providers"
   },
-  "mimo-v2.5-tts-voicedesign": {
-    "name": "MiMo-V2.5-TTS-VoiceDesign",
+  "azure-gpt-transcribe": {
+    "name": "GPT Transcribe (Azure)",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
-    "contextLength": 8192,
-    "source": "external-catalog:xiaomi-token-plan-ams"
+    "contextLength": 131072,
+    "source": "external-catalog:llmgateway-providers"
   },
-  "mimo-v2.5-tts-voiceclone": {
-    "name": "MiMo-V2.5-TTS-VoiceClone",
+  "gpt-transcribe": {
+    "name": "GPT Transcribe (Azure)",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
-    "contextLength": 8192,
-    "source": "external-catalog:xiaomi-token-plan-ams"
+    "contextLength": 131072,
+    "source": "external-catalog:llmgateway-providers"
   },
-  "apodex-apodex-1.1-mini": {
-    "name": "Apodex 1.1 Mini",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
+  "openai-gpt-live-transcribe": {
+    "name": "GPT Live Transcribe (OpenAI)",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:llmgateway-providers"
+  },
+  "openai-gpt-transcribe": {
+    "name": "GPT Transcribe (OpenAI)",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:llmgateway-providers"
+  },
+  "llama3.3-70b": {
+    "name": "Llama-3.3-70B-Instruct",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:pendra"
+  },
+  "qwen3-coder-30b": {
+    "name": "Qwen3-Coder 30B-A3B Instruct",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
     "contextLength": 262144,
-    "source": "external-catalog:novita-ai"
+    "source": "external-catalog:pendra"
   },
-  "apodex-1.1-mini": {
-    "name": "Apodex 1.1 Mini",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:novita-ai"
-  },
-  "mistralai-mistral-small-3.2-24b-instruct-2506": {
-    "name": "Mistral Small 3.2 24B Instruct",
+  "qwen3-embedding-8b": {
+    "name": "Qwen3-Embedding-8B",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
     "contextLength": 32768,
-    "source": "external-catalog:meganova"
+    "source": "external-catalog:inferx"
   },
-  "dots-studio-dots-3-note-preview-free": {
-    "name": "Dots Studio: Dots3-Note Preview (free)",
+  "qwen3.6-35b-a3b-fp8": {
+    "name": "Qwen3.6 35B A3B FP8",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 512000,
-    "source": "external-catalog:kilo"
+    "contextLength": 262000,
+    "source": "external-catalog:inferx"
   },
-  "dots-3-note-preview-free": {
-    "name": "Dots Studio: Dots3-Note Preview (free)",
+  "qwen3.6-35b-a3b-fp8-no-thinking": {
+    "name": "Qwen3.6-35B-A3B-fp8-no-thinking",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 262000,
+    "source": "external-catalog:inferx"
+  },
+  "ornith-1.0-35b-fp8": {
+    "name": "Ornith-1.0-35B-FP8",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 512000,
-    "source": "external-catalog:kilo"
+    "contextLength": 262000,
+    "source": "external-catalog:inferx"
+  },
+  "gemma-4-31b-it-fp8": {
+    "name": "Gemma 4 31B IT FP8",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:inferx"
+  },
+  "mimo-v25": {
+    "name": "mimo-v25",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:inferx"
+  },
+  "qwen3-coder-next-fp8-no-thinking": {
+    "name": "Qwen3-Coder-Next-FP8-no-thinking",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 260000,
+    "source": "external-catalog:inferx"
+  },
+  "agents-a1": {
+    "name": "Agents-A1",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262000,
+    "source": "external-catalog:inferx"
+  },
+  "qwen3.6-27b-fp8": {
+    "name": "Qwen3.6 27B FP8",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:inferx"
+  },
+  "devstral-2-123b-instruct-2512-int4-autoround": {
+    "name": "Devstral-2-123B-Instruct-2512-int4-AutoRound",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:inferx"
+  },
+  "qwen3-coder-next-fp8": {
+    "name": "Qwen3 Coder Next FP8",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 256144,
+    "source": "external-catalog:inferx"
   },
   "openrouter-pareto-code": {
     "name": "Pareto Code Router",
@@ -5489,36 +5137,12 @@
     "contextLength": 2000000,
     "source": "external-catalog:kilo"
   },
-  "google-lyria-3-clip-preview": {
-    "name": "Lyria 3 Clip Preview",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 1048576,
-    "source": "external-catalog:kilo"
-  },
-  "lyria-3-clip-preview": {
-    "name": "Lyria 3 Clip Preview",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 1048576,
-    "source": "external-catalog:kilo"
-  },
-  "google-lyria-3-pro-preview": {
-    "name": "Lyria 3 Pro Preview",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 1048576,
-    "source": "external-catalog:kilo"
-  },
-  "lyria-3-pro-preview": {
-    "name": "Lyria 3 Pro Preview",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 1048576,
+  "auto": {
+    "name": "Auto Router",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 2000000,
     "source": "external-catalog:kilo"
   },
   "humansand-ampersand-v0.1": {
@@ -5537,235 +5161,329 @@
     "contextLength": 1000000,
     "source": "external-catalog:kilo"
   },
-  "reflection-beam": {
-    "name": "Beam 1.0",
+  "duo-chat-opus-5-5": {
+    "name": "Agentic Chat (Claude Opus 5.5)",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:vercel"
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
   },
-  "beam-1-0-free": {
-    "name": "Beam 1.0 (Free)",
+  "duo-chat-sonnet-5-5": {
+    "name": "Agentic Chat (Claude Sonnet 5.5)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-sonnet-5": {
+    "name": "Agentic Chat (Claude Sonnet 5)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-5-6-luna": {
+    "name": "Agentic Chat (GPT-5.6 Luna)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1050000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-opus-4-6": {
+    "name": "Agentic Chat (Claude Opus 4.6)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-haiku-5-5": {
+    "name": "Agentic Chat (Claude Haiku 5.5)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-fable-5": {
+    "name": "Agentic Chat (Claude Fable 5)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-5-6-sol": {
+    "name": "Agentic Chat (GPT-5.6 Sol)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1050000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-opus-4-8": {
+    "name": "Agentic Chat (Claude Opus 4.8)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-5-4": {
+    "name": "Agentic Chat (GPT-5.4)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1050000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-6-astra": {
+    "name": "Agentic Chat (GPT-6 Astra)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1050000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-6-1-sol": {
+    "name": "Agentic Chat (GPT-6.1 Sol)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1050000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-6-sol": {
+    "name": "Agentic Chat (GPT-6 Sol)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1050000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-5-4-mini": {
+    "name": "Agentic Chat (GPT-5.4 Mini)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 400000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-fable-5-1": {
+    "name": "Agentic Chat (Claude Fable 5.1)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-opus-4-5": {
+    "name": "Agentic Chat (Claude Opus 4.5)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 200000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-5-5": {
+    "name": "Agentic Chat (GPT-5.5)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1050000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-opus-5": {
+    "name": "Agentic Chat (Claude Opus 5)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-5-6-terra": {
+    "name": "Agentic Chat (GPT-5.6 Terra)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1050000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-6-luna": {
+    "name": "Agentic Chat (GPT-6 Luna)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1050000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-opus-4-7": {
+    "name": "Agentic Chat (Claude Opus 4.7)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-sonnet-4-6": {
+    "name": "Agentic Chat (Claude Sonnet 4.6)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-gpt-5-2": {
+    "name": "Agentic Chat (GPT-5.2)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 400000,
+    "source": "external-catalog:gitlab"
+  },
+  "duo-chat-haiku-4-5": {
+    "name": "Agentic Chat (Claude Haiku 4.5)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 200000,
+    "source": "external-catalog:gitlab"
+  },
+  "qwen3.6": {
+    "name": "Qwen3.6 35B-A3B",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 262144,
-    "source": "external-catalog:kenari"
+    "source": "external-catalog:nan"
   },
-  "glm-4-6v-flash-free": {
-    "name": "GLM-4.6V-Flash",
+  "gemma4": {
+    "name": "Gemma 4 26B A4B IT",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:nan"
+  },
+  "qwen-qwen3.6-35b-a3b-fp8": {
+    "name": "Qwen3.6 35B A3B FP8",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:hetzner"
+  },
+  "coding-glm-5.1-free": {
+    "name": "Coding GLM 5.1 (free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 200000,
+    "source": "external-catalog:aihubmix"
+  },
+  "nemotron-3.5-content-safety-free": {
+    "name": "Nemotron 3.5 Content Safety (free)",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 128000,
-    "source": "external-catalog:kenari"
+    "source": "external-catalog:aihubmix"
   },
-  "solar-mini4-free": {
-    "name": "Solar Mini 4",
+  "nemotron-3-super-120b-a12b-free": {
+    "name": "Nemotron 3 Super 120B A12B (free)",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 524288,
-    "source": "external-catalog:kenari"
+    "contextLength": 262144,
+    "source": "external-catalog:aihubmix"
   },
-  "longcat-2-5-free": {
-    "name": "LongCat-2.5",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:kenari"
-  },
-  "glm-4-7-flash-free": {
-    "name": "GLM-4.7-Flash (Free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 200000,
-    "source": "external-catalog:kenari"
-  },
-  "deepseek-v4-pro": {
-    "name": "DeepSeek V4 Pro",
+  "coding-glm-5.2-free": {
+    "name": "GLM-5.2 (Coding, free)",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1000000,
-    "source": "external-catalog:scnet-token-plan",
-    "deprecated": true
+    "source": "external-catalog:aihubmix"
   },
-  "glm-5.1": {
-    "name": "GLM-5.1",
+  "glm-4.7-flash-free": {
+    "name": "GLM-4.7-Flash (free)",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 200000,
-    "source": "external-catalog:scnet-token-plan",
+    "source": "external-catalog:aihubmix"
+  },
+  "qwen3.8-flash-free": {
+    "name": "Qwen3.8 Flash (free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:aihubmix"
+  },
+  "ling-3.0-flash-free": {
+    "name": "Ling 3.0 Flash (free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:aihubmix",
     "deprecated": true
   },
-  "minimax-m2.7": {
-    "name": "MiniMax-M2.7",
+  "coding-glm-5.3-flash-free": {
+    "name": "GLM-5.3-Flash (Coding, free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:aihubmix"
+  },
+  "qwen3.8-max-free": {
+    "name": "Qwen3.8 Max (free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:aihubmix"
+  },
+  "coding-glm-5.3-free": {
+    "name": "GLM-5.3 (Coding, free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:aihubmix"
+  },
+  "coding-minimax-m2.7-free": {
+    "name": "Coding MiniMax M2.7 (Free)",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 204800,
-    "source": "external-catalog:scnet-token-plan",
-    "deprecated": true
+    "source": "external-catalog:aihubmix"
   },
-  "sensenova-6.8-flash-lite": {
-    "name": "SenseNova 6.8 Flash Lite",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:sensenova"
-  },
-  "deepseek-flash": {
-    "name": "DeepSeek V4.1 Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:sensenova"
-  },
-  "agnes-2.5-flash": {
-    "name": "Agnes 2.5 Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 512000,
-    "source": "external-catalog:agnes"
-  },
-  "agnes-3.0-flash": {
-    "name": "Agnes 3.0 Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 512000,
-    "source": "external-catalog:agnes"
-  },
-  "beam-1.0-501b-a23b": {
-    "name": "Beam 1.0 501B A23B",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:reflection"
-  },
-  "k3.1-pro-highspeed": {
-    "name": "Kimi K3.1 Pro Highspeed",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:kimi-code-plan-global"
-  },
-  "kimi-for-coding": {
-    "name": "kimi-for-coding",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:kimi-code-plan-global"
-  },
-  "k3.1-pro": {
-    "name": "Kimi K3.1 Pro",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:kimi-code-plan-global"
-  },
-  "kimi-for-coding-highspeed": {
-    "name": "Kimi For Coding HighSpeed",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:kimi-code-plan-global"
-  },
-  "k3-256k": {
-    "name": "Kimi K3-256K",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:kimi-code-plan-global"
-  },
-  "k3": {
-    "name": "Kimi K3",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:kimi-code-plan-global"
-  },
-  "glm-4-5-flash": {
-    "name": "GLM 4.5 Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 131072,
-    "source": "external-catalog:empiriolabs"
-  },
-  "glm-4-6v-flash": {
-    "name": "GLM 4.6V Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 131072,
-    "source": "external-catalog:empiriolabs"
-  },
-  "glm-4-7-flash": {
-    "name": "GLM 4.7 Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 202752,
-    "source": "external-catalog:empiriolabs"
-  },
-  "glm-5.4": {
-    "name": "GLM-5.4",
+  "z-ai-glm-5.3-free": {
+    "name": "GLM-5.3 (free)",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1000000,
-    "source": "external-catalog:zai-coding-plan"
+    "source": "external-catalog:tokenrouter"
   },
-  "glm-5.3-highspeed": {
-    "name": "GLM-5.3 Highspeed",
+  "glm-5.3-free": {
+    "name": "GLM-5.3 (free)",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1000000,
-    "source": "external-catalog:zai-coding-plan"
-  },
-  "umans-flash": {
-    "name": "Umans Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:umans-ai-coding-plan"
+    "source": "external-catalog:tokenrouter"
   },
   "umans-deepseek-v4.1-flash-1017": {
     "name": "DeepSeek V4.1 Flash 1017",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:umans-ai-coding-plan"
-  },
-  "umans-kimi-k3.1-pro": {
-    "name": "Kimi K3.1 Pro",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1048576,
-    "source": "external-catalog:umans-ai-coding-plan"
-  },
-  "umans-coder": {
-    "name": "Umans Coder",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
@@ -5780,6 +5498,22 @@
     "contextLength": 1048576,
     "source": "external-catalog:umans-ai-coding-plan"
   },
+  "umans-flash": {
+    "name": "Umans Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:umans-ai-coding-plan"
+  },
+  "umans-coder": {
+    "name": "Umans Coder",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:umans-ai-coding-plan"
+  },
   "umans-deepseek-v4.1-flash": {
     "name": "DeepSeek V4.1 Flash",
     "score": 75,
@@ -5788,215 +5522,13 @@
     "contextLength": 1048576,
     "source": "external-catalog:umans-ai-coding-plan"
   },
-  "lynkr-auto": {
-    "name": "Lynkr Auto (complexity routing)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:lynkr"
-  },
-  "auto-model": {
-    "name": "Auto model",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 1000000,
-    "source": "external-catalog:nano-gpt"
-  },
-  "nano-gpt-help": {
-    "name": "NanoGPT Help",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 6000,
-    "source": "external-catalog:nano-gpt"
-  },
-  "wan2.7-image": {
-    "name": "Wan2.7 Image",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 8192,
-    "source": "external-catalog:alibaba-token-plan-cn"
-  },
-  "qwen-image-2.0-pro": {
-    "name": "Qwen Image 2.0 Pro",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 8192,
-    "source": "external-catalog:alibaba-token-plan-cn"
-  },
-  "happyhorse-1.1-i2v": {
-    "name": "HappyHorse 1.1 Image-to-Video",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:alibaba-token-plan-cn"
-  },
-  "qwen-image-2.0": {
-    "name": "Qwen Image 2.0",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 8192,
-    "source": "external-catalog:alibaba-token-plan-cn"
-  },
-  "happyhorse-1.1-t2v": {
-    "name": "HappyHorse 1.1 Text-to-Video",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:alibaba-token-plan-cn"
-  },
-  "wan2.7-image-pro": {
-    "name": "Wan2.7 Image Pro",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 8192,
-    "source": "external-catalog:alibaba-token-plan-cn"
-  },
-  "happyhorse-1.1-r2v": {
-    "name": "HappyHorse 1.1 Reference-to-Video",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:alibaba-token-plan-cn"
-  },
-  "mini-lm-l12-v2": {
-    "name": "All-MiniLM-L12-v2",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128,
-    "source": "external-catalog:infomaniak"
-  },
-  "nova-2-lite-v1": {
-    "name": "Nova 2 Lite",
+  "umans-kimi-k3.1-pro": {
+    "name": "Kimi K3.1 Pro",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:nova"
-  },
-  "nova-2-pro-v1": {
-    "name": "Nova 2 Pro",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:nova"
-  },
-  "z-ai-glm-4.7-flash-free": {
-    "name": "GLM 4.7 Flash (Free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 200000,
-    "source": "external-catalog:zenmux"
-  },
-  "glm-4.7-flash-free": {
-    "name": "GLM 4.7 Flash (Free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 200000,
-    "source": "external-catalog:zenmux"
-  },
-  "z-ai-glm-4.6v-flash-free": {
-    "name": "GLM 4.6V Flash (Free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 200000,
-    "source": "external-catalog:zenmux"
-  },
-  "glm-4.6v-flash-free": {
-    "name": "GLM 4.6V Flash (Free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 200000,
-    "source": "external-catalog:zenmux"
-  },
-  "qwen-qwen3.6-35b-a3b-fp8": {
-    "name": "Qwen3.6 35B A3B FP8",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:hetzner"
-  },
-  "qwen3.6-35b-a3b-fp8": {
-    "name": "Qwen3.6 35B A3B FP8",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:hetzner"
-  },
-  "glm-4.5-flash": {
-    "name": "GLM-4.5-Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 131072,
-    "source": "external-catalog:zai"
-  },
-  "glm-4.6v-flash": {
-    "name": "GLM-4.6V-Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 128000,
-    "source": "external-catalog:zai"
-  },
-  "zai-org-glm-4.7-flash": {
-    "name": "GLM-4.7-Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 200000,
-    "source": "external-catalog:huggingface",
-    "deprecated": true
-  },
-  "orcarouter-auto": {
-    "name": "OrcaRouter Auto",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:orcarouter"
-  },
-  "allam-2-7b": {
-    "name": "ALLaM-2-7b",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 4096,
-    "source": "external-catalog:groq"
-  },
-  "z-ai-glm-5.3": {
-    "name": "GLM-5.3",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:inferall",
-    "deprecated": true
-  },
-  "deepseek-deepseek-v4-flash": {
-    "name": "DeepSeek V4 Flash",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:obscurify"
+    "contextLength": 1048576,
+    "source": "external-catalog:umans-ai-coding-plan"
   },
   "deepseek-ai-deepseek-ocr": {
     "name": "deepseek-ai/DeepSeek-OCR",
@@ -6030,6 +5562,150 @@
     "contextLength": 16384,
     "source": "external-catalog:siliconflow-cn"
   },
+  "custom": {
+    "name": "Custom Model",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:llmgateway"
+  },
+  "reflection-beam": {
+    "name": "Beam 1.0",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:vercel"
+  },
+  "glm-4-5-flash": {
+    "name": "GLM 4.5 Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 131072,
+    "source": "external-catalog:empiriolabs"
+  },
+  "glm-4-6v-flash": {
+    "name": "GLM 4.6V Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 131072,
+    "source": "external-catalog:empiriolabs"
+  },
+  "glm-4-7-flash": {
+    "name": "GLM 4.7 Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 202752,
+    "source": "external-catalog:empiriolabs"
+  },
+  "glm-4.5-flash": {
+    "name": "GLM-4.5-Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 131072,
+    "source": "external-catalog:zhipuai"
+  },
+  "glm-4.6v-flash": {
+    "name": "GLM-4.6V-Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 128000,
+    "source": "external-catalog:zhipuai"
+  },
+  "qwen-qwen3-30b-a3b-2507": {
+    "name": "Qwen3 30B A3B 2507",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 262144,
+    "source": "external-catalog:lmstudio"
+  },
+  "qwen3-30b-a3b-2507": {
+    "name": "Qwen3 30B A3B 2507",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 262144,
+    "source": "external-catalog:lmstudio"
+  },
+  "qwen-qwen3-coder-30b": {
+    "name": "Qwen3 Coder 30B",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 262144,
+    "source": "external-catalog:lmstudio"
+  },
+  "qwen3-5-9b-mlx-4bit": {
+    "name": "Qwen 3.5 9B (MLX 4-bit)",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 32768,
+    "source": "external-catalog:atomic-chat"
+  },
+  "meta-llama-3-1-8b-instruct-gguf": {
+    "name": "Meta Llama 3.1 8B Instruct (GGUF)",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:atomic-chat"
+  },
+  "gemma-4-e4b-it-mlx-4bit": {
+    "name": "Gemma 4 E4B Instruct (MLX 4-bit)",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 32768,
+    "source": "external-catalog:atomic-chat"
+  },
+  "gemma-4-e4b-it-iq4-xs": {
+    "name": "Gemma 4 E4B Instruct (IQ4_XS)",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 32768,
+    "source": "external-catalog:atomic-chat"
+  },
+  "qwen3-5-9b-q4-k-m": {
+    "name": "Qwen 3.5 9B (Q4_K_M)",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 32768,
+    "source": "external-catalog:atomic-chat"
+  },
+  "deepseek-r1-distill-qwen-1-5b": {
+    "name": "DeepSeek R1 Distill Qwen 1.5B",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 32768,
+    "source": "external-catalog:alibaba-cn"
+  },
+  "minimax-m2.7-free": {
+    "name": "MiniMax-M2.7",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 204800,
+    "source": "external-catalog:unorouter"
+  },
+  "glm-4.5-flash-free": {
+    "name": "GLM-4.5-Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 131072,
+    "source": "external-catalog:unorouter"
+  },
   "google-gemma-4-31b": {
     "name": "Gemma-4-31B",
     "score": 60,
@@ -6062,143 +5738,544 @@
     "contextLength": 128000,
     "source": "external-catalog:poe"
   },
-  "tc-code-latest": {
-    "name": "Auto",
+  "mistralai-mistral-small-3.2-24b-instruct-2506": {
+    "name": "Mistral Small 3.2 24B Instruct",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:tencent-coding-plan"
+    "contextLength": 32768,
+    "source": "external-catalog:meganova"
   },
-  "hy3-preview": {
-    "name": "Hy3 preview",
+  "apodex-1.1-mini": {
+    "name": "Apodex 1.1 Mini",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 256000,
-    "source": "external-catalog:tencent-tokenhub"
+    "contextLength": 262144,
+    "source": "external-catalog:concentrate"
   },
-  "doubao-seed-2.0-mini": {
-    "name": "Seed 2.0 Mini",
+  "k3-256k": {
+    "name": "Kimi K3-256K",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 256000,
-    "source": "external-catalog:volcengine-coding-plan",
-    "deprecated": true
+    "contextLength": 262144,
+    "source": "external-catalog:kimi-code-plan-global"
   },
-  "kimi-k2.8-preview": {
-    "name": "Kimi K2.8 Preview",
+  "k3.1-pro": {
+    "name": "Kimi K3.1 Pro",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 1048576,
-    "source": "external-catalog:volcengine-coding-plan"
+    "source": "external-catalog:kimi-code-plan-global"
   },
-  "deepseek-v4.1-flash-economy": {
-    "name": "DeepSeek V4.1 Flash",
+  "kimi-for-coding": {
+    "name": "kimi-for-coding",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:volcengine-coding-plan"
+    "contextLength": 1048576,
+    "source": "external-catalog:kimi-code-plan-global"
   },
-  "doubao-seed-evolving": {
-    "name": "Seed Evolving",
+  "k3": {
+    "name": "Kimi K3",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 1024000,
-    "source": "external-catalog:volcengine-coding-plan"
+    "contextLength": 1048576,
+    "source": "external-catalog:kimi-code-plan-global"
   },
-  "doubao-seed-2.1-lite": {
-    "name": "Seed 2.1 Lite",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1024000,
-    "source": "external-catalog:volcengine-coding-plan"
-  },
-  "doubao-seed-2.1-pro": {
-    "name": "Seed 2.1 Pro",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1024000,
-    "source": "external-catalog:volcengine-coding-plan"
-  },
-  "azure-gpt-transcribe": {
-    "name": "GPT Transcribe (Azure)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:llmgateway-providers"
-  },
-  "azure-gpt-live-transcribe": {
-    "name": "GPT Live Transcribe (Azure)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:llmgateway-providers"
-  },
-  "openai-gpt-transcribe": {
-    "name": "GPT Transcribe (OpenAI)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:llmgateway-providers"
-  },
-  "openai-gpt-live-transcribe": {
-    "name": "GPT Live Transcribe (OpenAI)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:llmgateway-providers"
-  },
-  "glm-4.7": {
-    "name": "GLM-4.7",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 204800,
-    "source": "external-catalog:kuae-cloud-coding-plan",
-    "deprecated": true
-  },
-  "qwen3.6": {
-    "name": "Qwen3.6 35B-A3B",
+  "kimi-for-coding-highspeed": {
+    "name": "Kimi For Coding HighSpeed",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 262144,
-    "source": "external-catalog:nan"
+    "source": "external-catalog:kimi-code-plan-global"
   },
-  "gemma4": {
-    "name": "Gemma 4 26B A4B IT",
+  "k3.1-pro-highspeed": {
+    "name": "Kimi K3.1 Pro Highspeed",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:kimi-code-plan-global"
+  },
+  "prism-ml-ternary-bonsai-27b": {
+    "name": "Ternary Bonsai 27B",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
     "contextLength": 262144,
-    "source": "external-catalog:nan"
+    "source": "external-catalog:togetherai"
   },
-  "llama3.3-70b": {
-    "name": "Llama-3.3-70B-Instruct",
+  "ternary-bonsai-27b": {
+    "name": "Ternary Bonsai 27B",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:togetherai"
+  },
+  "orcarouter-auto": {
+    "name": "OrcaRouter Auto",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
     "contextLength": 128000,
-    "source": "external-catalog:pendra"
+    "source": "external-catalog:orcarouter"
   },
-  "qwen3-coder-30b": {
-    "name": "Qwen3-Coder 30B-A3B Instruct",
+  "deepseek-deepseek-v4-flash": {
+    "name": "DeepSeek V4 Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:obscurify"
+  },
+  "north-small-translate-09-2026": {
+    "name": "North Small Translate",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
-    "contextLength": 262144,
-    "source": "external-catalog:pendra"
+    "contextLength": 32768,
+    "source": "external-catalog:cohere"
+  },
+  "command-a-plus-05-2026": {
+    "name": "Command A Plus",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 128000,
+    "source": "external-catalog:cohere"
+  },
+  "north-mini-code-1-0": {
+    "name": "North Mini Code",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 256000,
+    "source": "external-catalog:cohere"
+  },
+  "north-mini-code-1.0": {
+    "name": "North Mini Code",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 256000,
+    "source": "external-catalog:cohere"
+  },
+  "north-small-translate-1.0": {
+    "name": "North Small Translate",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 32768,
+    "source": "external-catalog:cohere"
+  },
+  "olala-v1.0-translate": {
+    "name": "Olala-v1.0-translate",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 8192,
+    "source": "external-catalog:ovhcloud"
+  },
+  "black-forest-labs-flux-2-klein-4b": {
+    "name": "FLUX.2 Klein 4B",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "flux-2-klein-4b": {
+    "name": "FLUX.2 Klein 4B",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "black-forest-labs-flux-1-schnell": {
+    "name": "FLUX.1-schnell",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "flux-1-schnell": {
+    "name": "FLUX.1-schnell",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "black-forest-labs-flux.1-dev": {
+    "name": "FLUX.1-dev",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "flux.1-dev": {
+    "name": "FLUX.1-dev",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "black-forest-labs-flux-1-kontext-dev": {
+    "name": "FLUX.1-Kontext-dev",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "flux-1-kontext-dev": {
+    "name": "FLUX.1-Kontext-dev",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "meta-llama-guard-4-12b": {
+    "name": "Llama Guard 4 12B",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 163840,
+    "source": "external-catalog:nvidia"
+  },
+  "llama-guard-4-12b": {
+    "name": "Llama Guard 4 12B",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 163840,
+    "source": "external-catalog:nvidia"
+  },
+  "qwen-qwen-image-edit": {
+    "name": "Qwen Image Edit",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "qwen-image-edit": {
+    "name": "Qwen Image Edit",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "qwen-qwen-image": {
+    "name": "Qwen Image",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "qwen-image": {
+    "name": "Qwen Image",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-llama-3.1-nemotron-safety-guard-8b-v3": {
+    "name": "llama-3.1-nemotron-safety-guard-8b-v3",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:nvidia"
+  },
+  "llama-3.1-nemotron-safety-guard-8b-v3": {
+    "name": "llama-3.1-nemotron-safety-guard-8b-v3",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-active-speaker-detection": {
+    "name": "Active Speaker Detection",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "active-speaker-detection": {
+    "name": "Active Speaker Detection",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-sparsedrive": {
+    "name": "sparsedrive",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:nvidia"
+  },
+  "sparsedrive": {
+    "name": "sparsedrive",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-magpie-tts-zeroshot": {
+    "name": "magpie-tts-zeroshot",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "magpie-tts-zeroshot": {
+    "name": "magpie-tts-zeroshot",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-synthetic-video-detector": {
+    "name": "synthetic-video-detector",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "synthetic-video-detector": {
+    "name": "synthetic-video-detector",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 131072,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-llama-nemotron-embed-vl-1b-v2": {
+    "name": "llama-nemotron-embed-vl-1b-v2",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 8192,
+    "source": "external-catalog:nvidia"
+  },
+  "llama-nemotron-embed-vl-1b-v2": {
+    "name": "llama-nemotron-embed-vl-1b-v2",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 8192,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-streampetr": {
+    "name": "streampetr",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:nvidia"
+  },
+  "streampetr": {
+    "name": "streampetr",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 128000,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-llama-nemotron-rerank-vl-1b-v2": {
+    "name": "llama-nemotron-rerank-vl-1b-v2",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 10240,
+    "source": "external-catalog:nvidia"
+  },
+  "llama-nemotron-rerank-vl-1b-v2": {
+    "name": "llama-nemotron-rerank-vl-1b-v2",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 10240,
+    "source": "external-catalog:nvidia"
+  },
+  "nvidia-nemotron-3.5-content-safety": {
+    "name": "Nemotron 3.5 Content Safety",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 128000,
+    "source": "external-catalog:nvidia"
+  },
+  "nemotron-3.5-content-safety": {
+    "name": "Nemotron 3.5 Content Safety",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 128000,
+    "source": "external-catalog:nvidia"
+  },
+  "openai-whisper-large-v3": {
+    "name": "Whisper Large v3",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 448,
+    "source": "external-catalog:nvidia"
+  },
+  "whisper-large-v3": {
+    "name": "Whisper Large v3",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 448,
+    "source": "external-catalog:nvidia"
+  },
+  "poolside-laguna-s-2.1-free": {
+    "name": "Laguna S 2.1",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 256000,
+    "source": "external-catalog:commandcode",
+    "deprecated": true
+  },
+  "laguna-s-2.1-free": {
+    "name": "Laguna S 2.1",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 256000,
+    "source": "external-catalog:commandcode",
+    "deprecated": true
+  },
+  "stealth-glyph-cluster-free": {
+    "name": "Glyph Cluster",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 256000,
+    "source": "external-catalog:commandcode"
+  },
+  "glyph-cluster-free": {
+    "name": "Glyph Cluster",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 256000,
+    "source": "external-catalog:commandcode"
+  },
+  "agnes-2.5-flash": {
+    "name": "Agnes 2.5 Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 512000,
+    "source": "external-catalog:agnes"
+  },
+  "agnes-3.0-flash": {
+    "name": "Agnes 3.0 Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 512000,
+    "source": "external-catalog:agnes"
+  },
+  "z-ai-glm-5.3": {
+    "name": "GLM-5.3",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:inferall",
+    "deprecated": true
+  },
+  "qwen3.5-2b": {
+    "name": "Qwen3.5 2B",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 32768,
+    "source": "external-catalog:qvac"
+  },
+  "qwen3.5-0.8b": {
+    "name": "Qwen3.5 0.8B",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 32768,
+    "source": "external-catalog:qvac"
+  },
+  "beam-1.0-501b-a23b": {
+    "name": "Beam 1.0 501B A23B",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:reflection"
+  },
+  "nova-2-pro-v1": {
+    "name": "Nova 2 Pro",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:nova"
+  },
+  "nova-2-lite-v1": {
+    "name": "Nova 2 Lite",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:nova"
+  },
+  "brick-v1-beta": {
+    "name": "Brick v1 Beta",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 100000,
+    "source": "external-catalog:regolo-ai"
+  },
+  "deepseek-ocr-2": {
+    "name": "DeepSeek OCR 2",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 4000,
+    "source": "external-catalog:regolo-ai"
+  },
+  "faster-whisper-large-v3": {
+    "name": "Faster Whisper Large v3",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 448,
+    "source": "external-catalog:regolo-ai"
   },
   "cohere-command-a-vision-07-2025": {
     "name": "Command A Vision",
@@ -6232,76 +6309,157 @@
     "contextLength": 8992,
     "source": "external-catalog:edenai"
   },
-  "qwen3-5-9b-mlx-4bit": {
-    "name": "Qwen 3.5 9B (MLX 4-bit)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 32768,
-    "source": "external-catalog:atomic-chat"
-  },
-  "qwen3-5-9b-q4-k-m": {
-    "name": "Qwen 3.5 9B (Q4_K_M)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 32768,
-    "source": "external-catalog:atomic-chat"
-  },
-  "gemma-4-e4b-it-iq4-xs": {
-    "name": "Gemma 4 E4B Instruct (IQ4_XS)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 32768,
-    "source": "external-catalog:atomic-chat"
-  },
-  "meta-llama-3-1-8b-instruct-gguf": {
-    "name": "Meta Llama 3.1 8B Instruct (GGUF)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 131072,
-    "source": "external-catalog:atomic-chat"
-  },
-  "gemma-4-e4b-it-mlx-4bit": {
-    "name": "Gemma 4 E4B Instruct (MLX 4-bit)",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 32768,
-    "source": "external-catalog:atomic-chat"
-  },
-  "zhipuai-glm-4.5": {
-    "name": "GLM-4.5",
+  "hungerg-free": {
+    "name": "HungerG Free",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 131072,
-    "source": "external-catalog:modelscope"
+    "contextLength": 1000000,
+    "source": "external-catalog:opencode-go"
   },
-  "zhipuai-glm-4.6": {
-    "name": "GLM-4.6",
+  "iceman-contributor-free": {
+    "name": "Iceman Contributor Free",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 202752,
-    "source": "external-catalog:modelscope"
+    "contextLength": 262144,
+    "source": "external-catalog:opencode-go"
   },
-  "qwen-qwen3-30b-a3b-instruct-2507": {
-    "name": "Qwen3 30B A3B Instruct 2507",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
+  "apodex-apodex-1.1-mini": {
+    "name": "Apodex 1.1 Mini",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:novita-ai"
+  },
+  "z-ai-glm-4.7-flash-free": {
+    "name": "GLM 4.7 Flash (Free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 200000,
+    "source": "external-catalog:zenmux"
+  },
+  "z-ai-glm-4.6v-flash-free": {
+    "name": "GLM 4.6V Flash (Free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 200000,
+    "source": "external-catalog:zenmux"
+  },
+  "glm-4.6v-flash-free": {
+    "name": "GLM 4.6V Flash (Free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 200000,
+    "source": "external-catalog:zenmux"
+  },
+  "doubao-seed-2.1-lite": {
+    "name": "Seed 2.1 Lite",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1024000,
+    "source": "external-catalog:volcengine-coding-plan"
+  },
+  "doubao-seed-2.1-pro": {
+    "name": "Seed 2.1 Pro",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1024000,
+    "source": "external-catalog:volcengine-coding-plan"
+  },
+  "deepseek-v4.1-flash-economy": {
+    "name": "DeepSeek V4.1 Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:volcengine-coding-plan"
+  },
+  "kimi-k2.8-preview": {
+    "name": "Kimi K2.8 Preview",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1048576,
+    "source": "external-catalog:volcengine-coding-plan"
+  },
+  "doubao-seed-evolving": {
+    "name": "Seed Evolving",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1024000,
+    "source": "external-catalog:volcengine-coding-plan"
+  },
+  "doubao-seed-2.0-mini": {
+    "name": "Seed 2.0 Mini",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 256000,
+    "source": "external-catalog:volcengine-coding-plan",
+    "deprecated": true
+  },
+  "glm-4-7-flash-free": {
+    "name": "GLM-4.7-Flash (Free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 200000,
+    "source": "external-catalog:kenari"
+  },
+  "solar-mini4-free": {
+    "name": "Solar Mini 4",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 524288,
+    "source": "external-catalog:kenari"
+  },
+  "beam-1-0-free": {
+    "name": "Beam 1.0 (Free)",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 262144,
+    "source": "external-catalog:kenari"
+  },
+  "longcat-2-5-free": {
+    "name": "LongCat-2.5",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 1000000,
+    "source": "external-catalog:kenari"
+  },
+  "glm-4-6v-flash-free": {
+    "name": "GLM-4.6V-Flash",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
+    "contextLength": 128000,
+    "source": "external-catalog:kenari"
+  },
+  "qwen-qwen3-30b-a3b-thinking-2507": {
+    "name": "Qwen3 30B A3B Thinking 2507",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
     "contextLength": 262144,
     "source": "external-catalog:modelscope",
     "deprecated": true
   },
-  "qwen3-30b-a3b-instruct-2507": {
-    "name": "Qwen3 30B A3B Instruct 2507",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
+  "qwen3-30b-a3b-thinking-2507": {
+    "name": "Qwen3 30B A3B Thinking 2507",
+    "score": 75,
+    "swe_bench": 75,
+    "tier": "S+",
     "contextLength": 262144,
     "source": "external-catalog:modelscope",
     "deprecated": true
@@ -6324,26 +6482,26 @@
     "source": "external-catalog:modelscope",
     "deprecated": true
   },
-  "qwen-qwen3-30b-a3b-thinking-2507": {
-    "name": "Qwen3 30B A3B Thinking 2507",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:modelscope",
-    "deprecated": true
-  },
-  "qwen3-30b-a3b-thinking-2507": {
-    "name": "Qwen3 30B A3B Thinking 2507",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:modelscope",
-    "deprecated": true
-  },
   "qwen-qwen3-235b-a22b-instruct-2507": {
     "name": "Qwen3 235B A22B Instruct 2507",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 262144,
+    "source": "external-catalog:modelscope",
+    "deprecated": true
+  },
+  "qwen-qwen3-30b-a3b-instruct-2507": {
+    "name": "Qwen3 30B A3B Instruct 2507",
+    "score": 60,
+    "swe_bench": 60,
+    "tier": "S",
+    "contextLength": 262144,
+    "source": "external-catalog:modelscope",
+    "deprecated": true
+  },
+  "qwen3-30b-a3b-instruct-2507": {
+    "name": "Qwen3 30B A3B Instruct 2507",
     "score": 60,
     "swe_bench": 60,
     "tier": "S",
@@ -6369,205 +6527,20 @@
     "source": "external-catalog:modelscope",
     "deprecated": true
   },
-  "qwen-qwen3-30b-a3b-2507": {
-    "name": "Qwen3 30B A3B 2507",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 262144,
-    "source": "external-catalog:lmstudio"
-  },
-  "qwen3-30b-a3b-2507": {
-    "name": "Qwen3 30B A3B 2507",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 262144,
-    "source": "external-catalog:lmstudio"
-  },
-  "qwen-qwen3-coder-30b": {
-    "name": "Qwen3 Coder 30B",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 262144,
-    "source": "external-catalog:lmstudio"
-  },
-  "zdev": {
-    "name": "ZDev",
+  "zhipuai-glm-4.6": {
+    "name": "GLM-4.6",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:zeldoc"
+    "contextLength": 202752,
+    "source": "external-catalog:modelscope"
   },
-  "ornith-1.0-35b-fp8": {
-    "name": "Ornith-1.0-35B-FP8",
+  "zhipuai-glm-4.5": {
+    "name": "GLM-4.5",
     "score": 75,
     "swe_bench": 75,
     "tier": "S+",
-    "contextLength": 262000,
-    "source": "external-catalog:inferx"
-  },
-  "gemma-4-31b-it-fp8": {
-    "name": "Gemma 4 31B IT FP8",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:inferx"
-  },
-  "qwen3-embedding-8b": {
-    "name": "Qwen3-Embedding-8B",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 32768,
-    "source": "external-catalog:inferx"
-  },
-  "devstral-2-123b-instruct-2512-int4-autoround": {
-    "name": "Devstral-2-123B-Instruct-2512-int4-AutoRound",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 128000,
-    "source": "external-catalog:inferx"
-  },
-  "mimo-v25": {
-    "name": "mimo-v25",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:inferx"
-  },
-  "qwen3-coder-next-fp8-no-thinking": {
-    "name": "Qwen3-Coder-Next-FP8-no-thinking",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 260000,
-    "source": "external-catalog:inferx"
-  },
-  "qwen3.6-27b-fp8": {
-    "name": "Qwen3.6 27B FP8",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:inferx"
-  },
-  "qwen3-coder-next-fp8": {
-    "name": "Qwen3 Coder Next FP8",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 256144,
-    "source": "external-catalog:inferx"
-  },
-  "agents-a1": {
-    "name": "Agents-A1",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262000,
-    "source": "external-catalog:inferx"
-  },
-  "qwen3.6-35b-a3b-fp8-no-thinking": {
-    "name": "Qwen3.6-35B-A3B-fp8-no-thinking",
-    "score": 60,
-    "swe_bench": 60,
-    "tier": "S",
-    "contextLength": 262000,
-    "source": "external-catalog:inferx"
-  },
-  "coding-glm-5.3-free": {
-    "name": "GLM-5.3 (Coding, free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:aihubmix"
-  },
-  "coding-glm-5.2-free": {
-    "name": "GLM-5.2 (Coding, free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:aihubmix"
-  },
-  "coding-glm-5.1-free": {
-    "name": "Coding GLM 5.1 (free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 200000,
-    "source": "external-catalog:aihubmix"
-  },
-  "ling-3.0-flash-free": {
-    "name": "Ling 3.0 Flash (free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:aihubmix",
-    "deprecated": true
-  },
-  "coding-glm-5.3-flash-free": {
-    "name": "GLM-5.3-Flash (Coding, free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:aihubmix"
-  },
-  "qwen3.8-flash-free": {
-    "name": "Qwen3.8 Flash (free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:aihubmix"
-  },
-  "coding-minimax-m2.7-free": {
-    "name": "Coding MiniMax M2.7 (Free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 204800,
-    "source": "external-catalog:aihubmix"
-  },
-  "qwen3.8-max-free": {
-    "name": "Qwen3.8 Max (free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 1000000,
-    "source": "external-catalog:aihubmix"
-  },
-  "nemotron-3-super-120b-a12b-free": {
-    "name": "Nemotron 3 Super 120B A12B (free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 262144,
-    "source": "external-catalog:aihubmix"
-  },
-  "nemotron-3.5-content-safety-free": {
-    "name": "Nemotron 3.5 Content Safety (free)",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 128000,
-    "source": "external-catalog:aihubmix"
-  },
-  "deepseek-r1-distill-qwen-1-5b": {
-    "name": "DeepSeek R1 Distill Qwen 1.5B",
-    "score": 75,
-    "swe_bench": 75,
-    "tier": "S+",
-    "contextLength": 32768,
-    "source": "external-catalog:alibaba-cn"
+    "contextLength": 131072,
+    "source": "external-catalog:modelscope"
   }
 }

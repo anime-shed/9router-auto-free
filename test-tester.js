@@ -70,24 +70,22 @@ async function main() {
     assert.ok(elapsed >= 40, `Pacer must enforce delayMs interval (elapsed: ${elapsed}ms)`);
   }
 
-  // 4. Dead models negative cache test
+  // 4. Dead models permanent negative cache test (no failCount, no revival)
   {
     const dummyStore = { models: {} };
     tester.recordDeadModel('prov/dead-1', '404 not found', 404, dummyStore);
     assert.ok(dummyStore.models['prov/dead-1']);
-    assert.strictEqual(dummyStore.models['prov/dead-1'].failCount, 1);
-    assert.strictEqual(dummyStore.models['prov/dead-1'].confirmedDead, false);
+    assert.strictEqual(dummyStore.models['prov/dead-1'].failCount, undefined, 'failCount must not be stored');
+    assert.strictEqual(dummyStore.models['prov/dead-1'].confirmedDead, true, 'Dead model must be immediately confirmed dead');
 
-    // If aged > 7 days and failCount >= 2
-    dummyStore.models['prov/dead-1'].firstSeenDead = new Date(Date.now() - 8 * 24 * 3600 * 1000).toISOString();
-    tester.recordDeadModel('prov/dead-1', '404 not found', 404, dummyStore);
-    assert.strictEqual(dummyStore.models['prov/dead-1'].confirmedDead, true);
-
+    // Even if aged > 30 days, dead stays dead and is never revived
+    dummyStore.models['prov/dead-1'].firstSeenDead = new Date(Date.now() - 35 * 24 * 3600 * 1000).toISOString();
+    dummyStore.models['prov/dead-1'].confirmedDeadAt = dummyStore.models['prov/dead-1'].firstSeenDead;
     const confirmed = tester.isModelConfirmedDead('prov/dead-1', dummyStore);
-    assert.ok(confirmed, 'Must identify confirmed dead model after 7 days');
+    assert.ok(confirmed, 'Dead model must stay dead permanently without TTL revival');
 
     tester.clearDeadModel('prov/dead-1', dummyStore);
-    assert.strictEqual(dummyStore.models['prov/dead-1'], undefined, 'Must clear dead model on success');
+    assert.strictEqual(dummyStore.models['prov/dead-1'], undefined, 'Must clear dead model on explicit clear');
   }
 
   // 5. Fallback to /v1/chat/completions on timeout bottleneck
@@ -121,6 +119,34 @@ async function main() {
     assert.strictEqual(endpointCalled, '/v1/chat/completions', 'Must fallback to /v1/chat/completions when /api/models/test times out');
     assert.strictEqual(res.valid, true, 'Fallback response must be valid');
     assert.strictEqual(res.viaChatCompletions, true, 'Result should indicate viaChatCompletions');
+  }
+
+  // 6. Pod-log error segregation tests (403, 503 high-demand, 504 timeout, 401/missing-creds)
+  {
+    const r403Harness = tester.parseUpstreamFailure(403, 'HTTP 403: [openrouter/inkling:free] [403]: {"error":{"message":"thinkingmachines/inkling-small:free is only available on agentic harnesses."}}');
+    assert.strictEqual(r403Harness.isDead, true, '403 agentic-harness-only model is dead for 9router');
+    assert.strictEqual(r403Harness.isFatalBillingOrAuth, false);
+
+    const r403Oauth = tester.parseUpstreamFailure(403, 'HTTP 403: [xai/grok-4] [403]: {"code":"unauthenticated:bad-credentials","error":"The OAuth2 access token could not be validated."}');
+    assert.strictEqual(r403Oauth.isFatalBillingOrAuth, true, '403 OAuth bad-credentials is fatal auth');
+    assert.strictEqual(r403Oauth.isDead, false, '403 OAuth bad-credentials must NOT mark model dead');
+
+    const r503Demand = tester.parseUpstreamFailure(503, 'HTTP 503: [gemini/gemini-3.5-flash] [503]: {"error":{"code":503,"message":"This model is currently experiencing high demand. Spikes in demand are usually temporary."}}');
+    assert.strictEqual(r503Demand.isRateLimit, true, '503 high demand is rate-limit/quota');
+    assert.strictEqual(r503Demand.isDead, false, '503 high demand must NOT mark model dead');
+
+    const rMissingCreds = tester.parseUpstreamFailure(404, 'HTTP 404: No active credentials for provider: 1723755422@xiaomi');
+    assert.strictEqual(rMissingCreds.isFatalBillingOrAuth, true, 'No active credentials is connection/auth error');
+    assert.strictEqual(rMissingCreds.isDead, false, 'No active credentials must NOT mark model dead');
+
+    const rTimeout = tester.parseUpstreamFailure(504, 'The operation was aborted due to timeout');
+    assert.strictEqual(rTimeout.isTimeout, true);
+    assert.strictEqual(rTimeout.isTransient, true);
+    assert.strictEqual(rTimeout.isDead, false, 'Timeout must be transient, NOT dead');
+
+    const r402Paid = tester.parseUpstreamFailure(402, 'HTTP 402: [402]: {"error":{"title":"Paid Model - Credits Required"}}');
+    assert.strictEqual(r402Paid.isDead, true, '402 Paid Model - Credits Required is dead');
+    assert.strictEqual(r402Paid.isFatalBillingOrAuth, false);
   }
 
   console.log('[✓] All tester.js unit tests passed successfully!');

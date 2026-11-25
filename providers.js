@@ -971,6 +971,26 @@ async function discover9routerActiveProviders(options = {}) {
       }
     } catch { }
   }
+  // Load dead-models.json so dead models are skipped immediately during discovery
+  let deadModelsMap = {};
+  let deadStoreObj = null;
+  try {
+    const deadPath = path.join(__dirname, 'dead-models.json');
+    if (fs.existsSync(deadPath)) {
+      deadStoreObj = JSON.parse(fs.readFileSync(deadPath, 'utf8'));
+      deadModelsMap = deadStoreObj.models || {};
+    }
+  } catch { }
+  const isDeadInStore = fullId => {
+    const e = deadModelsMap[fullId];
+    return Boolean(e && e.confirmedDead !== false);
+  };
+
+  // Clear and replace provider enabledModels in SQLite with the /v1/models output at sync start
+  if (!options.dryRun && modelsList.length > 0 && storage.syncProviderEnabledModelsFromModelsList) {
+    storage.syncProviderEnabledModelsFromModelsList(modelsList, deadStoreObj);
+  }
+
   // Support built-in OpenCode (oc) models if present in 9router models list
   if (modelsList.some(m => String(m.id || '').startsWith('oc/')) && !activeByPrefix.has('oc')) {
     const ocConn = { provider: 'opencode', prefix: 'oc', name: 'OpenCode' };
@@ -1077,6 +1097,11 @@ async function discover9routerActiveProviders(options = {}) {
     }
 
     const targetKey = conn.prefix || prefix;
+    const fullId = formatRoutingFullId(targetKey, modelId);
+    if (isDeadInStore(fullId) || isDeadInStore(id)) {
+      seenFullIds.add(id);
+      continue;
+    }
     const existingRec = PROVIDERS.find(p => p.key === targetKey || p.prefixes.includes(targetKey));
     const combo = existingRec?.combo || `${targetKey}-free`;
 
@@ -1136,6 +1161,7 @@ async function discover9routerActiveProviders(options = {}) {
       if (isPaidModel(prov, cleanDId) || isPaidModel(targetKey, cleanDId)) continue;
       if (storage.isModelExcluded && (storage.isModelExcluded(cleanDId) || storage.isModelExcluded(`${targetKey}/${cleanDId}`))) continue;
       const fullId = formatRoutingFullId(targetKey, cleanDId);
+      if (isDeadInStore(fullId)) continue;
       if (!seenFullIds.has(fullId.toLowerCase())) {
         seenFullIds.add(fullId.toLowerCase());
         results[targetKey].models.push({
@@ -1160,6 +1186,7 @@ async function discover9routerActiveProviders(options = {}) {
         if (isPaidModel(prov, cleanCId) || isPaidModel(targetKey, cleanCId)) continue;
         if (storage.isModelExcluded && (storage.isModelExcluded(cleanCId) || storage.isModelExcluded(`${targetKey}/${cleanCId}`))) continue;
         const fullId = formatRoutingFullId(targetKey, cleanCId);
+        if (isDeadInStore(fullId)) continue;
         if (!seenFullIds.has(fullId.toLowerCase())) {
           seenFullIds.add(fullId.toLowerCase());
           results[targetKey].models.push({

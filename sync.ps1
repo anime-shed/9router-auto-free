@@ -80,7 +80,7 @@ $SyncCandidates = @(
   'sync.js', 'storage.js', 'providers.js', 'tester.js', 'scheduler.js',
   'update-benchmarks.js', 'fetch-external-models.js', 'web.js', 'test.js',
   'test-tester.js', 'test-persist-guard.js', 'package.json', 'package-lock.json',
-  'index.html', 'exclusions.json', 'priorities.json', 'custom-providers.json',
+  'index.html', 'provider-registry.json', 'exclusions.json', 'priorities.json', 'custom-providers.json',
   'dead-models.json', 'benchmarks.json', 'external-models.json', 'candidates-state.json'
 )
 

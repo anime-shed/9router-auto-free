@@ -584,15 +584,12 @@ async function harvestExternalModels({
     }
   }
 
-  // Upgrade existing entries in deadStore that are known to be permanently dead (HTTP 410, retired, archived)
+  // Ensure all existing entries in deadStore are marked confirmedDead without failCount
   for (const [mId, mData] of Object.entries(deadStore.models)) {
     if (!mData) continue;
-    const isPerma = Number(mData.status) === 410 ||
-      /retired|archived|does not exist|model_not_found|permanently|no longer available/i.test(String(mData.reason || ''));
-    if (isPerma && !mData.confirmedDead) {
-      mData.confirmedDead = true;
-      if (!mData.confirmedDeadAt) mData.confirmedDeadAt = mData.lastSeenDead || now;
-    }
+    mData.confirmedDead = true;
+    if (!mData.confirmedDeadAt) mData.confirmedDeadAt = mData.lastSeenDead || now;
+    if ('failCount' in mData) delete mData.failCount;
   }
 
   const stdPrefixes = (providersHelper && providersHelper.STANDARD_PROVIDER_PREFIXES) || {
@@ -616,7 +613,6 @@ async function harvestExternalModels({
       lastSeenDead: now,
       status: 410,
       reason: depRec.reason || 'Deprecated / removed upstream in external catalog',
-      failCount: Math.max(existing?.failCount || 0, 5),
       confirmedDead: true,
       confirmedDeadAt: existing?.confirmedDeadAt || now
     };

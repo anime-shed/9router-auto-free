@@ -442,21 +442,67 @@ async function testModelWith9router(fullModelId, token, attempt = 1, fetchImpl =
   });
 }
 
+function loadExternalModelSignals() {
+  const activeIds = new Set();
+  const expiredIds = new Set();
+  const extPath = path.join(__dirname, 'external-models.json');
+  try {
+    if (!fs.existsSync(extPath)) return { activeIds, expiredIds };
+    const ext = JSON.parse(fs.readFileSync(extPath, 'utf8'));
+    const now = Date.now();
+    for (const m of (ext.models || [])) {
+      const id = String(m.id || '').toLowerCase();
+      if (!id) continue;
+      if (m.deprecatedAfter && !isNaN(new Date(m.deprecatedAfter).getTime()) && new Date(m.deprecatedAfter).getTime() <= now) {
+        expiredIds.add(id);
+      } else {
+        activeIds.add(id);
+      }
+    }
+    for (const ids of Object.values(ext.providerCatalog || {})) {
+      for (const id of (ids || [])) {
+        const lId = String(id || '').toLowerCase();
+        if (lId && !expiredIds.has(lId)) activeIds.add(lId);
+      }
+    }
+  } catch { }
+  return { activeIds, expiredIds };
+}
+
 async function validateCandidateModels(models, prefix) {
   const exclusions = getExclusionList();
+  const deadStore = tester.loadDeadModels();
+  const benchmarks = getBenchmarksDatabase();
+  const { activeIds: extActiveIds, expiredIds: extExpiredIds } = loadExternalModelSignals();
   const nonExcludedModels = [];
 
   for (const m of models) {
     const fullId = m.fullId || `${prefix}/${m.id}`;
+    const strippedId = String(fullId).toLowerCase().replace(PROVIDER_PREFIX_RE, '').replace(/:free$/, '');
+    const baseName = strippedId.split('/').pop();
+    const src = String(m.source || '').toLowerCase();
+    const isLiveSource = src.endsWith('-9router') || src.endsWith('-upstream-live');
+    const exactBm = benchmarks[strippedId] || benchmarks[baseName];
+
     const matchedRule = isModelExcluded(fullId, exclusions) || isModelExcluded(m.id, exclusions);
     if (matchedRule) {
       console.log(`    [⊘ Excluded] ${fullId} -> Matched rule "${matchedRule}"`);
+    } else if (tester.isModelConfirmedDead(fullId, deadStore)) {
+      console.log(`    [⊘ Dead] ${fullId} -> Skipping (dead in dead-models.json)`);
+    } else if (extExpiredIds.has(strippedId) || extExpiredIds.has(baseName)) {
+      console.log(`    [⊘ Expired] ${fullId} -> Skipping (deprecatedAfter passed in external-models.json)`);
+    } else if (exactBm?.deprecated === true && !isLiveSource && !extActiveIds.has(strippedId) && !extActiveIds.has(baseName)) {
+      console.log(`    [⊘ Deprecated] ${fullId} -> Skipping (deprecated in benchmarks.json and absent from external-models.json)`);
     } else {
       nonExcludedModels.push(m);
     }
   }
 
-  // Generically ensure all non-excluded candidate models are enabled in 9router before pre-testing
+  if (nonExcludedModels.length === 0) {
+    return [];
+  }
+
+  // Generically ensure all non-excluded, non-dead candidate models are enabled in 9router before pre-testing
   if (storage.enableModelsIn9router && prefix && nonExcludedModels.length > 0) {
     storage.enableModelsIn9router(prefix, nonExcludedModels);
   }
@@ -670,6 +716,7 @@ async function refreshCombos() {
 
   const fullState = loadFullCandidateState();
   const cooldowns = fullState.cooldowns || {};
+  const deadStore = tester.loadDeadModels();
   const now = Date.now();
 
   const activeSet = new Set();
@@ -678,6 +725,10 @@ async function refreshCombos() {
   const queue = [];
 
   for (const id of allIds) {
+    if (tester.isModelConfirmedDead(id, deadStore)) {
+      console.log(`    [⊘ Dead] ${id} -> Skipping (dead in dead-models.json)`);
+      continue;
+    }
     const entry = cooldowns[id];
     if (entry && entry.nextRetryAt && now < new Date(entry.nextRetryAt).getTime()) {
       console.log(`    [⏳ Backoff] ${id} in cooldown until ${entry.nextRetryAt} (tier ${entry.failCount})`);
@@ -878,14 +929,12 @@ async function injectInto9router(providers) {
     opencodeGo: sortedOpencodeGo
   }), 'daily-sync');
 
-  // Update enabledModels in 9router SQLite connection table for providers with active models
+  // Update enabledModels in 9router SQLite connection table for active connected providers
   if (storage.updateProviderEnabledModels) {
     for (const [key, data] of defs) {
-      if (data && !data.excluded && Array.isArray(data.validated) && data.validated.length > 0) {
+      if (data && !data.excluded && !data.notConnected && Array.isArray(data.validated)) {
         const activeOnly = data.validated.filter(m => !m.quotaExhausted);
-        if (activeOnly.length > 0) {
-          storage.updateProviderEnabledModels(data.prefix || key, activeOnly);
-        }
+        storage.updateProviderEnabledModels(data.prefix || key, activeOnly);
       }
     }
   }
@@ -958,7 +1007,7 @@ async function main() {
   }
 
   console.log('\n[3/4] Discovering active 9router providers and candidate models...');
-  const results = await discoverAllProviders({ excludedProviders });
+  const results = await discoverAllProviders({ excludedProviders, dryRun: isDryRun });
 
   console.log('\n[4/4] Validating models, assembling combos, and updating 9router...');
   await injectInto9router(results);
