@@ -147,6 +147,10 @@ async function main() {
     const r402Paid = tester.parseUpstreamFailure(402, 'HTTP 402: [402]: {"error":{"title":"Paid Model - Credits Required"}}');
     assert.strictEqual(r402Paid.isDead, true, '402 Paid Model - Credits Required is dead');
     assert.strictEqual(r402Paid.isFatalBillingOrAuth, false);
+
+    const r402Account = tester.parseUpstreamFailure(503, 'HTTP 503: [xiaomi-mimo/mimo-v2.6-pro] [402]: { "error": { "code": "402", "message": "payment required" } }');
+    assert.strictEqual(r402Account.isFatalBillingOrAuth, true, 'Account-level 402 is fatal billing/auth');
+    assert.strictEqual(r402Account.isDead, false, 'Account-level 402 must NOT mark model dead');
   }
 
   console.log('[✓] All tester.js unit tests passed successfully!');

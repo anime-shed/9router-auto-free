@@ -93,6 +93,48 @@
       "baseUrl": "https://inference-api.nousresearch.com/v1",
       "modelsUrl": "https://inference-api.nousresearch.com/v1/models",
       "freeOnly": true
+    },
+    {
+      "_doc": "Codex (cx) — ChatGPT OAuth, no /v1/models endpoint. Model list hardcoded from 9router upstream registry/codex.js. Only LLM models included (image/stt excluded). Credentials read from 'codex' SQLite connection.",
+      "key": "codex",
+      "prefix": "cx",
+      "connection": "codex",
+      "credentialKind": "oauth"
+    },
+    {
+      "_doc": "Kiro (kr) — AWS Bedrock/CodeWhisperer, no /v1/models endpoint. Model list hardcoded from 9router upstream registry/kiro.js. Credentials read from 'kiro' SQLite connection.",
+      "key": "kiro",
+      "prefix": "kr",
+      "connection": "kiro",
+      "credentialKind": "oauth"
+    },
+    {
+      "_doc": "Trae (trae) — ByteDance IDE, no /v1/models endpoint. Model list hardcoded from 9router upstream registry/trae.js. Prefix is 'trae' to prevent collision with 'tokenrouter' alias 'tr'.",
+      "key": "trae",
+      "prefix": "trae",
+      "connection": "trae",
+      "credentialKind": "oauth"
+    },
+    {
+      "_doc": "Qoder (qd) — AI coding assistant, no /v1/models endpoint. Model list hardcoded from 9router upstream registry/qoder.js. Credentials read from 'qoder' SQLite connection.",
+      "key": "qoder",
+      "prefix": "qd",
+      "connection": "qoder",
+      "credentialKind": "oauth"
+    },
+    {
+      "_doc": "Kimi (kimi) — Moonshot AI OAuth, no /v1/models endpoint. Model list hardcoded from 9router upstream registry/kimi.js. Credentials read from 'kimi' SQLite connection.",
+      "key": "kimi",
+      "prefix": "kimi",
+      "connection": "kimi",
+      "credentialKind": "oauth"
+    },
+    {
+      "_doc": "Xiaomi MiMo (mimo) — Xiaomi OAuth, no /v1/models endpoint. Model list hardcoded from 9router upstream registry/xiaomi-mimo.js. Credentials read from 'xiaomi-mimo' SQLite connection.",
+      "key": "xiaomi-mimo",
+      "prefix": "mimo",
+      "connection": "xiaomi-mimo",
+      "credentialKind": "oauth"
     }
   ],
   "freeOnly": [
@@ -121,6 +163,10 @@
     "antigravity": "ag",
     "opencode-zen": "ocz",
     "opencode-go": "ocg",
-    "devin-cli": "devin"
+    "devin-cli": "devin",
+    "codex": "cx",
+    "kiro": "kr",
+    "trae": "trae",
+    "kimi": "kimi"
   }
 }

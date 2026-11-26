@@ -143,6 +143,7 @@ function parseUpstreamFailure(resStatus, rawError) {
   // Account-level fatal billing or authentication failure (kills entire connection, NOT individual models)
   const isFatalBillingOrAuth = !isModelTierOrChannelError && (
     upstreamStatus === 401 ||
+    upstreamStatus === 402 ||
     isMissingCredentials ||
     /spending.?limit|run out of credits|need a .* subscription|your current subscription|payment required to access|insufficient balance|no resource package|account.?suspended|invalid.?api.?key|unauthorized|oauth2 access token|bad-credentials|valid license/i.test(text)
   );
@@ -157,7 +158,6 @@ function parseUpstreamFailure(resStatus, rawError) {
   // Confirmed model-level dead/unavailable/paid
   const isDead = !isFatalBillingOrAuth && !isRateLimit && !isTimeout && (
     [400, 404, 410].includes(upstreamStatus) ||
-    upstreamStatus === 402 ||
     isModelTierOrChannelError ||
     /archived|retired|not.?found|does not exist|no endpoints found|no longer available|unsupported model|model is unavailable|unavailable for free|not included in your plan|model is not included/i.test(text)
   );

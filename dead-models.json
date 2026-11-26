@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-26T05:57:18.983Z",
+  "updatedAt": "2026-11-26T07:29:24.148Z",
   "models": {
     "oc/mimo-v2.5-free": {
       "firstSeenDead": "2026-11-20T07:59:02.517Z",
@@ -777,14 +777,6 @@
       "confirmedDead": true,
       "confirmedDeadAt": "2026-11-21T17:22:30.543Z"
     },
-    "qd/qmodel_latest_preview": {
-      "firstSeenDead": "2026-11-20T08:06:12.744Z",
-      "lastSeenDead": "2026-11-20T08:06:12.744Z",
-      "status": 403,
-      "reason": "HTTP 503: [qoder/qmodel_latest_preview] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-20T08:06:12.744Z"
-    },
     "ocz/union-alpha": {
       "firstSeenDead": "2026-11-20T08:06:15.565Z",
       "lastSeenDead": "2026-11-21T14:53:57.967Z",
@@ -865,27 +857,11 @@
       "confirmedDead": true,
       "confirmedDeadAt": "2026-11-21T14:56:23.802Z"
     },
-    "mimo/mimo-v2.6-flash": {
-      "firstSeenDead": "2026-11-20T08:08:33.469Z",
-      "lastSeenDead": "2026-11-24T05:56:52.350Z",
-      "status": 402,
-      "reason": "HTTP 503: [xiaomi-mimo/mimo-v2.6-flash] [402]: { \"error\": { \"code\": \"402\", \"mess",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-24T05:56:52.350Z"
-    },
-    "mimo/mimo-v2.6-pro": {
-      "firstSeenDead": "2026-11-20T08:08:33.471Z",
-      "lastSeenDead": "2026-11-24T05:56:51.929Z",
-      "status": 402,
-      "reason": "HTTP 503: [xiaomi-mimo/mimo-v2.6-pro] [402]: { \"error\": { \"code\": \"402\", \"messag",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-24T05:56:51.929Z"
-    },
     "mimo/mimo-v2.6-pro-ultraspeed": {
       "firstSeenDead": "2026-11-20T08:08:33.913Z",
       "lastSeenDead": "2026-11-21T14:56:27.281Z",
       "status": 400,
-      "reason": "HTTP 400: [400]: {\"error\":{\"message\":\"模型不支持当前套餐档位: mimo-v2.6-pro-ultraspeed（plan",
+      "reason": "HTTP 400: [400]: {\"error\":{\"message\":\"\u6a21\u578b\u4e0d\u652f\u6301\u5f53\u524d\u5957\u9910\u6863\u4f4d: mimo-v2.6-pro-ultraspeed\uff08plan",
       "confirmedDead": true,
       "confirmedDeadAt": "2026-11-21T14:56:27.281Z"
     },
@@ -7889,14 +7865,6 @@
       "confirmedDead": true,
       "confirmedDeadAt": "2026-11-22T15:40:19.024Z"
     },
-    "qd/kmodel": {
-      "firstSeenDead": "2026-11-22T05:21:39.768Z",
-      "lastSeenDead": "2026-11-24T05:48:43.683Z",
-      "status": 403,
-      "reason": "HTTP 503: [qoder/kmodel] [403]: {\"error\":{\"message\":\"{\\\"code\\\":\\\"112\\\",\\\"message",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-24T05:48:43.683Z"
-    },
     "nvidia/cosmos-reason2-8b": {
       "firstSeenDead": "2026-11-22T06:43:12.465Z",
       "lastSeenDead": "2026-11-22T16:00:03.076Z",
@@ -8416,86 +8384,6 @@
       "reason": "HTTP 410: [410]: {\"type\":\"error\",\"error\":{\"type\":\"ModelDeprecated\",\"message\":\"Mo",
       "confirmedDead": true,
       "confirmedDeadAt": "2026-11-22T15:49:10.103Z"
-    },
-    "kimi/kimi-k3": {
-      "firstSeenDead": "2026-11-22T15:49:21.023Z",
-      "lastSeenDead": "2026-11-25T08:40:54.798Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/kimi-k3] [403]: {\"error\":{\"message\":\"Your current subscription d",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:40:54.798Z"
-    },
-    "kimi/k3": {
-      "firstSeenDead": "2026-11-22T15:49:21.059Z",
-      "lastSeenDead": "2026-11-25T08:40:55.022Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/k3] [403]: {\"error\":{\"message\":\"Your current subscription does n",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:40:55.022Z"
-    },
-    "kimi/kimi-for-coding": {
-      "firstSeenDead": "2026-11-22T15:49:23.808Z",
-      "lastSeenDead": "2026-11-25T08:40:57.740Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/kimi-for-coding] [403]: {\"error\":{\"message\":\"Your current subscr",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:40:57.740Z"
-    },
-    "kimi/kimi-for-coding-highspeed": {
-      "firstSeenDead": "2026-11-22T15:49:24.126Z",
-      "lastSeenDead": "2026-11-25T08:40:58.088Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/kimi-for-coding-highspeed] [403]: {\"error\":{\"message\":\"Your curr",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:40:58.088Z"
-    },
-    "kimi/kimi-k2.7-code": {
-      "firstSeenDead": "2026-11-22T15:49:26.766Z",
-      "lastSeenDead": "2026-11-25T08:41:00.604Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/kimi-k2.7-code] [403]: {\"error\":{\"message\":\"Your current subscri",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:41:00.604Z"
-    },
-    "kimi/kimi-k2.7-code-highspeed": {
-      "firstSeenDead": "2026-11-22T15:49:27.036Z",
-      "lastSeenDead": "2026-11-25T08:41:00.995Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/kimi-k2.7-code-highspeed] [403]: {\"error\":{\"message\":\"Your curre",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:41:00.995Z"
-    },
-    "kimi/kimi-k2.6": {
-      "firstSeenDead": "2026-11-22T15:49:29.655Z",
-      "lastSeenDead": "2026-11-25T08:41:03.466Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/kimi-k2.6] [403]: {\"error\":{\"message\":\"Your current subscription",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:41:03.466Z"
-    },
-    "kimi/kimi-k2.5": {
-      "firstSeenDead": "2026-11-22T15:49:30.102Z",
-      "lastSeenDead": "2026-11-25T08:41:03.789Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/kimi-k2.5] [403]: {\"error\":{\"message\":\"Your current subscription",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:41:03.789Z"
-    },
-    "kimi/kimi-k2.5-thinking": {
-      "firstSeenDead": "2026-11-22T15:49:32.478Z",
-      "lastSeenDead": "2026-11-25T08:41:06.251Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/kimi-k2.5-thinking] [403]: {\"error\":{\"message\":\"Your current sub",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:41:06.251Z"
-    },
-    "kimi/kimi-latest": {
-      "firstSeenDead": "2026-11-22T15:49:32.980Z",
-      "lastSeenDead": "2026-11-25T08:41:06.866Z",
-      "status": 403,
-      "reason": "HTTP 503: [kimi/kimi-latest] [403]: {\"error\":{\"message\":\"Your current subscripti",
-      "confirmedDead": true,
-      "confirmedDeadAt": "2026-11-25T08:41:06.866Z"
     },
     "mimo/mimo-v2-omni": {
       "firstSeenDead": "2026-11-22T15:49:40.838Z",
@@ -10225,7 +10113,7 @@
       "confirmedDead": true,
       "confirmedDeadAt": "2026-11-26T05:17:20.240Z"
     },
-    "Active — verified 2026-08-31": {
+    "Active \u2014 verified 2026-08-31": {
       "firstSeenDead": "2026-11-26T05:17:20.240Z",
       "lastSeenDead": "2026-11-26T05:17:20.240Z",
       "status": 410,
@@ -10336,6 +10224,54 @@
       "reason": "HTTP 503: [xai/grok-code-fast-1] [404]: {\"code\":\"not-found\",\"error\":\"The model g",
       "confirmedDead": true,
       "confirmedDeadAt": "2026-11-26T05:48:12.753Z"
+    },
+    "cx/gpt-6.1-sol": {
+      "firstSeenDead": "2026-11-26T06:12:04.471Z",
+      "lastSeenDead": "2026-11-26T06:12:04.471Z",
+      "status": 400,
+      "reason": "HTTP 503: [codex/gpt-6.1-sol] [400]: {\"detail\":\"The 'gpt-6.1-sol' model is not s",
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-26T06:12:04.471Z"
+    },
+    "cx/gpt-6.1-terra": {
+      "firstSeenDead": "2026-11-26T06:12:06.849Z",
+      "lastSeenDead": "2026-11-26T06:12:06.849Z",
+      "status": 400,
+      "reason": "HTTP 503: [codex/gpt-6.1-terra] [400]: {\"detail\":\"The 'gpt-6.1-terra' model is n",
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-26T06:12:06.849Z"
+    },
+    "cx/gpt-6-astra": {
+      "firstSeenDead": "2026-11-26T06:12:07.255Z",
+      "lastSeenDead": "2026-11-26T06:12:07.255Z",
+      "status": 400,
+      "reason": "HTTP 503: [codex/gpt-6-astra] [400]: {\"detail\":\"The 'gpt-6-astra' model is not s",
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-26T06:12:07.255Z"
+    },
+    "cx/gpt-6-sol": {
+      "firstSeenDead": "2026-11-26T06:12:07.701Z",
+      "lastSeenDead": "2026-11-26T06:12:07.701Z",
+      "status": 400,
+      "reason": "HTTP 503: [codex/gpt-6-sol] [400]: {\"detail\":\"The 'gpt-6-sol' model is not suppo",
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-26T06:12:07.701Z"
+    },
+    "cx/gpt-6-astra[1m]": {
+      "firstSeenDead": "2026-11-26T06:12:07.733Z",
+      "lastSeenDead": "2026-11-26T06:12:07.733Z",
+      "status": 400,
+      "reason": "HTTP 503: [codex/gpt-6-astra] [400]: {\"detail\":\"The 'gpt-6-sol' model is not sup",
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-26T06:12:07.733Z"
+    },
+    "cx/gpt-6-sol[1m]": {
+      "firstSeenDead": "2026-11-26T06:12:08.136Z",
+      "lastSeenDead": "2026-11-26T06:12:08.136Z",
+      "status": 400,
+      "reason": "HTTP 503: [codex/gpt-6-sol] [400]: {\"detail\":\"The 'gpt-6-sol' model is not suppo",
+      "confirmedDead": true,
+      "confirmedDeadAt": "2026-11-26T06:12:08.136Z"
     }
   }
 }

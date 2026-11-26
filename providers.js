@@ -61,9 +61,9 @@ function buildProvidersFromRuntime() {
     seen.add(b.key);
     seen.add(primaryPrefix);
     list.push({
-      key:             b.key,
+      key:             primaryPrefix,
       label:           b.key,       // label resolved at discovery time from connection name
-      combo:           `${b.key}-free`,
+      combo:           `${primaryPrefix}-free`,
       prefixes:        [primaryPrefix, b.key].filter((v, i, a) => v && a.indexOf(v) === i),
       usageName:       b.connection || b.key,
       kind:            b.key,       // kind === key → PROVIDER_DISCOVERY_MAP lookup
@@ -99,7 +99,13 @@ function buildProvidersFromRuntime() {
 
 // Lazily built once — callers that need live data should use discover9routerActiveProviders()
 const PROVIDERS = buildProvidersFromRuntime();
-const PROVIDER_BY_KEY = Object.fromEntries(PROVIDERS.map(p => [p.key, p]));
+const PROVIDER_BY_KEY = {};
+for (const p of PROVIDERS) {
+  PROVIDER_BY_KEY[p.key] = p;
+  for (const px of (p.prefixes || [])) {
+    if (!PROVIDER_BY_KEY[px]) PROVIDER_BY_KEY[px] = p;
+  }
+}
 
 // ---------------------------------------------------------------------------
 // CANONICAL_CATALOG_MAP  — built from external-models.json at runtime.
@@ -753,6 +759,200 @@ const fetchNousFreeModels = (apiKey, baseUrl, prefix) => fetchOpenAiCompatibleFr
   requireApiKey: false
 });
 
+// ----------------------------------------------------------------------------
+// Static model catalogs for OAuth-only providers (no /v1/models endpoint)
+// Source-of-truth: 9router upstream registry/codex.js, registry/kiro.js,
+// registry/trae.js — read from pod at /app/open-sse/providers/registry/
+// Update these lists whenever the upstream registry changes.
+// ----------------------------------------------------------------------------
+
+/**
+ * Codex (cx) — ChatGPT OAuth, routes to chatgpt.com/backend-api/codex/responses.
+ * Only chat/reasoning LLMs; image and stt models are excluded.
+ * Source: /app/open-sse/providers/registry/codex.js
+ */
+function getCodexStaticModels(prefix = 'cx') {
+  const LLM_MODELS = [
+    // GPT 6.1 family (latest)
+    { id: 'gpt-6.1-sol',          name: 'GPT 6.1 Sol',          contextLength: 1000000 },
+    { id: 'gpt-6.1-terra',        name: 'GPT 6.1 Terra',        contextLength: 1000000 },
+    // GPT 6.0 family
+    { id: 'gpt-6-astra',          name: 'GPT 6.0 Astra',        contextLength: 1000000 },
+    { id: 'gpt-6-sol',            name: 'GPT 6.0 Sol',          contextLength: 1000000 },
+    { id: 'gpt-6-luna',           name: 'GPT 6.0 Luna',         contextLength: 1000000 },
+    // GPT 5.6 family
+    { id: 'gpt-5.6-sol',          name: 'GPT 5.6 Sol',          contextLength: 272000 },
+    { id: 'gpt-5.6-terra',        name: 'GPT 5.6 Terra',        contextLength: 272000 },
+    { id: 'gpt-5.6-luna',         name: 'GPT 5.6 Luna',         contextLength: 272000 },
+    // Other live LLMs
+    { id: 'gpt-daybreak-blue-latest', name: 'GPT Daybreak Blue', contextLength: 272000 },
+    { id: 'gpt-reserve',          name: 'GPT Reserve',           contextLength: 272000 },
+    { id: 'codex-auto-review',    name: 'Codex Auto Review',     contextLength: 128000 },
+  ];
+  return {
+    prefix,
+    models: LLM_MODELS.map(m => ({
+      ...m,
+      fullId: formatRoutingFullId(prefix, m.id),
+      source: 'codex-static'
+    }))
+  };
+}
+
+/**
+ * Kiro (kr) — AWS Bedrock/CodeWhisperer, no public /v1/models.
+ * Includes base models only (no -thinking / -agentic variants — test base first).
+ * Source: /app/open-sse/providers/registry/kiro.js
+ */
+function getKiroStaticModels(prefix = 'kr') {
+  const BASE_MODELS = [
+    // Opus 5.5 (experimental 1M context preview)
+    { id: 'claude-opus-5.5',      name: 'Claude Opus 5.5',      contextLength: 1000000 },
+    // Opus 5
+    { id: 'claude-opus-5',        name: 'Claude Opus 5',        contextLength: 200000 },
+    // Opus 4.x
+    { id: 'claude-opus-4.8',      name: 'Claude Opus 4.8',      contextLength: 200000 },
+    { id: 'claude-opus-4.7',      name: 'Claude Opus 4.7',      contextLength: 200000 },
+    { id: 'claude-opus-4.5',      name: 'Claude Opus 4.5',      contextLength: 200000 },
+    // Sonnet
+    { id: 'claude-sonnet-5',      name: 'Claude Sonnet 5',      contextLength: 200000 },
+    { id: 'claude-sonnet-4.5',    name: 'Claude Sonnet 4.5',    contextLength: 200000 },
+    // Haiku
+    { id: 'claude-haiku-4.5',     name: 'Claude Haiku 4.5',     contextLength: 200000 },
+    // Non-Anthropic models available via Kiro
+    { id: 'deepseek-3.2',         name: 'DeepSeek 3.2',         contextLength: 128000 },
+    { id: 'qwen3-coder-next',     name: 'Qwen3 Coder Next',     contextLength: 128000 },
+    { id: 'glm-5',                name: 'GLM 5',                contextLength: 128000 },
+    { id: 'MiniMax-M2.5',         name: 'MiniMax M2.5',         contextLength: 1000000 },
+    // GPT models via Kiro's upstream
+    { id: 'gpt-5.6-sol',          name: 'GPT 5.6 Sol',          contextLength: 272000 },
+    { id: 'gpt-5.6-terra',        name: 'GPT 5.6 Terra',        contextLength: 272000 },
+    { id: 'gpt-5.6-luna',         name: 'GPT 5.6 Luna',         contextLength: 272000 },
+  ];
+  return {
+    prefix,
+    models: BASE_MODELS.map(m => ({
+      ...m,
+      fullId: formatRoutingFullId(prefix, m.id),
+      source: 'kiro-static'
+    }))
+  };
+}
+
+/**
+ * Trae (trae) — ByteDance IDE, auth via Cloud-IDE-JWT, no /v1/models.
+ * Source: /app/open-sse/providers/registry/trae.js
+ * Routing prefix: "trae" (to avoid colliding with "tokenrouter" which also claims "tr").
+ */
+function getTraeStaticModels(prefix = 'trae') {
+  const MODELS = [
+    { id: 'gemini-3.1-pro',       name: 'Gemini 3.1 Pro',       contextLength: 2000000 },
+    { id: 'minimax-m3',           name: 'MiniMax M3',            contextLength: 1000000 },
+    { id: 'minimax-m2.7',         name: 'MiniMax M2.7',          contextLength: 1000000 },
+    { id: 'kimi-k2.5',            name: 'Kimi K2.5',             contextLength: 128000  },
+    { id: 'gpt-5.4',              name: 'GPT 5.4',               contextLength: 128000  },
+    { id: 'gpt-5.2',              name: 'GPT 5.2',               contextLength: 128000  },
+    // 'auto' and 'work' are meta-models that server-side route — include so we can probe them
+    { id: 'auto',                 name: 'Trae Auto',             contextLength: 128000  },
+    { id: 'work',                 name: 'Trae Work (Fast)',       contextLength: 128000  },
+    { id: 'gemini-3-flash-solo',  name: 'Gemini 3 Flash',        contextLength: 1000000 },
+  ];
+  return {
+    prefix,
+    models: MODELS.map(m => ({
+      ...m,
+      fullId: formatRoutingFullId(prefix, m.id),
+      source: 'trae-static'
+    }))
+  };
+}
+
+/**
+ * Qoder (qd) — AI coding assistant, no /v1/models endpoint.
+ * Source: /app/open-sse/providers/registry/qoder.js
+ */
+function getQoderStaticModels(prefix = 'qd') {
+  const MODELS = [
+    { id: 'ultimate',             name: 'Qoder Ultimate',       contextLength: 131072 },
+    { id: 'auto',                 name: 'Qoder Auto',           contextLength: 131072 },
+    { id: 'performance',          name: 'Qoder Performance',    contextLength: 131072 },
+    { id: 'efficient',            name: 'Qoder Efficient',      contextLength: 131072 },
+    { id: 'lite',                 name: 'Qoder Lite',           contextLength: 131072 },
+    { id: 'qmodel_38max',         name: 'Qwen 3.8 Max (Qoder)', contextLength: 131072 },
+    { id: 'qmodel_latest',        name: 'Qwen 3.7 Max (Qoder)', contextLength: 131072 },
+    { id: 'qmodel',               name: 'Qwen 3.7 Plus (Qoder)',contextLength: 131072 },
+    { id: 'qfmodel',              name: 'Qwen 3.8 Flash (Qoder)',contextLength: 131072 },
+    { id: 'kmodel_latest',        name: 'Kimi K3 (Qoder)',      contextLength: 131072 },
+    { id: 'kmodel',               name: 'Kimi K2.7 Code (Qoder)',contextLength: 131072 },
+    { id: 'gmodel',               name: 'GLM 5.3 (Qoder)',      contextLength: 131072 },
+    { id: 'gfmodel',              name: 'GLM 5.3 Flash (Qoder)',contextLength: 131072 },
+    { id: 'dmodel',               name: 'DeepSeek V4 Pro (Qoder)',contextLength: 131072 },
+    { id: 'dfmodel',              name: 'DeepSeek V4 Flash (Qoder)',contextLength: 131072 },
+    { id: 'mmodel',               name: 'MiniMax M3 (Qoder)',   contextLength: 131072 },
+    { id: 'smodel',               name: 'Sonus (Qoder)',        contextLength: 131072 },
+    { id: 'cmodel',               name: 'Cantus (Qoder)',       contextLength: 131072 },
+  ];
+  return {
+    prefix,
+    models: MODELS.map(m => ({
+      ...m,
+      fullId: formatRoutingFullId(prefix, m.id),
+      source: 'qoder-static'
+    }))
+  };
+}
+
+/**
+ * Kimi (kimi) — Moonshot AI OAuth, no /v1/models endpoint.
+ * Source: /app/open-sse/providers/registry/kimi.js
+ */
+function getKimiStaticModels(prefix = 'kimi') {
+  const MODELS = [
+    { id: 'kimi-k3',              name: 'Kimi K3',              contextLength: 200000 },
+    { id: 'k3',                   name: 'Kimi K3 (Code)',       contextLength: 200000 },
+    { id: 'kimi-for-coding',      name: 'Kimi for Coding',      contextLength: 200000 },
+    { id: 'kimi-for-coding-highspeed', name: 'Kimi for Coding Highspeed', contextLength: 200000 },
+    { id: 'kimi-k2.7-code',       name: 'Kimi K2.7 Code',       contextLength: 200000 },
+    { id: 'kimi-k2.7-code-highspeed', name: 'Kimi K2.7 Code Highspeed', contextLength: 200000 },
+    { id: 'kimi-k2.6',            name: 'Kimi K2.6',            contextLength: 200000 },
+    { id: 'kimi-k2.5',            name: 'Kimi K2.5',            contextLength: 200000 },
+    { id: 'kimi-k2.5-thinking',   name: 'Kimi K2.5 (Thinking)', contextLength: 200000 },
+    { id: 'kimi-latest',          name: 'Kimi Latest',          contextLength: 200000 },
+  ];
+  return {
+    prefix,
+    models: MODELS.map(m => ({
+      ...m,
+      fullId: formatRoutingFullId(prefix, m.id),
+      source: 'kimi-static'
+    }))
+  };
+}
+
+/**
+ * Xiaomi MiMo (mimo) — Xiaomi OAuth, no /v1/models endpoint.
+ * Source: /app/open-sse/providers/registry/xiaomi-mimo.js
+ */
+function getXiaomiMimoStaticModels(prefix = 'mimo') {
+  const MODELS = [
+    { id: 'mimo-v2.6-pro',        name: 'MiMo V2.6 Pro',        contextLength: 1000000 },
+    { id: 'mimo-v2.6-flash',      name: 'MiMo V2.6 Flash',      contextLength: 1000000 },
+    { id: 'mimo-v2.6-pro-ultraspeed', name: 'MiMo V2.6 Pro UltraSpeed', contextLength: 1000000 },
+    { id: 'mimo-v2.5-pro',        name: 'MiMo V2.5 Pro',        contextLength: 200000  },
+    { id: 'mimo-v2.5',            name: 'MiMo V2.5',            contextLength: 200000  },
+    { id: 'mimo-v2-omni',         name: 'MiMo V2 Omni',         contextLength: 128000  },
+    { id: 'mimo-v2-flash',        name: 'MiMo V2 Flash',        contextLength: 128000  },
+  ];
+  return {
+    prefix,
+    models: MODELS.map(m => ({
+      ...m,
+      fullId: formatRoutingFullId(prefix, m.id),
+      source: 'xiaomi-mimo-static'
+    }))
+  };
+}
+
 async function fetchCloudflareFreeModels(creds, prefix = 'cloudflare-ai') {
   const freeModels = [];
   if (!creds.apiKey || !creds.accountId) {
@@ -925,6 +1125,53 @@ const PROVIDER_DISCOVERY_MAP = {
       skipPatterns: record.skipPatterns || [], requireApiKey: record.requireApiKey !== false
     });
     return { prefix: creds.prefix || record.prefixes[0], models };
+  },
+
+  // ---------------------------------------------------------------------------
+  // OAuth-only providers: no /v1/models endpoint — static catalog from upstream
+  // ---------------------------------------------------------------------------
+
+  codex: record => {
+    // ChatGPT OAuth → chatgpt.com/backend-api/codex/responses
+    // No REST discovery endpoint exists. Return LLM-only hardcoded model list.
+    const prefix = (record && record.prefixes && record.prefixes[0]) || 'cx';
+    return Promise.resolve(getCodexStaticModels(prefix));
+  },
+
+  kiro: record => {
+    // AWS Bedrock/CodeWhisperer. No /v1/models. Return base models only (not -thinking/-agentic).
+    const prefix = (record && record.prefixes && record.prefixes[0]) || 'kr';
+    return Promise.resolve(getKiroStaticModels(prefix));
+  },
+
+  trae: record => {
+    // ByteDance Trae IDE. No /v1/models. Auth = Cloud-IDE-JWT.
+    // Use prefix "trae" so it doesn't collide with "tokenrouter" which also claims "tr".
+    const prefix = (record && record.prefixes && record.prefixes[0]) || 'trae';
+    return Promise.resolve(getTraeStaticModels(prefix));
+  },
+
+  qoder: record => {
+    // Qoder coding assistant. No /v1/models.
+    const prefix = (record && record.prefixes && record.prefixes[0]) || 'qd';
+    return Promise.resolve(getQoderStaticModels(prefix));
+  },
+
+  kimi: record => {
+    // Moonshot AI Kimi. No /v1/models.
+    const prefix = (record && record.prefixes && record.prefixes[0]) || 'kimi';
+    return Promise.resolve(getKimiStaticModels(prefix));
+  },
+
+  'xiaomi-mimo': record => {
+    // Xiaomi MiMo OAuth. No /v1/models.
+    const prefix = (record && record.prefixes && record.prefixes[0]) || 'mimo';
+    return Promise.resolve(getXiaomiMimoStaticModels(prefix));
+  },
+
+  mimo: record => {
+    const prefix = (record && record.prefixes && record.prefixes[0]) || 'mimo';
+    return Promise.resolve(getXiaomiMimoStaticModels(prefix));
   }
 };
 

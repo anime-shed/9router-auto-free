@@ -197,8 +197,14 @@ function getCodingScore(modelIdentifier, customBenchmarks = null) {
 
   if (id.includes('claude') || id.includes('sonnet') || id.includes('opus')) baseScore = 8000;
   else if (id.includes('gemini-4') || /gemini.*(argon|carbon|hydrogen|neon)/.test(id)) baseScore = 8400;
-  else if (id.includes('gemini') || id.includes('gpt-4') || id.includes('o1') || id.includes('o3') || id.includes('r1')) baseScore = 7500;
-  else if (id.includes('qwen') || id.includes('deepseek') || id.includes('codestral') || id.includes('mistral') || id.includes('devin') || id.includes('glm')) baseScore = 6500;
+  else if (id.includes('gemini') || id.includes('gpt-4') || id.includes('gpt-6') || id.includes('gpt-5') || id.includes('o1') || id.includes('o3') || id.includes('o4') || id.includes('r1')) baseScore = 7500;
+  else if (/^qd\/(ultimate|performance|auto)|qoder\/(ultimate|performance|auto)/.test(id)) baseScore = 8000;
+  else if (/^qd\/(qmodel|kmodel|dmodel)|qoder\/(qmodel|kmodel|dmodel)/.test(id)) baseScore = 7500;
+  else if (/^qd\/(gmodel|mmodel)|qoder\/(gmodel|mmodel)/.test(id)) baseScore = 6500;
+  else if (/^qd\/|qoder\//.test(id)) baseScore = 6000;
+  else if (/^trae\/(auto|work)|tr\/(auto|work)/.test(id)) baseScore = 7500;
+  else if (id.includes('qwen') || id.includes('deepseek') || id.includes('codestral') || id.includes('mistral') || id.includes('devin') || id.includes('glm') || id.includes('kimi') || id.includes('grok')) baseScore = 6500;
+  else if (id.includes('minimax') || id.includes('mimo')) baseScore = 6500;
   else if (id.includes('coder') || id.includes('code') || id.includes('instruct')) baseScore = 5500;
   else if (id.includes('flash') || id.includes('mini') || id.includes('small') || id.includes('lite') || id.includes('nano')) baseScore = 4500;
 
