@@ -172,9 +172,15 @@ function readAllProviderConnections() {
 }
 
 // Read all active provider connections from SQLite with resolved prefixes.
-// Prefix is read directly from the connection's stored data (providerSpecificData.prefix),
-// which 9router writes when you configure a provider. No hardcoded map needed.
+// Prefix is read from connection data (providerSpecificData.prefix), then registry prefixAliases,
+// then first segment of provider name.
 function readActiveProviderConnections() {
+  let prefixAliases = {};
+  try {
+    const reg = JSON.parse(fs.readFileSync(path.join(__dirname, 'provider-registry.json'), 'utf8'));
+    prefixAliases = reg.prefixAliases || {};
+  } catch { }
+
   try {
     const Database = getDbClass();
     const db = new Database(DB_PATH, { readonly: true });
@@ -183,8 +189,8 @@ function readActiveProviderConnections() {
     return rows.map(r => {
       const data = (() => { try { return JSON.parse(r.data || '{}'); } catch { return {}; } })();
       const prov = String(r.provider || '').toLowerCase();
-      // Priority: (1) explicit prefix stored by 9router, (2) first segment of provider name
-      const prefix = data?.providerSpecificData?.prefix || prov.split('-')[0];
+      // Priority: (1) explicit prefix stored by 9router, (2) registry prefixAliases, (3) first segment of provider name
+      const prefix = data?.providerSpecificData?.prefix || prefixAliases[prov] || prov.split('-')[0];
       return {
         id: r.id,
         provider: r.provider,
@@ -460,6 +466,12 @@ function syncProviderEnabledModelsFromModelsList(modelsList, deadStore = null) {
       }
     }
 
+    let prefixAliases = {};
+    try {
+      const reg = JSON.parse(fs.readFileSync(path.join(__dirname, 'provider-registry.json'), 'utf8'));
+      prefixAliases = reg.prefixAliases || {};
+    } catch { }
+
     const Database = getDbClass();
     const db = new Database(DB_PATH);
     const rows = db.prepare("SELECT id, provider, data FROM providerConnections WHERE isActive = 1").all();
@@ -469,11 +481,15 @@ function syncProviderEnabledModelsFromModelsList(modelsList, deadStore = null) {
     for (const r of rows) {
       const prov = String(r.provider || '').toLowerCase();
       const data = (() => { try { return JSON.parse(r.data || '{}'); } catch { return {}; } })();
-      const prefix = String(data?.providerSpecificData?.prefix || prov.split('-')[0]).toLowerCase();
+      const prefix = String(data?.providerSpecificData?.prefix || prefixAliases[prov] || prov.split('-')[0]).toLowerCase();
       const cleanIds = byPrefix.get(prefix) || byPrefix.get(prov) || [];
 
       data.providerSpecificData = data.providerSpecificData || {};
-      data.providerSpecificData.enabledModels = cleanIds;
+      if (cleanIds.length > 0) {
+        data.providerSpecificData.enabledModels = cleanIds;
+      } else {
+        delete data.providerSpecificData.enabledModels;
+      }
       db.prepare("UPDATE providerConnections SET data = ?, updatedAt = ? WHERE id = ?").run(
         JSON.stringify(data),
         now,

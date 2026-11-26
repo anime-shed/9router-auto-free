@@ -144,7 +144,7 @@ function parseUpstreamFailure(resStatus, rawError) {
   const isFatalBillingOrAuth = !isModelTierOrChannelError && (
     upstreamStatus === 401 ||
     isMissingCredentials ||
-    /spending.?limit|run out of credits|need a .* subscription|payment required to access|insufficient balance|no resource package|account.?suspended|invalid.?api.?key|unauthorized|oauth2 access token|bad-credentials|valid license/i.test(text)
+    /spending.?limit|run out of credits|need a .* subscription|your current subscription|payment required to access|insufficient balance|no resource package|account.?suspended|invalid.?api.?key|unauthorized|oauth2 access token|bad-credentials|valid license/i.test(text)
   );
 
   // Transient rate limit / high demand -> park in quota, NOT dead
@@ -227,20 +227,26 @@ class CircuitBreaker {
     const s = this.state.get(providerKey);
     if (s && !s.tripped) {
       s.consecutive429 = 0;
+      s.consecutiveAuth = 0;
     }
   }
 
   recordFailure(providerKey, failure) {
     let s = this.state.get(providerKey);
     if (!s) {
-      s = { consecutive429: 0, tripped: false, reason: '' };
+      s = { consecutive429: 0, consecutiveAuth: 0, tripped: false, reason: '' };
       this.state.set(providerKey, s);
     }
 
     if (failure.isFatalBillingOrAuth) {
-      s.tripped = true;
-      s.reason = `Fatal upstream authorization or billing block: ${failure.reason}`;
-      return { tripped: true, immediate: true };
+      s.consecutiveAuth += 1;
+      const maxAuth = failure.maxAuthStrikes || 1;
+      if (s.consecutiveAuth >= maxAuth) {
+        s.tripped = true;
+        s.reason = `Fatal upstream authorization or billing block: ${failure.reason}`;
+        return { tripped: true, immediate: true };
+      }
+      return { tripped: false, backoffMs: 500 };
     }
 
     if (failure.isRateLimit) {
@@ -517,6 +523,15 @@ async function testModels(models, options = {}) {
 
   const pacer = options.pacer || new ProviderPacer();
   const breaker = options.breaker || new CircuitBreaker();
+  const activeConnCount = storage.readActiveProviderConnections
+    ? storage.readActiveProviderConnections().filter(c => {
+        const p = String(c.provider || '').toLowerCase();
+        const pref = String(c.prefix || '').toLowerCase();
+        const k = String(prefix || '').toLowerCase();
+        return p === k || pref === k;
+      }).length
+    : 1;
+  const maxAuthStrikes = Math.max(1, Math.min(activeConnCount, 3));
 
   const active = [];
   const quota = [];
@@ -580,6 +595,7 @@ async function testModels(models, options = {}) {
       } else if (result.verdict === 'auth_error') {
         const breakRes = breaker.recordFailure(prefix, {
           isFatalBillingOrAuth: true,
+          maxAuthStrikes,
           reason: result.reason
         });
         console.log(`    [🔐 Auth/Billing] ${fullId} -> ${result.reason} (NOT marking model dead)`);

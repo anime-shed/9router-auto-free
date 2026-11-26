@@ -467,7 +467,7 @@ async function handleApi(req, res, url) {
 
   // 11. SSE Action Execution Stream
   if (pathname === '/api/actions/stream' && method === 'GET') {
-    const action = url.searchParams.get('action'); // sync | dry-run | refresh | benchmarks | setup-cron
+    const action = url.searchParams.get('action'); // sync | refresh | benchmarks | setup-cron
     if (currentProcess) {
       return sendJson(res, 409, { success: false, error: 'Ada proses CLI lain yang sedang berjalan!' });
     }
@@ -475,9 +475,7 @@ async function handleApi(req, res, url) {
     let script = path.join(__dirname, 'sync.js');
     let cliArgs = [];
 
-    if (action === 'dry-run') {
-      cliArgs = ['--dry-run'];
-    } else if (action === 'refresh') {
+    if (action === 'refresh') {
       cliArgs = ['--refresh'];
     } else if (action === 'benchmarks') {
       script = path.join(__dirname, 'update-benchmarks.js');

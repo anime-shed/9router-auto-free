@@ -57,12 +57,14 @@ function buildProvidersFromRuntime() {
 
   // 1. Bespoke entries — always included (they may not have a SQLite connection)
   for (const b of BESPOKE_PROVIDERS) {
+    const primaryPrefix = b.prefix || b.key;
     seen.add(b.key);
+    seen.add(primaryPrefix);
     list.push({
       key:             b.key,
       label:           b.key,       // label resolved at discovery time from connection name
       combo:           `${b.key}-free`,
-      prefixes:        [b.key],
+      prefixes:        [primaryPrefix, b.key].filter((v, i, a) => v && a.indexOf(v) === i),
       usageName:       b.connection || b.key,
       kind:            b.key,       // kind === key → PROVIDER_DISCOVERY_MAP lookup
       ...(b.connection    && { connection: b.connection }),
@@ -128,19 +130,20 @@ try {
 // Maps every known provider name/alias → its routing prefix.
 // Falls back to splitting on '-' for unknown providers.
 // ---------------------------------------------------------------------------
-const STANDARD_PROVIDER_PREFIXES = {};
+const STANDARD_PROVIDER_PREFIXES = { ...(_reg.prefixAliases || {}) };
 {
   const conns = (storage.readActiveProviderConnections ? storage.readActiveProviderConnections() : []);
   for (const conn of conns) {
     const prov = String(conn.provider || '').toLowerCase();
-    const prefix = conn.prefix || prov.split('-')[0];
+    const prefix = conn.prefix || STANDARD_PROVIDER_PREFIXES[prov] || prov.split('-')[0];
     STANDARD_PROVIDER_PREFIXES[prov] = prefix;
     if (conn.prefix) STANDARD_PROVIDER_PREFIXES[conn.prefix] = prefix;
   }
   // Bespoke overrides from registry (e.g. kilo → kc, openrouter → openrouter)
   for (const b of BESPOKE_PROVIDERS) {
-    if (b.connection) STANDARD_PROVIDER_PREFIXES[b.connection] = b.key;
-    STANDARD_PROVIDER_PREFIXES[b.key] = b.key;
+    const p = b.prefix || b.key;
+    if (b.connection) STANDARD_PROVIDER_PREFIXES[b.connection] = p;
+    STANDARD_PROVIDER_PREFIXES[b.key] = p;
   }
 }
 
@@ -987,7 +990,7 @@ async function discover9routerActiveProviders(options = {}) {
   };
 
   // Clear and replace provider enabledModels in SQLite with the /v1/models output at sync start
-  if (!options.dryRun && modelsList.length > 0 && storage.syncProviderEnabledModelsFromModelsList) {
+  if (modelsList.length > 0 && storage.syncProviderEnabledModelsFromModelsList) {
     storage.syncProviderEnabledModelsFromModelsList(modelsList, deadStoreObj);
   }
 

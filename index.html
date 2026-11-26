@@ -125,10 +125,6 @@
       </nav>
 
       <div class="flex items-center space-x-2">
-        <button onclick="triggerCliAction('dry-run')" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-dark-border transition flex items-center space-x-1.5">
-          <svg class="w-3.5 h-3.5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-          <span>Dry Run</span>
-        </button>
         <button onclick="triggerCliAction('sync')" class="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-zinc-950 transition shadow-lg shadow-emerald-500/20 flex items-center space-x-1.5">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
           <span>Full Sync</span>
@@ -315,13 +311,6 @@
               <span data-i18n="action_sync_title">Full Daily Sync</span>
             </div>
             <div class="text-xs text-zinc-400 mt-1" data-i18n="action_sync_desc">Scrape, live pre-test & inject model ke semua combo 9router.</div>
-          </button>
-          <button onclick="triggerCliAction('dry-run')" class="p-4 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-dark-border text-left transition group">
-            <div class="font-bold text-sm text-white group-hover:text-yellow-400 flex items-center space-x-1.5">
-              <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-              <span data-i18n="action_dry_title">Dry Run Sync</span>
-            </div>
-            <div class="text-xs text-zinc-400 mt-1" data-i18n="action_dry_desc">Simulasi live pre-test tanpa mengubah database SQLite.</div>
           </button>
           <button onclick="triggerCliAction('refresh')" class="p-4 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-dark-border text-left transition group">
             <div class="font-bold text-sm text-white group-hover:text-cyan-400 flex items-center space-x-1.5">
@@ -540,7 +529,6 @@
       <!-- Action Buttons Bar -->
       <div class="flex flex-wrap gap-2 p-3 bg-dark-card border border-dark-border rounded-xl">
         <button onclick="triggerCliAction('sync')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-zinc-950 transition" data-i18n="cli_btn_sync">Full Sync (node sync.js)</button>
-        <button onclick="triggerCliAction('dry-run')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-yellow-500 hover:bg-yellow-600 text-zinc-950 transition" data-i18n="cli_btn_dry_run">Dry Run (--dry-run)</button>
         <button onclick="triggerCliAction('refresh')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-cyan-500 hover:bg-cyan-600 text-zinc-950 transition" data-i18n="cli_btn_refresh">Watchdog Refresh (--refresh)</button>
         <button onclick="triggerCliAction('benchmarks')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-500 hover:bg-purple-600 text-white transition" data-i18n="cli_btn_benchmarks">Update Benchmarks</button>
         <button onclick="triggerCliAction('setup-cron')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-zinc-700 hover:bg-zinc-600 text-white transition" data-i18n="cli_btn_setup_cron">Setup Scheduler (--setup-cron)</button>

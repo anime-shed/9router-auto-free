@@ -36,6 +36,7 @@
     },
     {
       "key": "kilo",
+      "prefix": "kc",
       "connection": "kilocode",
       "credentialKind": "kilo",
       "baseUrl": "https://ai-gateway.kilo.ai/api/v1",
@@ -62,6 +63,7 @@
     {
       "key": "ollama",
       "connection": "ollama",
+      "baseUrl": "https://api.ollama.com/v1",
       "solo": true
     },
     {
@@ -106,5 +108,19 @@
     "nous-portal",
     "commandcode",
     "tokenreply"
-  ]
+  ],
+  "prefixAliases": {
+    "kilocode": "kc",
+    "qoder": "qd",
+    "xiaomi-mimo": "mimo",
+    "mimo-code": "mimo",
+    "grok-cli": "gcli",
+    "gemini-cli": "gc",
+    "freebuff": "fb",
+    "github": "gh",
+    "antigravity": "ag",
+    "opencode-zen": "ocz",
+    "opencode-go": "ocg",
+    "devin-cli": "devin"
+  }
 }

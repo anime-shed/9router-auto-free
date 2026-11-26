@@ -29,10 +29,6 @@
 .EXAMPLE
   .\sync.ps1 --test
   Runs the full test suite remotely on the pod.
-
-.EXAMPLE
-  .\sync.ps1 --dry-run
-  Simulates sync remotely without modifying the SQLite database.
 #>
 [CmdletBinding()]
 param(

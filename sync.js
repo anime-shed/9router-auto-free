@@ -12,7 +12,6 @@
  *   node sync.js              -> Full daily sync (scrape + live-test + inject)
  *   node sync.js --refresh    -> Intra-day watchdog: re-test existing combo models,
  *                                park quota-exhausted (429) in my9model-cooldown
- *   node sync.js --dry-run    -> Simulate without writing
  *   node sync.js --setup-cron -> Install scheduler (systemd timer w/ Persistent=true, cron fallback)
  */
 
@@ -28,7 +27,6 @@ const { BENCHMARKS_PATH, SMART_MIN_SCORE } = require('./update-benchmarks.js');
 
 // Options
 const args = process.argv.slice(2);
-const isDryRun = args.includes('--dry-run');
 const isRefreshMode = args.includes('--refresh') || args.includes('--watchdog');
 const isCronSetup = args.includes('--setup-cron') || args.includes('--setup-scheduler');
 const isLiveBenchmarks = args.includes('--live-benchmarks') || args.includes('--update-benchmarks');
@@ -40,6 +38,7 @@ const isVerbose = args.includes('--verbose') || args.includes('-v') || process.e
 
 // ponytail: single-user local tool, thresholds hardcoded; promote to config file when a second machine appears
 const AGENTIC_MIN_CONTEXT = 100000;      // super-combo agentic floor (supports 128k/256k/1M models)
+const MIN_CODING_SCORE = Number(process.env.MIN_CODING_SCORE || (args.find(a => a.startsWith('--min-score='))?.split('=')[1]) || 5000); // models below this benchmark floor (e.g. deprecated/2.5-flash) are never tested or added
 const QUOTA_RETRY_DELAY_MS = 1200;       // wait before re-testing a transient failure
 const QUOTA_LATENCY_SENTINEL = 999998;   // latency marker that forces quota-exhausted models to the bottom
 const CANDIDATES_STATE_PATH = path.join(__dirname, 'candidates-state.json'); // last full-sync candidate pool
@@ -197,6 +196,7 @@ function getCodingScore(modelIdentifier, customBenchmarks = null) {
   let baseScore = 4000;
 
   if (id.includes('claude') || id.includes('sonnet') || id.includes('opus')) baseScore = 8000;
+  else if (id.includes('gemini-4') || /gemini.*(argon|carbon|hydrogen|neon)/.test(id)) baseScore = 8400;
   else if (id.includes('gemini') || id.includes('gpt-4') || id.includes('o1') || id.includes('o3') || id.includes('r1')) baseScore = 7500;
   else if (id.includes('qwen') || id.includes('deepseek') || id.includes('codestral') || id.includes('mistral') || id.includes('devin') || id.includes('glm')) baseScore = 6500;
   else if (id.includes('coder') || id.includes('code') || id.includes('instruct')) baseScore = 5500;
@@ -407,8 +407,9 @@ function buildComboMap({ free = [], cooldown = [], smart, fast, opencodeGo = [],
 function assembleCombos({ candidates, latencyMap = new Map(), metaMap = new Map(), signals = null }) {
   const allIds = Array.from(new Set(candidates.map(getModelFullId)));
 
-  // Filter out models explicitly excluded from super-combos (e.g. OpenCode Go)
-  const eligibleIds = allIds.filter(id => !isExcludedFromSuperCombo(id));
+  // Filter out models explicitly excluded from super-combos or below minimum coding score threshold
+  const benchmarks = signals?.benchmarks || getBenchmarksDatabase();
+  const eligibleIds = allIds.filter(id => !isExcludedFromSuperCombo(id) && getCodingScore(id, benchmarks) >= MIN_CODING_SCORE);
 
   // Super-combo agentic readiness gate
   const gatedIds = eligibleIds.filter(id => passesAgenticGate(metaMap.get(id)));
@@ -494,13 +495,21 @@ async function validateCandidateModels(models, prefix) {
     } else if (exactBm?.deprecated === true && !isLiveSource && !extActiveIds.has(strippedId) && !extActiveIds.has(baseName)) {
       console.log(`    [⊘ Deprecated] ${fullId} -> Skipping (deprecated in benchmarks.json and absent from external-models.json)`);
     } else {
-      nonExcludedModels.push(m);
+      const score = getCodingScore(fullId, benchmarks);
+      if (score < MIN_CODING_SCORE) {
+        console.log(`    [⊘ Below Threshold] ${fullId} -> Skipping (score ${score} < ${MIN_CODING_SCORE})`);
+      } else {
+        nonExcludedModels.push({ ...m, _preScore: score });
+      }
     }
   }
 
   if (nonExcludedModels.length === 0) {
     return [];
   }
+
+  // Sort highest-scoring models first so quota/rate-limited providers test the best models before older ones
+  nonExcludedModels.sort((a, b) => (b._preScore || 0) - (a._preScore || 0));
 
   // Generically ensure all non-excluded, non-dead candidate models are enabled in 9router before pre-testing
   if (storage.enableModelsIn9router && prefix && nonExcludedModels.length > 0) {
@@ -814,11 +823,6 @@ async function refreshCombos() {
 
   console.log(`\n[Σ] Refresh result: ${activeSet.size} active, ${quotaSet.size} parked in cooldown, ${allIds.length - activeSet.size - quotaSet.size} removed permanently, ${recoveredCount} recovered into provider combos.`);
 
-  if (isDryRun) {
-    console.log('\n[*] Dry run mode enabled. No changes written.');
-    return;
-  }
-
   await persistAndNotifyCombos(comboMap, 'watchdog-refresh');
   console.log('\n[🎉] Watchdog refresh completed successfully.');
 }
@@ -916,11 +920,6 @@ async function injectInto9router(providers) {
     }
   }
 
-  if (isDryRun) {
-    console.log('\n[*] Dry run mode enabled. No changes written.');
-    return;
-  }
-
   await persistAndNotifyCombos(buildComboMap({
     free: assembled.unified,
     smart: assembled.smart,
@@ -1007,7 +1006,7 @@ async function main() {
   }
 
   console.log('\n[3/4] Discovering active 9router providers and candidate models...');
-  const results = await discoverAllProviders({ excludedProviders, dryRun: isDryRun });
+  const results = await discoverAllProviders({ excludedProviders });
 
   console.log('\n[4/4] Validating models, assembling combos, and updating 9router...');
   await injectInto9router(results);
