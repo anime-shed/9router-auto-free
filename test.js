@@ -1059,6 +1059,50 @@ async function runTests() {
   assert.strictEqual(storage.updateProviderEnabledModels(null, []), false, 'Should return false for null provider');
   assert.strictEqual(storage.updateProviderEnabledModels('nvidia', null), false, 'Should return false for null models');
 
+  // 13) Tier-based selection & provider-scoped deprecation tests
+  console.log('[-] Testing tier-based selection & provider-scoped deprecation...');
+  {
+    const { compareTiers } = require('./update-benchmarks.js');
+    assert.ok(compareTiers('S+', 'S') > 0, 'S+ must outrank S');
+    assert.ok(compareTiers('S', 'A+') > 0, 'S must outrank A+');
+    assert.ok(compareTiers('A+', 'A') > 0, 'A+ must outrank A');
+    assert.ok(compareTiers('C', 'D') > 0, 'C must outrank D');
+
+    const scopedBenchmarks = {
+      'gpt-5.6-sol': {
+        score: 50,
+        tier: 'A+',
+        contextLength: 1048576,
+        source: 'external-catalog:pollinations',
+        deprecatedProviders: ['pollinations']
+      },
+      'minimax-m3': {
+        score: 80.5,
+        tier: 'S+',
+        contextLength: 512000,
+        deprecatedProviders: ['some-other-provider']
+      }
+    };
+
+    assert.strictEqual(
+      syncLib.isModelDeprecatedForProvider('cx/gpt-5.6-sol', scopedBenchmarks),
+      false,
+      'Pollinations deprecation must NOT mark cx/gpt-5.6-sol deprecated'
+    );
+    assert.strictEqual(
+      syncLib.isModelDeprecatedForProvider('pollinations/gpt-5.6-sol', scopedBenchmarks),
+      true,
+      'Pollinations deprecation MUST mark pollinations/gpt-5.6-sol deprecated'
+    );
+    assert.ok(
+      syncLib.getCodingScore('cx/gpt-5.6-sol', scopedBenchmarks) >= 5000,
+      'cx/gpt-5.6-sol must not suffer -5000 penalty'
+    );
+    assert.strictEqual(syncLib.getModelTier('trae/minimax-m3', scopedBenchmarks), 'S+');
+    assert.strictEqual(syncLib.getModelTier('cx/gpt-daybreak-blue-latest', scopedBenchmarks), 'S+');
+    assert.strictEqual(syncLib.getModelTier('cx/gpt-reserve', scopedBenchmarks), 'S+');
+  }
+
   console.log('[✓] All tests passed successfully!');
 
 }

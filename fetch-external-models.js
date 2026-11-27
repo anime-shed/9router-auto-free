@@ -664,7 +664,12 @@ async function harvestExternalModels({
     models: filteredModels,
     providerCatalog: filteredProviderCatalog,
     quotas: parsedIndex.quotas,
-    deprecated: mergedDeprecated
+    deprecated: mergedDeprecated,
+    deprecatedRecords: allDeprecatedRecords.map(r => ({
+      modelId: r.modelId,
+      provider: r.provider || null,
+      reason: r.reason || null
+    })).filter(r => r.modelId && r.provider)
   };
 
   try {

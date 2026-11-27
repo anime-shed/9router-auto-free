@@ -71,6 +71,11 @@ const BASELINE = {
   "hy3": { name: "Tencent HY3", score: 50.0, swe_bench: 50.0, tier: "A+", contextLength: 131072 }
 };
 
+const TIER_ORDER = ["S+", "S", "A+", "A", "A-", "B+", "B", "C", "D"];
+const TIER_RANK = Object.fromEntries(
+  TIER_ORDER.map((tier, idx) => [tier, TIER_ORDER.length - idx])
+);
+
 function determineTier(score) {
   if (score >= 70) return "S+";
   if (score >= 60) return "S";
@@ -79,7 +84,14 @@ function determineTier(score) {
   if (score >= 35) return "A-";
   if (score >= 30) return "B+";
   if (score >= 20) return "B";
-  return "C";
+  if (score >= 10) return "C";
+  return "D";
+}
+
+function compareTiers(tierA, tierB) {
+  const rankA = TIER_RANK[String(tierA || "D").toUpperCase()] || 0;
+  const rankB = TIER_RANK[String(tierB || "D").toUpperCase()] || 0;
+  return rankA - rankB;
 }
 
 function normalizeKey(str) {
@@ -214,6 +226,96 @@ async function fetchLiveCodeBench() {
   }
 }
 
+// Fetch Aider Polyglot coding benchmark leaderboard (225 multi-language coding exercises)
+// https://raw.githubusercontent.com/Aider-AI/aider/main/aider/website/_data/polyglot_leaderboard.yml
+async function fetchAiderPolyglot() {
+  const url = "https://raw.githubusercontent.com/Aider-AI/aider/main/aider/website/_data/polyglot_leaderboard.yml";
+  try {
+    console.log("[*] Fetching Aider Polyglot leaderboard...");
+    const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const yamlText = await res.text();
+
+    const parsed = {};
+    const blocks = yamlText.split(/\r?\n(?=- dirname:)/);
+    for (const block of blocks) {
+      const modelMatch = block.match(/^\s*model:\s*(.+)$/m);
+      const rate2Match = block.match(/^\s*pass_rate_2:\s*([0-9.]+)/m);
+      const rate1Match = block.match(/^\s*pass_rate_1:\s*([0-9.]+)/m);
+      const cmdMatch = block.match(/^\s*command:\s*aider\s+--model\s+(\S+)/m);
+
+      const scoreRaw = rate2Match ? Number(rate2Match[1]) : (rate1Match ? Number(rate1Match[1]) : NaN);
+      if (isNaN(scoreRaw) || scoreRaw <= 0) continue;
+      const score = Math.round(scoreRaw * 10) / 10;
+
+      const candidateNames = [];
+      if (modelMatch) candidateNames.push(modelMatch[1].trim().replace(/^["']|["']$/g, ""));
+      if (cmdMatch) {
+        const cmdModel = cmdMatch[1].trim();
+        candidateNames.push(cmdModel);
+        if (cmdModel.includes("/")) candidateNames.push(cmdModel.split("/").pop());
+      }
+
+      for (const rawName of candidateNames) {
+        const key = normalizeKey(rawName);
+        if (!key || key.length < 3) continue;
+        if (!parsed[key] || score > parsed[key].score) {
+          parsed[key] = {
+            name: (modelMatch ? modelMatch[1].trim() : rawName).replace(/^["']|["']$/g, ""),
+            score,
+            aider_polyglot: score,
+            tier: determineTier(score),
+            source: "aider-polyglot"
+          };
+        }
+      }
+    }
+    console.log(`[+] Parsed ${Object.keys(parsed).length} models from Aider Polyglot.`);
+    return parsed;
+  } catch (err) {
+    console.warn(`[!] Note: Could not fetch Aider Polyglot data (${err.message}). Skipping.`);
+    return null;
+  }
+}
+
+// Fetch daily-refreshed LiveCodeBench leaderboard from EvanZhouDev/ai-model-index
+// https://raw.githubusercontent.com/EvanZhouDev/ai-model-index/main/data/llm/livecodebench.json
+async function fetchAiModelIndexLiveCodeBench() {
+  const url = "https://raw.githubusercontent.com/EvanZhouDev/ai-model-index/main/data/llm/livecodebench.json";
+  try {
+    console.log("[*] Fetching ai-model-index LiveCodeBench leaderboard...");
+    const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    const parsed = {};
+    for (const m of (Array.isArray(data.models) ? data.models : [])) {
+      const rawScore = Number(m.score);
+      if (isNaN(rawScore) || rawScore <= 0) continue;
+      const score = Math.round((rawScore <= 1 ? rawScore * 100 : rawScore) * 10) / 10;
+      const candidateNames = [m.slug, m.name].filter(Boolean);
+      for (const rawName of candidateNames) {
+        const key = normalizeKey(rawName);
+        if (!key) continue;
+        if (!parsed[key] || score > parsed[key].score) {
+          parsed[key] = {
+            name: m.name || m.slug,
+            score,
+            livecodebench: score,
+            tier: determineTier(score),
+            source: "ai-model-index:livecodebench"
+          };
+        }
+      }
+    }
+    console.log(`[+] Parsed ${Object.keys(parsed).length} models from ai-model-index LiveCodeBench.`);
+    return parsed;
+  } catch (err) {
+    console.warn(`[!] Note: Could not fetch ai-model-index LiveCodeBench (${err.message}). Skipping.`);
+    return null;
+  }
+}
+
 async function updateBenchmarks() {
   console.log("[*] Checking latest empirical coding benchmarks...");
   
@@ -223,10 +325,12 @@ async function updateBenchmarks() {
   // Fetch live sources; the calibrated baseline always wins, later sources only fill gaps
   const liveEvalPlus = await fetchEvalPlusBenchmarks();
   const liveSweBench = await fetchSweBenchVerified();
+  const liveAider = await fetchAiderPolyglot();
+  const liveIndexLcb = await fetchAiModelIndexLiveCodeBench();
   const liveLcb = await fetchLiveCodeBench();
 
   let added = 0;
-  for (const dataset of [liveEvalPlus, liveSweBench, liveLcb]) {
+  for (const dataset of [liveEvalPlus, liveSweBench, liveAider, liveIndexLcb, liveLcb]) {
     if (!dataset || Object.keys(dataset).length === 0) continue;
     console.log(`[+] Fetched ${Object.keys(dataset).length} models from ${Object.values(dataset)[0]?.source || "live"} source.`);
     for (const [key, data] of Object.entries(dataset)) {
@@ -275,17 +379,20 @@ async function updateBenchmarks() {
       }
       console.log(`[+] Ingested ${extAdded} models from external-models.json catalog.`);
 
-      // Mark deprecated models (exact match only - never loose substring)
-      const deprecated = extData.deprecated || [];
-      for (const dep of deprecated) {
-        if (!dep || typeof dep !== 'string') continue;
-        const depKey = normalizeKey(dep);
-        if (depKey.length < 3 || depKey.length > 50) continue;
-        if (merged[depKey]) merged[depKey].deprecated = true;
-        for (const [k, v] of Object.entries(merged)) {
-          const strippedK = normalizeKey(k.replace(/^[^/]+\//, ''));
-          if (normalizeKey(k) === depKey || strippedK === depKey) {
-            v.deprecated = true;
+      // Record provider-scoped deprecations ONLY (exact provider + model match).
+      // Never stamp a global `deprecated: true` flag across unrelated providers.
+      const depRecords = Array.isArray(extData.deprecatedRecords) ? extData.deprecatedRecords : [];
+      for (const rec of depRecords) {
+        if (!rec || !rec.modelId || !rec.provider) continue;
+        const prov = String(rec.provider).toLowerCase();
+        const rawDepKey = normalizeKey(rec.modelId);
+        const baseDepKey = normalizeKey(String(rec.modelId).split("/").pop());
+        for (const k of [rawDepKey, baseDepKey]) {
+          if (k && merged[k]) {
+            if (!Array.isArray(merged[k].deprecatedProviders)) merged[k].deprecatedProviders = [];
+            if (!merged[k].deprecatedProviders.includes(prov)) {
+              merged[k].deprecatedProviders.push(prov);
+            }
           }
         }
       }
@@ -312,4 +419,17 @@ if (require.main === module) {
 // determineTier). sync.js imports this instead of restating the number.
 const SMART_MIN_SCORE = 60;
 
-module.exports = { updateBenchmarks, determineTier, normalizeKey, fetchSweBenchVerified, fetchLiveCodeBench, SMART_MIN_SCORE, BENCHMARKS_PATH };
+module.exports = {
+  updateBenchmarks,
+  determineTier,
+  compareTiers,
+  TIER_ORDER,
+  TIER_RANK,
+  normalizeKey,
+  fetchSweBenchVerified,
+  fetchLiveCodeBench,
+  fetchAiderPolyglot,
+  fetchAiModelIndexLiveCodeBench,
+  SMART_MIN_SCORE,
+  BENCHMARKS_PATH
+};

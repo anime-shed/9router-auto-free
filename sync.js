@@ -23,7 +23,7 @@ const storage = require('./storage.js');
 const tester = require('./tester.js');
 const scheduler = require('./scheduler.js');
 const { PROVIDERS, PROVIDER_BY_KEY, providerByPrefix, discoverProvider, discoverAllProviders, getProviderCredentials, formatRoutingFullId } = require('./providers.js');
-const { BENCHMARKS_PATH, SMART_MIN_SCORE } = require('./update-benchmarks.js');
+const { BENCHMARKS_PATH, SMART_MIN_SCORE, TIER_RANK, compareTiers, determineTier } = require('./update-benchmarks.js');
 
 // Options
 const args = process.argv.slice(2);
@@ -38,7 +38,12 @@ const isVerbose = args.includes('--verbose') || args.includes('-v') || process.e
 
 // ponytail: single-user local tool, thresholds hardcoded; promote to config file when a second machine appears
 const AGENTIC_MIN_CONTEXT = 100000;      // super-combo agentic floor (supports 128k/256k/1M models)
-const MIN_CODING_SCORE = Number(process.env.MIN_CODING_SCORE || (args.find(a => a.startsWith('--min-score='))?.split('=')[1]) || 5000); // models below this benchmark floor (e.g. deprecated/2.5-flash) are never tested or added
+const _rawMinScore = process.env.MIN_CODING_SCORE || (args.find(a => a.startsWith('--min-score='))?.split('=')[1]);
+const MIN_CODING_TIER = String(
+  process.env.MIN_CODING_TIER ||
+  (args.find(a => a.startsWith('--min-tier='))?.split('=')[1]) ||
+  (_rawMinScore ? determineTier(Number(_rawMinScore) / 100) : 'A+')
+).toUpperCase(); // models below this tier (e.g. A, B, C, D) are never tested or added
 const QUOTA_RETRY_DELAY_MS = 1200;       // wait before re-testing a transient failure
 const QUOTA_LATENCY_SENTINEL = 999998;   // latency marker that forces quota-exhausted models to the bottom
 const CANDIDATES_STATE_PATH = path.join(__dirname, 'candidates-state.json'); // last full-sync candidate pool
@@ -186,9 +191,6 @@ function getCodingScore(modelIdentifier, customBenchmarks = null) {
       if (ctx >= 1000000) score += 200;
       else if (ctx >= 250000) score += 100;
     }
-    if (match.deprecated === true) {
-      score -= 5000;
-    }
     return score;
   }
 
@@ -197,7 +199,7 @@ function getCodingScore(modelIdentifier, customBenchmarks = null) {
 
   if (id.includes('claude') || id.includes('sonnet') || id.includes('opus')) baseScore = 8000;
   else if (id.includes('gemini-4') || /gemini.*(argon|carbon|hydrogen|neon)/.test(id)) baseScore = 8400;
-  else if (id.includes('gemini') || id.includes('gpt-4') || id.includes('gpt-6') || id.includes('gpt-5') || id.includes('o1') || id.includes('o3') || id.includes('o4') || id.includes('r1')) baseScore = 7500;
+  else if (id.includes('gemini') || /gpt-(?:[4-9]|daybreak|reserve)/.test(id) || id.includes('o1') || id.includes('o3') || id.includes('o4') || id.includes('r1')) baseScore = 7500;
   else if (/^qd\/(ultimate|performance|auto)|qoder\/(ultimate|performance|auto)/.test(id)) baseScore = 8000;
   else if (/^qd\/(qmodel|kmodel|dmodel)|qoder\/(qmodel|kmodel|dmodel)/.test(id)) baseScore = 7500;
   else if (/^qd\/(gmodel|mmodel)|qoder\/(gmodel|mmodel)/.test(id)) baseScore = 6500;
@@ -309,14 +311,84 @@ function isThinkingVariant(modelIdentifier) {
   return /thinking|reasoning|reasoner/.test(String(modelIdentifier).toLowerCase());
 }
 
+function getModelTier(modelIdentifier, customBenchmarks = null) {
+  const benchmarks = customBenchmarks || getBenchmarksDatabase();
+  const match = findBenchmarkMatch(modelIdentifier, benchmarks);
+  if (match && match.tier && TIER_RANK[String(match.tier).toUpperCase()]) {
+    return String(match.tier).toUpperCase();
+  }
+  if (match && typeof match.score === 'number') {
+    return determineTier(match.score);
+  }
+  return determineTier(getCodingScore(modelIdentifier, benchmarks) / 100);
+}
+
+function resolveProviderKeysForPrefix(prefix) {
+  const keys = new Set();
+  const p = String(prefix || '').toLowerCase();
+  if (!p) return keys;
+  keys.add(p);
+  const rec = providerByPrefix(p);
+  if (rec) {
+    if (rec.key) keys.add(String(rec.key).toLowerCase());
+    if (rec.prefix) keys.add(String(rec.prefix).toLowerCase());
+    if (rec.usageName) keys.add(String(rec.usageName).toLowerCase());
+  }
+  return keys;
+}
+
+/**
+ * Provider-scoped deprecation check:
+ * A model is deprecated for a provider ONLY when:
+ * 1. Exact `prefix/modelId` is confirmed dead in dead-models.json (live test or exact provider removal), OR
+ * 2. Exact provider + model match in benchmark `deprecatedProviders` or external `expiredProviderModels`.
+ */
+function isModelDeprecatedForProvider(fullId, benchmarks = null, deadStore = null, extSignals = null) {
+  const raw = String(fullId || '');
+  const slashIdx = raw.indexOf('/');
+  const prefix = slashIdx !== -1 ? raw.slice(0, slashIdx).toLowerCase() : '';
+  const strippedId = raw.toLowerCase().replace(PROVIDER_PREFIX_RE, '').replace(/:free$/, '');
+  const baseName = strippedId.split('/').pop();
+
+  if (deadStore && tester.isModelConfirmedDead(raw, deadStore)) {
+    return true;
+  }
+
+  const provKeys = resolveProviderKeysForPrefix(prefix);
+
+  if (extSignals && extSignals.expiredProviderModels && provKeys.size > 0) {
+    for (const pk of provKeys) {
+      if (extSignals.expiredProviderModels.has(`${pk}|${strippedId}`) ||
+          extSignals.expiredProviderModels.has(`${pk}|${baseName}`)) {
+        return true;
+      }
+    }
+  }
+
+  const bm = benchmarks || getBenchmarksDatabase();
+  const exactBm = bm[strippedId] || bm[baseName] || findBenchmarkMatch(raw, bm);
+  if (exactBm && Array.isArray(exactBm.deprecatedProviders) && provKeys.size > 0) {
+    for (const dp of exactBm.deprecatedProviders) {
+      if (provKeys.has(String(dp).toLowerCase())) return true;
+    }
+  }
+  // Legacy mock/unit-test support: if a synthetic benchmark entry sets `deprecated: true`
+  // with NO `source` (not from an unrelated external catalog) and NO `deprecatedProviders`
+  if (exactBm && exactBm.deprecated === true && !exactBm.source && !Array.isArray(exactBm.deprecatedProviders)) {
+    return true;
+  }
+
+  return false;
+}
+
 function isSmartTierModel(modelIdentifier, benchmarks = null) {
   const str = String(modelIdentifier).toLowerCase();
   if (/thinking|reasoning|reasoner|r1\b/.test(str)) return true;
-  const match = findBenchmarkMatch(str, benchmarks || getBenchmarksDatabase());
-  if (match) {
-    if (match.tier === 'S+' || match.tier === 'S') return true;
-    if (typeof match.score === 'number' && match.score >= SMART_MIN_SCORE) return true;
-  }
+  const bm = benchmarks || getBenchmarksDatabase();
+  const tier = getModelTier(str, bm);
+  if (tier === 'S+' || tier === 'S') return true;
+  const match = findBenchmarkMatch(str, bm);
+  if (match && typeof match.score === 'number' && match.score >= SMART_MIN_SCORE) return true;
   return false;
 }
 
@@ -355,17 +427,21 @@ function sortModelsByCodingQuality(models, latencyMap = null, customPriorities =
 
     if (quotaA !== quotaB) return quotaA ? 1 : -1;
 
-    // Deprecated models go below active models
-    const matchA = findBenchmarkMatch(idA, benchmarks);
-    const matchB = findBenchmarkMatch(idB, benchmarks);
-    const depA = Boolean(matchA?.deprecated);
-    const depB = Boolean(matchB?.deprecated);
+    // Provider-scoped deprecated models go below active models
+    const depA = isModelDeprecatedForProvider(idA, benchmarks);
+    const depB = isModelDeprecatedForProvider(idB, benchmarks);
     if (depA !== depB) return depA ? 1 : -1;
 
     const rankA = getModelPriorityRank(idA, priorities);
     const rankB = getModelPriorityRank(idB, priorities);
 
     if (rankA !== rankB) return rankA - rankB;
+
+    // Sort by Tier first (S+ > S > A+ > A > A- > B+ > B > C > D), then by intra-tier score
+    const tierA = getModelTier(idA, benchmarks);
+    const tierB = getModelTier(idB, benchmarks);
+    const tierCmp = compareTiers(tierB, tierA);
+    if (tierCmp !== 0) return tierCmp;
 
     const penaltyA = getUsagePenalty(idA, usageStats);
     const penaltyB = getUsagePenalty(idB, usageStats);
@@ -413,9 +489,9 @@ function buildComboMap({ free = [], cooldown = [], smart, fast, opencodeGo = [],
 function assembleCombos({ candidates, latencyMap = new Map(), metaMap = new Map(), signals = null }) {
   const allIds = Array.from(new Set(candidates.map(getModelFullId)));
 
-  // Filter out models explicitly excluded from super-combos or below minimum coding score threshold
+  // Filter out models explicitly excluded from super-combos or below minimum coding tier
   const benchmarks = signals?.benchmarks || getBenchmarksDatabase();
-  const eligibleIds = allIds.filter(id => !isExcludedFromSuperCombo(id) && getCodingScore(id, benchmarks) >= MIN_CODING_SCORE);
+  const eligibleIds = allIds.filter(id => !isExcludedFromSuperCombo(id) && compareTiers(getModelTier(id, benchmarks), MIN_CODING_TIER) >= 0);
 
   // Super-combo agentic readiness gate
   const gatedIds = eligibleIds.filter(id => passesAgenticGate(metaMap.get(id)));
@@ -451,61 +527,66 @@ async function testModelWith9router(fullModelId, token, attempt = 1, fetchImpl =
 
 function loadExternalModelSignals() {
   const activeIds = new Set();
-  const expiredIds = new Set();
+  const expiredProviderModels = new Set();
   const extPath = path.join(__dirname, 'external-models.json');
   try {
-    if (!fs.existsSync(extPath)) return { activeIds, expiredIds };
+    if (!fs.existsSync(extPath)) return { activeIds, expiredProviderModels };
     const ext = JSON.parse(fs.readFileSync(extPath, 'utf8'));
     const now = Date.now();
     for (const m of (ext.models || [])) {
       const id = String(m.id || '').toLowerCase();
+      const prov = String(m.provider || '').toLowerCase();
       if (!id) continue;
       if (m.deprecatedAfter && !isNaN(new Date(m.deprecatedAfter).getTime()) && new Date(m.deprecatedAfter).getTime() <= now) {
-        expiredIds.add(id);
+        if (prov) expiredProviderModels.add(`${prov}|${id}`);
       } else {
         activeIds.add(id);
+      }
+    }
+    for (const rec of (ext.deprecatedRecords || [])) {
+      const id = String(rec?.modelId || '').toLowerCase();
+      const prov = String(rec?.provider || '').toLowerCase();
+      if (id && prov) {
+        expiredProviderModels.add(`${prov}|${id}`);
+        expiredProviderModels.add(`${prov}|${id.split('/').pop()}`);
       }
     }
     for (const ids of Object.values(ext.providerCatalog || {})) {
       for (const id of (ids || [])) {
         const lId = String(id || '').toLowerCase();
-        if (lId && !expiredIds.has(lId)) activeIds.add(lId);
+        if (lId) activeIds.add(lId);
       }
     }
   } catch { }
-  return { activeIds, expiredIds };
+  return { activeIds, expiredProviderModels };
 }
 
 async function validateCandidateModels(models, prefix) {
   const exclusions = getExclusionList();
   const deadStore = tester.loadDeadModels();
   const benchmarks = getBenchmarksDatabase();
-  const { activeIds: extActiveIds, expiredIds: extExpiredIds } = loadExternalModelSignals();
+  const extSignals = loadExternalModelSignals();
   const nonExcludedModels = [];
 
   for (const m of models) {
     const fullId = m.fullId || `${prefix}/${m.id}`;
-    const strippedId = String(fullId).toLowerCase().replace(PROVIDER_PREFIX_RE, '').replace(/:free$/, '');
-    const baseName = strippedId.split('/').pop();
     const src = String(m.source || '').toLowerCase();
     const isLiveSource = src.endsWith('-9router') || src.endsWith('-upstream-live');
-    const exactBm = benchmarks[strippedId] || benchmarks[baseName];
 
     const matchedRule = isModelExcluded(fullId, exclusions) || isModelExcluded(m.id, exclusions);
     if (matchedRule) {
       console.log(`    [⊘ Excluded] ${fullId} -> Matched rule "${matchedRule}"`);
     } else if (tester.isModelConfirmedDead(fullId, deadStore)) {
-      console.log(`    [⊘ Dead] ${fullId} -> Skipping (dead in dead-models.json)`);
-    } else if (extExpiredIds.has(strippedId) || extExpiredIds.has(baseName)) {
-      console.log(`    [⊘ Expired] ${fullId} -> Skipping (deprecatedAfter passed in external-models.json)`);
-    } else if (exactBm?.deprecated === true && !isLiveSource && !extActiveIds.has(strippedId) && !extActiveIds.has(baseName)) {
-      console.log(`    [⊘ Deprecated] ${fullId} -> Skipping (deprecated in benchmarks.json and absent from external-models.json)`);
+      console.log(`    [⊘ Dead] ${fullId} -> Skipping (confirmed dead for [${prefix}] in dead-models.json)`);
+    } else if (!isLiveSource && isModelDeprecatedForProvider(fullId, benchmarks, deadStore, extSignals)) {
+      console.log(`    [⊘ Deprecated] ${fullId} -> Skipping (exact provider/model deprecated in external catalog)`);
     } else {
+      const tier = getModelTier(fullId, benchmarks);
       const score = getCodingScore(fullId, benchmarks);
-      if (score < MIN_CODING_SCORE) {
-        console.log(`    [⊘ Below Threshold] ${fullId} -> Skipping (score ${score} < ${MIN_CODING_SCORE})`);
+      if (compareTiers(tier, MIN_CODING_TIER) < 0) {
+        console.log(`    [⊘ Below Tier] ${fullId} -> Skipping (tier ${tier} < ${MIN_CODING_TIER})`);
       } else {
-        nonExcludedModels.push({ ...m, _preScore: score });
+        nonExcludedModels.push({ ...m, _preTier: tier, _preScore: score });
       }
     }
   }
@@ -514,8 +595,12 @@ async function validateCandidateModels(models, prefix) {
     return [];
   }
 
-  // Sort highest-scoring models first so quota/rate-limited providers test the best models before older ones
-  nonExcludedModels.sort((a, b) => (b._preScore || 0) - (a._preScore || 0));
+  // Sort highest-tier models first (S+ > S > A+), then by score within tier
+  nonExcludedModels.sort((a, b) => {
+    const tierCmp = compareTiers(b._preTier, a._preTier);
+    if (tierCmp !== 0) return tierCmp;
+    return (b._preScore || 0) - (a._preScore || 0);
+  });
 
   // Generically ensure all non-excluded, non-dead candidate models are enabled in 9router before pre-testing
   if (storage.enableModelsIn9router && prefix && nonExcludedModels.length > 0) {
@@ -1027,6 +1112,9 @@ if (require.main === module) {
 
 module.exports = {
   getCodingScore,
+  getModelTier,
+  MIN_CODING_TIER,
+  isModelDeprecatedForProvider,
   sortModelsByCodingQuality,
   getPrioritiesList,
   getModelPriorityRank,
