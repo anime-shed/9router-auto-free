@@ -133,18 +133,21 @@ function parseUpstreamFailure(resStatus, rawError) {
   let upstreamStatus = bracketMatch ? parseInt(bracketMatch[1], 10)
     : (httpPrefixMatch ? parseInt(httpPrefixMatch[1], 10) : Number(resStatus || 500));
 
-  // Connection/credential-level missing auth (not a dead model)
+  // Connection/credential-level missing auth or 9router adapter/config crash (not a dead model)
   const isMissingCredentials = /no active credentials for provider/i.test(text);
+  const isProviderAdapterError =
+    /cannot read propert|is not defined|is not a function|provider not configured|econnrefused|enotfound/i.test(text);
 
   // Model-level paid / tier / channel / harness errors (specific to this model, NOT fatal to the provider account)
   const isModelTierOrChannelError =
     /paid model|credits required|not included in your (free )?(usage|plan)|not included in you|no_available_channel|model不支持|未开通会员|model_not_found|only available on agentic harnesses|not yet available to you|does not support this protocol/i.test(text);
 
-  // Account-level fatal billing or authentication failure (kills entire connection, NOT individual models)
+  // Account-level fatal billing, authentication, or provider-adapter failure (kills entire connection, NOT individual models)
   const isFatalBillingOrAuth = !isModelTierOrChannelError && (
     upstreamStatus === 401 ||
     upstreamStatus === 402 ||
     isMissingCredentials ||
+    isProviderAdapterError ||
     /spending.?limit|run out of credits|need a .* subscription|your current subscription|payment required to access|insufficient balance|no resource package|account.?suspended|invalid.?api.?key|unauthorized|oauth2 access token|bad-credentials|valid license/i.test(text)
   );
 
@@ -228,13 +231,15 @@ class CircuitBreaker {
     if (s && !s.tripped) {
       s.consecutive429 = 0;
       s.consecutiveAuth = 0;
+      s.consecutiveTimeouts = 0;
+      s.consecutiveTransient = 0;
     }
   }
 
   recordFailure(providerKey, failure) {
     let s = this.state.get(providerKey);
     if (!s) {
-      s = { consecutive429: 0, consecutiveAuth: 0, tripped: false, reason: '' };
+      s = { consecutive429: 0, consecutiveAuth: 0, consecutiveTimeouts: 0, consecutiveTransient: 0, tripped: false, reason: '' };
       this.state.set(providerKey, s);
     }
 
@@ -243,7 +248,7 @@ class CircuitBreaker {
       const maxAuth = failure.maxAuthStrikes || 1;
       if (s.consecutiveAuth >= maxAuth) {
         s.tripped = true;
-        s.reason = `Fatal upstream authorization or billing block: ${failure.reason}`;
+        s.reason = `Fatal upstream authorization, billing, or adapter block: ${failure.reason}`;
         return { tripped: true, immediate: true };
       }
       return { tripped: false, backoffMs: 500 };
@@ -259,6 +264,26 @@ class CircuitBreaker {
       // Progressive provider backoff: 1.5s, 3s
       const backoffMs = s.consecutive429 * 1500;
       return { tripped: false, backoffMs };
+    }
+
+    if (failure.isTimeout) {
+      s.consecutiveTimeouts += 1;
+      if (s.consecutiveTimeouts >= 3) {
+        s.tripped = true;
+        s.reason = `Persistent timeouts (3 consecutive timeouts): ${failure.reason}`;
+        return { tripped: true, backoffMs: 0 };
+      }
+      return { tripped: false };
+    }
+
+    if (failure.isTransient) {
+      s.consecutiveTransient += 1;
+      if (s.consecutiveTransient >= 4) {
+        s.tripped = true;
+        s.reason = `Persistent upstream errors (4 consecutive transient failures): ${failure.reason}`;
+        return { tripped: true, backoffMs: 0 };
+      }
+      return { tripped: false };
     }
 
     return { tripped: false };
@@ -479,13 +504,14 @@ async function testModelWith9router(fullModelId, token, options = {}) {
     const isTimeoutErr = err.name === 'AbortError' || String(err.message).toLowerCase().includes('timeout') || String(err.message).toLowerCase().includes('aborted');
     const failure = parseUpstreamFailure(504, err.message);
 
-    // If fetch itself timed out on /api/models/test (15s bottleneck), fallback to /v1/chat/completions with full timeout
-    if ((failure.isTimeout || isTimeoutErr) && !options.isChatFallback) {
+    // If 9router's internal /api/models/test 15s bottleneck timed out early (latency < timeoutMs - 5s),
+    // fallback once to /v1/chat/completions. If our own full 45s client timeout already elapsed, do not double-wait.
+    if ((failure.isTimeout || isTimeoutErr) && !options.isChatFallback && latencyMs < timeoutMs - 5000) {
       const chatRes = await testModelWithChatCompletions(fullModelId, { ...options, token, isChatFallback: true });
       return chatRes;
     }
 
-    if (attempt <= maxRetries && !failure.isDead && !failure.isFatalBillingOrAuth) {
+    if (attempt <= maxRetries && !failure.isDead && !failure.isFatalBillingOrAuth && !failure.isTimeout && !isTimeoutErr) {
       await new Promise(r => setTimeout(r, 1200));
       const retryRes = await testModelWith9router(fullModelId, token, {
         ...options,
@@ -606,7 +632,18 @@ async function testModels(models, options = {}) {
           break;
         }
       } else if (result.verdict === 'transient') {
+        const breakRes = breaker.recordFailure(prefix, {
+          isTimeout: result.timedOut,
+          isTransient: true,
+          reason: result.reason
+        });
         console.log(`    [⚠ Transient] ${fullId} -> ${result.reason}${result.retried ? ' (after retry)' : ''} (NOT marking model dead)`);
+        if (breakRes.tripped) {
+          circuitTripped = true;
+          tripReason = breaker.getTripReason(prefix);
+          console.log(`    [⚡ Circuit Breaker] Provider [${prefix}] tripped! ${tripReason}. Skipping ${queue.length} remaining candidates.`);
+          break;
+        }
       } else {
         // Confirmed dead result
         recordDeadModel(fullId, result.reason, result.status, deadStore);

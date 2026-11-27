@@ -68,6 +68,9 @@ function getDbClass() {
           if (options.readonly !== undefined) opts.readOnly = Boolean(options.readonly);
           if (options.readOnly !== undefined) opts.readOnly = Boolean(options.readOnly);
           this._db = new DatabaseSync(filePath, opts);
+          if (!opts.readOnly) {
+            try { this._db.exec('PRAGMA busy_timeout = 5000;'); } catch { }
+          }
         }
         prepare(sql) {
           const stmt = this._db.prepare(sql);

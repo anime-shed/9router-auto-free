@@ -151,6 +151,21 @@ async function main() {
     const r402Account = tester.parseUpstreamFailure(503, 'HTTP 503: [xiaomi-mimo/mimo-v2.6-pro] [402]: { "error": { "code": "402", "message": "payment required" } }');
     assert.strictEqual(r402Account.isFatalBillingOrAuth, true, 'Account-level 402 is fatal billing/auth');
     assert.strictEqual(r402Account.isDead, false, 'Account-level 402 must NOT mark model dead');
+
+    const rAdapterCrash = tester.parseUpstreamFailure(503, "HTTP 503: [trae/gpt-5.2] [502]: Cannot read properties of undefined (reading 'baseUrl')");
+    assert.strictEqual(rAdapterCrash.isFatalBillingOrAuth, true, 'Provider adapter crash must trip circuit breaker immediately');
+    assert.strictEqual(rAdapterCrash.isDead, false, 'Provider adapter crash must NOT mark model dead');
+  }
+
+  // 7. CircuitBreaker consecutive timeout tripping
+  {
+    const cb = new tester.CircuitBreaker();
+    assert.strictEqual(cb.recordFailure('qd', { isTimeout: true, reason: 'timeout 1' }).tripped, false);
+    assert.strictEqual(cb.recordFailure('qd', { isTimeout: true, reason: 'timeout 2' }).tripped, false);
+    cb.recordSuccess('qd'); // resets streak
+    assert.strictEqual(cb.recordFailure('qd', { isTimeout: true, reason: 'timeout 1b' }).tripped, false);
+    assert.strictEqual(cb.recordFailure('qd', { isTimeout: true, reason: 'timeout 2b' }).tripped, false);
+    assert.strictEqual(cb.recordFailure('qd', { isTimeout: true, reason: 'timeout 3b' }).tripped, true, '3 consecutive timeouts must trip breaker');
   }
 
   console.log('[✓] All tester.js unit tests passed successfully!');
